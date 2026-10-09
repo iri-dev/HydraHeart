@@ -18,6 +18,11 @@ class HydraViewModel(application: Application) : AndroidViewModel(application) {
 
     val state: StateFlow<HydraState> = _state.asStateFlow()
 
+    init {
+        // Alarms are lost if the app is force-stopped, so re-book them on every launch.
+        HydraReminderScheduler.sync(getApplication(), _state.value.reminders, _state.value.remindersEnabled)
+    }
+
     fun logDrink(type: HydraDrinkType, amountMl: Float = type.defaultAmountMl) {
         val now = System.currentTimeMillis()
         val safeAmount = amountMl.coerceAtLeast(1f)

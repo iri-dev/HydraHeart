@@ -1,5 +1,8 @@
 package com.example.hydraheart
 
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -45,6 +48,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.clipPath
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -118,6 +122,8 @@ fun RemindersScreen(
         savedReminders.map { ReminderItem(it.timeText, it.label) }
     }
     var customMessage by remember { mutableStateOf("") }
+    var onTimePromptDismissed by remember { mutableStateOf(false) }
+    val context = LocalContext.current
     val scrollState = rememberScrollState()
 
     Box(
@@ -175,6 +181,24 @@ fun RemindersScreen(
                     )
                 }
                 RmSwitch(checked = remindersEnabled, onChange = onToggle)
+            }
+
+            // Android 14+ only lets reminders arrive on the minute once alarm access is allowed.
+            if (remindersEnabled && !onTimePromptDismissed &&
+                !HydraReminderScheduler.canScheduleExactAlarms(context)
+            ) {
+                Spacer(modifier = Modifier.height(16.dp))
+                OnTimeRemindersCard(
+                    onClick = {
+                        onTimePromptDismissed = true
+                        context.startActivity(
+                            Intent(
+                                Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM,
+                                Uri.parse("package:${context.packageName}")
+                            )
+                        )
+                    }
+                )
             }
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -837,6 +861,56 @@ private fun SoundGlyphIcon(glyph: SoundGlyph, selected: Boolean) {
                     style = Stroke(width = stroke)
                 )
             }
+        }
+    }
+}
+
+@Composable
+private fun OnTimeRemindersCard(onClick: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(16.dp))
+            .background(rmTileBrush)
+            .border(
+                brush = rmTileBorder,
+                width = 0.85.dp,
+                shape = RoundedCornerShape(16.dp)
+            )
+            .clickable(onClick = onClick)
+            .padding(horizontal = 16.dp, vertical = 14.dp)
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Column(modifier = Modifier.weight(1f)) {
+                BasicText(
+                    text = "Allow on-time reminders",
+                    style = TextStyle(
+                        color = RmLavender,
+                        fontSize = 19.sp,
+                        fontFamily = AppFont,
+                        fontStyle = FontStyle.Italic,
+                        fontWeight = FontWeight.Bold
+                    )
+                )
+                Spacer(modifier = Modifier.height(2.dp))
+                BasicText(
+                    text = "Without alarm access they can arrive a few minutes late",
+                    style = TextStyle(
+                        color = RmMuted.copy(alpha = 0.80f),
+                        fontSize = 14.sp,
+                        fontFamily = AppFont,
+                        fontStyle = FontStyle.Italic
+                    )
+                )
+            }
+            BasicText(
+                text = "›",
+                style = TextStyle(
+                    color = RmAccent.copy(alpha = 0.85f),
+                    fontSize = 24.sp,
+                    fontFamily = AppFont
+                )
+            )
         }
     }
 }
