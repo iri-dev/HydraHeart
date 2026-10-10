@@ -24,3 +24,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "HydraHeart"
 include(":app")
+include(":hydraheart2")

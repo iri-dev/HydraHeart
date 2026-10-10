@@ -9,6 +9,17 @@ activityCompose = "1.8.0"
 kotlin = "2.2.10"
 composeBom = "2026.02.01"
 
+# HydraHeart (hydraheart2 module)
+hh2ComposeBom = "2024.12.01"
+hh2ActivityCompose = "1.9.3"
+hh2Appcompat = "1.7.0"
+hh2CoreKtx = "1.15.0"
+hh2CoreSplashscreen = "1.0.1"
+hh2Datastore = "1.1.1"
+hh2Lifecycle = "2.8.7"
+hh2Navigation = "2.8.5"
+hh2Gson = "2.11.0"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -24,6 +35,20 @@ androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "u
 androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+
+hh2-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "hh2ComposeBom" }
+hh2-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "hh2ActivityCompose" }
+hh2-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "hh2Appcompat" }
+hh2-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "hh2CoreKtx" }
+hh2-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "hh2CoreSplashscreen" }
+hh2-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "hh2Datastore" }
+hh2-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "hh2Lifecycle" }
+hh2-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "hh2Lifecycle" }
+hh2-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "hh2Lifecycle" }
+hh2-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "hh2Navigation" }
+hh2-gson = { group = "com.google.code.gson", name = "gson", version.ref = "hh2Gson" }
+hh2-compose-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts" }
+hh2-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
