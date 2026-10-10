@@ -1612,6 +1612,10 @@ class HydraViewModel : ViewModel() {
         }
         if (appReOpenedAt > 0 && System.currentTimeMillis() - appReOpenedAt <= 120_000) award("in_sync")
         if (waterPercent >= 90f) award("close_enough")
+        // Perfect Day: every goal met without going over any limit (unlocks the Barbie theme).
+        if (waterPercent >= 100f && totalCalcium >= goals.calciumMg &&
+            totalCaffeine <= goals.caffeineMg && totalSugar <= goals.sugarG && totalAlcohol <= goals.alcoholG
+        ) award("perfect_day")
         hp = hp + hpGain
     }
 
