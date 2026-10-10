@@ -91,7 +91,7 @@ fun HydraNavigation(viewModel: HydraViewModel) {
                 "history" -> HistoryScreen(viewModel, onNavigate = { navigateTo(it) })
                 "education" -> EducationScreen(viewModel)
                 "trophies" -> TrophiesScreen(viewModel)
-                "settings" -> SettingsScreen(viewModel, onBack = { navigateTo("home") }, onNavigate = { navigateTo(it) })
+                "settings" -> SettingsScreen(viewModel, onBack = { navigateTo("home") }, onNavigateTo = { navigateTo(it) })
                 "diary" -> DiaryScreen(viewModel, onBack = { navigateTo("home") })
                 "mood_tracking" -> MoodTrackingScreen(viewModel, onBack = { navigateTo("settings") })
                 "mood_calendar" -> MoodCalendarScreen(viewModel, onBack = { navigateTo("settings") })
