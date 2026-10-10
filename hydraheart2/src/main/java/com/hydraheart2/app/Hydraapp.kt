@@ -14,6 +14,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.edit
 import com.hydraheart2.app.ui.navigation.HydraNavigation
 import com.hydraheart2.app.ui.screens.OnboardingScreen
 import com.hydraheart2.app.ui.theme.HydraHeart2Theme
@@ -58,18 +59,21 @@ fun HydraApp(viewModel: HydraViewModel, prefs: SharedPreferences) {
     }
 
     val reminderTimes = viewModel.customReminders.map { it.time }
+    val customMessages = viewModel.reminderMessages.toList()
     LaunchedEffect(
         viewModel.isLoaded, viewModel.remindersEnabled, reminderTimes,
-        viewModel.reminderMessages.toList(), viewModel.reminderSound
+        customMessages, viewModel.reminderSound
     ) {
         if (!viewModel.isLoaded) return@LaunchedEffect
-        val allReminderMessages = viewModel.allReminderMessages
+        val allMessages = viewModel.allReminderMessages
         if (viewModel.remindersEnabled) {
-            val reminders = viewModel.customReminders.map { reminder ->
-                val parts = reminder.time.split(":")
-                (parts[0].toIntOrNull() ?: 8) to (parts.getOrNull(1)?.toIntOrNull() ?: 0)
+            val reminders = viewModel.customReminders.map {
+                val parts = it.time.split(":")
+                val hour = parts[0].toIntOrNull() ?: 8
+                val minute = parts.getOrNull(1)?.toIntOrNull() ?: 0
+                hour to minute
             }
-            NotificationHelper.rescheduleAll(context, reminders, allReminderMessages, viewModel.reminderSound)
+            NotificationHelper.rescheduleAll(context, reminders, allMessages, viewModel.reminderSound)
         } else {
             for (i in 0 until 20) {
                 NotificationHelper.cancelReminder(context, i)
@@ -81,30 +85,30 @@ fun HydraApp(viewModel: HydraViewModel, prefs: SharedPreferences) {
             context,
             viewModel.remindersEnabled,
             viewModel.customReminders.toList(),
-            allReminderMessages,
+            allMessages,
             viewModel.reminderSound
         )
     }
 
     HydraHeart2Theme(theme) {
-        if (viewModel.isLoaded) {
+        if (!viewModel.isLoaded) {
+            Box(Modifier.fillMaxSize().background(Brush.linearGradient(listOf(theme.bg1, theme.bg2, theme.bg3))))
+        } else {
             AnimatedContent(
                 targetState = viewModel.onboardingComplete,
-                modifier = Modifier.fillMaxSize(),
                 transitionSpec = { fadeIn(tween(500)) togetherWith fadeOut(tween(300)) },
+                modifier = Modifier.fillMaxSize(),
                 label = "appState"
             ) { onboarded ->
                 if (!onboarded) {
                     OnboardingScreen(viewModel) {
-                        prefs.edit().putBoolean("has_seen_onboarding", true).apply()
+                        prefs.edit { putBoolean("has_seen_onboarding", true) }
                         viewModel.onboardingComplete = true
                     }
                 } else {
                     HydraNavigation(viewModel)
                 }
             }
-        } else {
-            Box(Modifier.fillMaxSize().background(Brush.linearGradient(listOf(theme.bg1, theme.bg2, theme.bg3))))
         }
     }
 }

@@ -26,6 +26,3 @@ private fun Pending(name: String, viewModel: HydraViewModel, onBack: (() -> Unit
 @Composable
 fun SettingsScreen(viewModel: HydraViewModel, onBack: () -> Unit, onNavigate: (String) -> Unit) =
     Pending("Settings", viewModel, onBack)
-
-@Composable
-fun OnboardingScreen(viewModel: HydraViewModel, onComplete: () -> Unit) = Pending("Onboarding", viewModel, onComplete)
