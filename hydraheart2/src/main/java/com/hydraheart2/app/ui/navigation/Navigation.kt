@@ -95,11 +95,11 @@ fun HydraNavigation(viewModel: HydraViewModel) {
                 "diary" -> DiaryScreen(viewModel, onBack = { navigateTo("home") })
                 "mood_tracking" -> MoodTrackingScreen(viewModel, onBack = { navigateTo("settings") })
                 "mood_calendar" -> MoodCalendarScreen(viewModel, onBack = { navigateTo("settings") })
-                "about" -> AboutScreen(viewModel, onBack = { navigateTo("settings") }, onNavigate = { route -> navigateTo(route) })
+                "about" -> AboutScreen(viewModel, onBack = { navigateTo("settings") }, onNavigateTo = { route -> navigateTo(route) })
                 "dev_profile" -> DeveloperProfileScreen(
                     viewModel,
                     onBack = { navigateTo("about") },
-                    onNavigate = { route -> navigateTo(route) }
+                    onNavigateTo = { route -> navigateTo(route) }
                 )
                 "privacy" -> LegalContentScreen(viewModel, "Privacy Policy", "privacy", onBack = { navigateTo("about") })
                 "terms" -> LegalContentScreen(viewModel, "Terms of Service", "terms", onBack = { navigateTo("about") })

@@ -24,29 +24,8 @@ private fun Pending(name: String, viewModel: HydraViewModel, onBack: (() -> Unit
 }
 
 @Composable
-fun EducationScreen(viewModel: HydraViewModel) = Pending("Learn", viewModel)
-
-@Composable
 fun SettingsScreen(viewModel: HydraViewModel, onBack: () -> Unit, onNavigate: (String) -> Unit) =
     Pending("Settings", viewModel, onBack)
-
-@Composable
-fun AboutScreen(viewModel: HydraViewModel, onBack: () -> Unit, onNavigate: (String) -> Unit) =
-    Pending("About", viewModel, onBack)
-
-@Composable
-fun DeveloperProfileScreen(viewModel: HydraViewModel, onBack: () -> Unit, onNavigate: (String) -> Unit) =
-    Pending("Developer profile", viewModel, onBack)
-
-@Composable
-fun LegalContentScreen(viewModel: HydraViewModel, title: String, type: String, onBack: () -> Unit) =
-    Pending(title, viewModel, onBack)
-
-@Composable
-fun WhatsNewScreen(viewModel: HydraViewModel, onBack: () -> Unit) = Pending("What's new", viewModel, onBack)
-
-@Composable
-fun LevelControlScreen(viewModel: HydraViewModel, onBack: () -> Unit) = Pending("Level control", viewModel, onBack)
 
 @Composable
 fun OnboardingScreen(viewModel: HydraViewModel, onComplete: () -> Unit) = Pending("Onboarding", viewModel, onComplete)
