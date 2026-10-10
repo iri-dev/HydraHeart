@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">HydraHeart2</string>
     <string name="drink_cat_alcohol">Alcohol</string>
     <string name="drink_cat_coffee">Café y Té</string>
     <string name="drink_cat_energy">Bebidas Energéticas</string>
@@ -30,6 +31,13 @@
     <string name="general_experience_desc_saver">Efectos mínimos para ahorrar batería.</string>
     <string name="general_experience_full">Completo</string>
     <string name="general_experience_saver">Ahorro</string>
+    <string name="general_hydra_flow_subtitle">Todo aquí moldea cómo me siento y cómo respondo contigo.</string>
+    <string name="general_hydra_flow_title">Flujo Hydra</string>
+    <string name="general_hydra_msg_balanced">Una mezcla perfecta de sensación y respuesta 💧</string>
+    <string name="general_hydra_msg_celebrate">Lo noto — gracias por afinar esto conmigo 💕</string>
+    <string name="general_hydra_msg_full_intensity">Todos los sentidos activos — estoy completamente contigo ✨</string>
+    <string name="general_hydra_msg_off">Estaré quieta y callada — solo aquí para ti 🌙</string>
+    <string name="general_hydra_msg_soft">Suave y gentil — justo para sentirnos cerca 🌿</string>
     <string name="general_interaction_balanced">Equilibrado</string>
     <string name="general_interaction_desc_balanced">Haptics, sonidos y efectos visuales sutiles.</string>
     <string name="general_interaction_desc_full">Retroalimentación total — todos los sentidos.</string>
@@ -41,6 +49,7 @@
     <string name="general_interaction_soft">Suave</string>
     <string name="general_language_row_title">Idioma</string>
     <string name="general_language_sheet_title">Idioma</string>
+    <string name="general_screen_subtitle">Cómo nos movemos, sentimos y hablamos juntos</string>
     <string name="general_section_device">COMPORTAMIENTO DEL DISPOSITIVO</string>
     <string name="general_section_experience">MODO DE EXPERIENCIA</string>
     <string name="general_section_interaction">ESTILO DE INTERACCIÓN</string>
@@ -115,9 +124,12 @@
     <string name="lang_en_us">Inglés (EE. UU.)</string>
     <string name="lang_es">Español</string>
     <string name="lang_system">Sistema (automático)</string>
+    <string name="learn_subtitle">Entiende lo que entra en tu cuerpo</string>
     <string name="learn_title">Aprender</string>
     <string name="log_drink_add">+ Añadir</string>
     <string name="log_drink_dehydrating">⚠️ Deshidratante: -%1$s%2$s de tu total</string>
+    <string name="log_drink_options_count">%1$d opciones</string>
+    <string name="log_drink_title">Registrar Bebida</string>
     <string name="menu_about">Acerca de</string>
     <string name="menu_calendar">Calendario</string>
     <string name="menu_general">General</string>

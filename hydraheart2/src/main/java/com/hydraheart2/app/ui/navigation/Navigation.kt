@@ -87,7 +87,7 @@ fun HydraNavigation(viewModel: HydraViewModel) {
         ) { screen ->
             when (screen) {
                 "home" -> HomeScreen(viewModel, onNavigate = { navigateTo(it) })
-                "log" -> LogDrinkScreen(viewModel, onBack = { navigateTo("home") })
+                "log" -> LogDrinkScreen(viewModel, onNavigateHome = { navigateTo("home") })
                 "history" -> HistoryScreen(viewModel, onNavigate = { navigateTo(it) })
                 "education" -> EducationScreen(viewModel)
                 "trophies" -> TrophiesScreen(viewModel)

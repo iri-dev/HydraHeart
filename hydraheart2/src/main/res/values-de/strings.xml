@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">HydraHeart2</string>
     <string name="drink_cat_alcohol">Alkohol</string>
     <string name="drink_cat_coffee">Kaffee &amp; Tee</string>
     <string name="drink_cat_energy">Energydrinks</string>
@@ -30,6 +31,13 @@
     <string name="general_experience_desc_saver">Minimale Effekte für mehr Akkulaufzeit.</string>
     <string name="general_experience_full">Voll</string>
     <string name="general_experience_saver">Sparen</string>
+    <string name="general_hydra_flow_subtitle">All das hier formt, wie ich mich fühle und auf dich reagiere.</string>
+    <string name="general_hydra_flow_title">Hydra-Fluss</string>
+    <string name="general_hydra_msg_balanced">Eine perfekte Mischung aus Gefühl und Feedback 💧</string>
+    <string name="general_hydra_msg_celebrate">Ich spüre das — danke, dass du das mit mir feinjustierst 💕</string>
+    <string name="general_hydra_msg_full_intensity">Alle Sinne aktiv — ich bin vollständig bei dir ✨</string>
+    <string name="general_hydra_msg_off">Ich bleibe ruhig und still — einfach für dich da 🌙</string>
+    <string name="general_hydra_msg_soft">Sanft und zart — gerade genug, um uns nah zu fühlen 🌿</string>
     <string name="general_interaction_balanced">Ausgewogen</string>
     <string name="general_interaction_desc_balanced">Haptik, sanfte Töne und dezente visuelle Effekte.</string>
     <string name="general_interaction_desc_full">Volles immersives Feedback — alle Sinne.</string>
@@ -41,6 +49,7 @@
     <string name="general_interaction_soft">Sanft</string>
     <string name="general_language_row_title">Sprache</string>
     <string name="general_language_sheet_title">Sprache</string>
+    <string name="general_screen_subtitle">Wie wir uns bewegen, fühlen und zusammen sprechen</string>
     <string name="general_section_device">GERÄTEVERHALTEN</string>
     <string name="general_section_experience">ERLEBNISMODUS</string>
     <string name="general_section_interaction">INTERAKTIONSSTIL</string>
@@ -115,9 +124,12 @@
     <string name="lang_en_us">English (US)</string>
     <string name="lang_es">Español</string>
     <string name="lang_system">System (Auto)</string>
+    <string name="learn_subtitle">Verstehe, was in deinen Körper kommt</string>
     <string name="learn_title">Lernen</string>
     <string name="log_drink_add">+ Hinzufügen</string>
     <string name="log_drink_dehydrating">⚠️ Dehydrierend: -%1$s%2$s von deinem Gesamtwert</string>
+    <string name="log_drink_options_count">%1$d Optionen</string>
+    <string name="log_drink_title">Getränk erfassen</string>
     <string name="menu_about">Über</string>
     <string name="menu_calendar">Kalender</string>
     <string name="menu_general">Allgemein</string>

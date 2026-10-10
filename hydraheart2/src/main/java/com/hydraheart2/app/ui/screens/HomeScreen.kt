@@ -166,8 +166,7 @@ fun HomeScreen(viewModel: HydraViewModel, onNavigate: (String) -> Unit) {
         }
     }
 
-    val unlocked = viewModel.pendingUnlockPersonality
-    if (unlocked != null) {
+    viewModel.pendingUnlockPersonality?.let { unlocked ->
         PersonalityUnlockDialog(
             personality = unlocked,
             theme = theme,
@@ -263,19 +262,18 @@ fun HomeScreen(viewModel: HydraViewModel, onNavigate: (String) -> Unit) {
                         .padding(horizontal = 8.dp, vertical = 4.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    val levelInfo = viewModel.levelInfo
                     Text(
-                        stringResource(R.string.home_level, levelInfo.level),
+                        stringResource(R.string.home_level, viewModel.levelInfo.level),
                         color = theme.textMuted,
                         style = MaterialTheme.typography.labelSmall.copy(letterSpacing = 2.sp)
                     )
                     // Fix: at the top level there is no next threshold (requiredHp is 0), which used
                     // to read "1251148/0 HP". Show the HP total with MAX instead.
                     Text(
-                        if (levelInfo.requiredHp > 0) {
-                            stringResource(R.string.home_hp, levelInfo.currentHp, levelInfo.requiredHp)
+                        if (viewModel.levelInfo.requiredHp > 0) {
+                            stringResource(R.string.home_hp, viewModel.levelInfo.currentHp, viewModel.levelInfo.requiredHp)
                         } else {
-                            stringResource(R.string.home_hp_max, levelInfo.totalHp)
+                            stringResource(R.string.home_hp_max, viewModel.levelInfo.totalHp)
                         },
                         color = theme.accent,
                         style = MaterialTheme.typography.labelMedium
@@ -292,8 +290,8 @@ fun HomeScreen(viewModel: HydraViewModel, onNavigate: (String) -> Unit) {
                             Modifier
                                 .fillMaxHeight()
                                 .fillMaxWidth(
-                                    if (levelInfo.requiredHp > 0) {
-                                        levelInfo.currentHp.toFloat() / levelInfo.requiredHp.toFloat()
+                                    if (viewModel.levelInfo.requiredHp > 0) {
+                                        viewModel.levelInfo.currentHp.toFloat() / viewModel.levelInfo.requiredHp.toFloat()
                                     } else {
                                         1f
                                     }
@@ -886,32 +884,32 @@ private fun PersonalityUnlockDialog(
                         if (p == 0) {
                             Text(
                                 acknowledgment,
+                                style = MaterialTheme.typography.bodyMedium,
                                 color = theme.textSoft,
                                 textAlign = TextAlign.Center,
-                                lineHeight = 22.sp,
-                                style = MaterialTheme.typography.bodyMedium
+                                lineHeight = 22.sp
                             )
                         } else {
                             Text(
                                 "✨ " + personality.label + " unlocked",
+                                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
                                 color = theme.accent,
-                                textAlign = TextAlign.Center,
-                                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold)
+                                textAlign = TextAlign.Center
                             )
                             Spacer(Modifier.height(10.dp))
                             Text(
                                 reveal,
+                                style = MaterialTheme.typography.bodyMedium,
                                 color = theme.textSoft,
                                 textAlign = TextAlign.Center,
-                                lineHeight = 22.sp,
-                                style = MaterialTheme.typography.bodyMedium
+                                lineHeight = 22.sp
                             )
                             Spacer(Modifier.height(4.dp))
                             Text(
                                 personality.desc,
+                                style = MaterialTheme.typography.bodySmall,
                                 color = theme.accent.copy(alpha = 0.7f),
-                                textAlign = TextAlign.Center,
-                                style = MaterialTheme.typography.bodySmall
+                                textAlign = TextAlign.Center
                             )
                         }
                     }

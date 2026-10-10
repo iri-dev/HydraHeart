@@ -24,12 +24,6 @@ private fun Pending(name: String, viewModel: HydraViewModel, onBack: (() -> Unit
 }
 
 @Composable
-fun LogDrinkScreen(viewModel: HydraViewModel, onBack: () -> Unit) = Pending("Log drink", viewModel, onBack)
-
-@Composable
-fun HistoryScreen(viewModel: HydraViewModel, onNavigate: (String) -> Unit) = Pending("History", viewModel)
-
-@Composable
 fun EducationScreen(viewModel: HydraViewModel) = Pending("Learn", viewModel)
 
 @Composable
@@ -38,12 +32,6 @@ fun TrophiesScreen(viewModel: HydraViewModel) = Pending("Trophies", viewModel)
 @Composable
 fun SettingsScreen(viewModel: HydraViewModel, onBack: () -> Unit, onNavigate: (String) -> Unit) =
     Pending("Settings", viewModel, onBack)
-
-@Composable
-fun DiaryScreen(viewModel: HydraViewModel, onBack: () -> Unit) = Pending("Diary", viewModel, onBack)
-
-@Composable
-fun MoodTrackingScreen(viewModel: HydraViewModel, onBack: () -> Unit) = Pending("Mood tracking", viewModel, onBack)
 
 @Composable
 fun MoodCalendarScreen(viewModel: HydraViewModel, onBack: () -> Unit) = Pending("Mood calendar", viewModel, onBack)

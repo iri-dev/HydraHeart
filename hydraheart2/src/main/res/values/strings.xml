@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">HydraHeart2</string>
     <string name="drink_cat_alcohol">Alcohol</string>
     <string name="drink_cat_coffee">Coffee &amp; Tea</string>
     <string name="drink_cat_energy">Energy Drinks</string>
@@ -50,6 +51,7 @@
     <string name="edu_sugar_crash_title">Why Sugar Crashes Happen</string>
     <string name="edu_sugar_title">Understanding Sugar</string>
     <string name="edu_sweeteners_title">Artificial Sweeteners Explained</string>
+    <string name="edu_tap_to_explore">Tap to explore</string>
     <string name="edu_too_much_water_title">Can You Drink Too Much Water?</string>
     <string name="edu_water_needs_title">How Much Water Do You Need?</string>
     <string name="edu_water_title">Why Water Matters</string>
@@ -69,6 +71,13 @@
     <string name="general_experience_desc_saver">Minimal effects to preserve battery life.</string>
     <string name="general_experience_full">Full</string>
     <string name="general_experience_saver">Saver</string>
+    <string name="general_hydra_flow_subtitle">Everything here shapes how I feel and respond to you.</string>
+    <string name="general_hydra_flow_title">Hydra Flow</string>
+    <string name="general_hydra_msg_balanced">A perfect blend of feeling and feedback 💧</string>
+    <string name="general_hydra_msg_celebrate">I feel that — thank you for tuning things with me 💕</string>
+    <string name="general_hydra_msg_full_intensity">Every sense engaged — I\'m fully here with you ✨</string>
+    <string name="general_hydra_msg_off">I\'ll be still and quiet — just here for you 🌙</string>
+    <string name="general_hydra_msg_soft">Soft and gentle — just enough to feel close 🌿</string>
     <string name="general_interaction_balanced">Balanced</string>
     <string name="general_interaction_desc_balanced">Haptics, audio cues, and subtle visual effects.</string>
     <string name="general_interaction_desc_full">Full immersive feedback — every sense engaged.</string>
@@ -80,6 +89,7 @@
     <string name="general_interaction_soft">Soft</string>
     <string name="general_language_row_title">Language</string>
     <string name="general_language_sheet_title">Language</string>
+    <string name="general_screen_subtitle">How we move, feel, and speak together</string>
     <string name="general_section_device">DEVICE BEHAVIOR</string>
     <string name="general_section_experience">EXPERIENCE MODE</string>
     <string name="general_section_interaction">INTERACTION STYLE</string>
@@ -154,17 +164,29 @@
     <string name="lang_en_us">English (US)</string>
     <string name="lang_es">Español</string>
     <string name="lang_system">System (Auto)</string>
+    <string name="learn_all_topics">All Topics</string>
     <string name="learn_article_back">← Learn</string>
+    <string name="learn_featured_label">FEATURED LESSON</string>
+    <string name="learn_feel_clear">Clear</string>
+    <string name="learn_feel_title">How are you feeling?</string>
     <string name="learn_hydra_teaser">Everything you need to know about what you drink.</string>
     <string name="learn_no_results_hint">Try: hydration, sleep, caffeine, skin, headache…</string>
     <string name="learn_no_results_title">No articles found</string>
     <string name="learn_read_article">Read article</string>
     <string name="learn_refreshes_daily">Refreshes daily</string>
     <string name="learn_search_hint">Search hydration, sleep, caffeine…</string>
+    <string name="learn_subtitle">Understanding what goes into your body</string>
+    <string name="learn_tip_alcohol">You\'ve had alcohol today — hydration matters more right now.</string>
+    <string name="learn_tip_caffeine">You\'ve had caffeine today — see how it might affect your sleep.</string>
+    <string name="learn_tip_low_water">Behind on water today — a quick refresher on why it matters.</string>
+    <string name="learn_tip_read_more">Read more →</string>
+    <string name="learn_tip_sugar">You\'ve logged sugar today — see what it does to your energy levels.</string>
     <string name="learn_title">Learn</string>
     <string name="learn_today_badge">Today\'s Lesson</string>
     <string name="log_drink_add">+ Add</string>
     <string name="log_drink_dehydrating">⚠️ Dehydrating: -%1$s%2$s from your total</string>
+    <string name="log_drink_options_count">%1$d options</string>
+    <string name="log_drink_title">Log a Drink</string>
     <string name="menu_about">About</string>
     <string name="menu_calendar">Calendar</string>
     <string name="menu_general">General</string>

@@ -371,7 +371,7 @@ fun HydraHeartCanvas(
                         0.25f to Color.White.copy(alpha = 0.05f),
                         0.55f to Color.Transparent,
                         1f to Color(0xFF000000).copy(alpha = 0.05f),
-                        start = Offset(w * 0.03f, levelY + (h - levelY) * 0.03f),
+                        start = Offset(w * 0.03f, levelY + liquidH * 0.03f),
                         end = Offset(w * 0.97f, h)
                     ),
                     topLeft = Offset(0f, levelY),
@@ -497,14 +497,13 @@ fun HydraHeartCanvas(
                 drawCircle(Color(0xFFFF1493).copy(alpha = 0.9f), radius = s * 3f, center = Offset(cx, bowY))
             }
             if (equippedAccessories.contains("sparkles")) {
+                val colours = listOf(theme.accent, theme.accent2, Color(0xFFFFD700), Color.White, Color(0xFFFF69B4))
                 for (i in 0 until 8) {
                     val angle = (i * 45f + wave1 * 22f) * 3.1415927f / 180f
                     val dist = w * 0.52f + sin(wave1 + i * 0.8f) * w * 0.035f
-                    val colours = listOf(theme.accent, theme.accent2, Color(0xFFFFD700), Color.White, Color(0xFFFF69B4))
+                    val sparkleAlpha = (0.28f + sparkle * 0.38f) * (if (i % 2 == 0) 1f else 0.58f)
                     drawCircle(
-                        colours[i % colours.size].copy(
-                            alpha = (0.28f + sparkle * 0.38f) * (if (i % 2 == 0) 1f else 0.58f)
-                        ),
+                        colours[i % colours.size].copy(alpha = sparkleAlpha),
                         radius = 1.8f + sin(wave2 + i) * 0.5f,
                         center = Offset(cx + cos(angle) * dist, cy + sin(angle) * dist)
                     )

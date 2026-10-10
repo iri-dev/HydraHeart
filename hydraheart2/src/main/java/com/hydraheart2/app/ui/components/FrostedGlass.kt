@@ -106,8 +106,8 @@ fun FrostedGlass(
                         startY = 0f,
                         endY = 2.5.dp.toPx()
                     ),
-                    size = Size(size.width, size.height),
-                    cornerRadius = CornerRadius(radius, radius)
+                    cornerRadius = CornerRadius(radius, radius),
+                    size = Size(size.width, size.height)
                 )
                 if (glowAlpha > 0f) {
                     drawRoundRect(
@@ -136,10 +136,9 @@ fun FrostedGlass(
                     Modifier
                 }
             )
-            .padding(padding)
-    ) {
-        content()
-    }
+            .padding(padding),
+        content = content
+    )
 }
 
 @Composable
@@ -161,7 +160,7 @@ fun HydraSpeechBubble(
                     .padding(horizontal = 18.dp, vertical = 12.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Text(text, color = theme.textPrimary, textAlign = TextAlign.Center, lineHeight = 20.sp, style = textStyle)
+                Text(text, style = textStyle, color = theme.textPrimary, textAlign = TextAlign.Center, lineHeight = 20.sp)
             }
         }
         "minimal" -> {
@@ -169,7 +168,7 @@ fun HydraSpeechBubble(
                 modifier = modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Text(text, color = theme.textSoft, textAlign = TextAlign.Center, lineHeight = 20.sp, style = textStyle)
+                Text(text, style = textStyle, color = theme.textSoft, textAlign = TextAlign.Center, lineHeight = 20.sp)
             }
         }
         "solid" -> {
@@ -182,10 +181,10 @@ fun HydraSpeechBubble(
             ) {
                 Text(
                     text,
+                    style = textStyle.copy(fontWeight = FontWeight.Medium),
                     color = Color.White,
                     textAlign = TextAlign.Center,
-                    lineHeight = 20.sp,
-                    style = textStyle.copy(fontWeight = FontWeight.Medium)
+                    lineHeight = 20.sp
                 )
             }
         }
@@ -201,7 +200,7 @@ fun HydraSpeechBubble(
                     .padding(horizontal = 18.dp, vertical = 12.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Text(text, color = theme.textPrimary, textAlign = TextAlign.Center, lineHeight = 20.sp, style = textStyle)
+                Text(text, style = textStyle, color = theme.textPrimary, textAlign = TextAlign.Center, lineHeight = 20.sp)
             }
         }
         "dark" -> {
@@ -213,7 +212,7 @@ fun HydraSpeechBubble(
                     .padding(horizontal = 18.dp, vertical = 12.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Text(text, color = theme.textPrimary, textAlign = TextAlign.Center, lineHeight = 20.sp, style = textStyle)
+                Text(text, style = textStyle, color = theme.textPrimary, textAlign = TextAlign.Center, lineHeight = 20.sp)
             }
         }
         "glow" -> {
@@ -223,8 +222,8 @@ fun HydraSpeechBubble(
                         drawCircle(
                             brush = Brush.radialGradient(
                                 listOf(theme.accent.copy(alpha = 0.22f), Color.Transparent),
-                                center = Offset(size.width / 2f, size.height / 2f),
-                                radius = size.width * 0.72f
+                                radius = size.width * 0.72f,
+                                center = Offset(size.width / 2f, size.height / 2f)
                             ),
                             radius = size.width * 0.72f,
                             center = Offset(size.width / 2f, size.height / 2f)
@@ -236,7 +235,7 @@ fun HydraSpeechBubble(
                     .padding(horizontal = 18.dp, vertical = 12.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Text(text, color = theme.textPrimary, textAlign = TextAlign.Center, lineHeight = 20.sp, style = textStyle)
+                Text(text, style = textStyle, color = theme.textPrimary, textAlign = TextAlign.Center, lineHeight = 20.sp)
             }
         }
         "neon" -> {
@@ -250,10 +249,10 @@ fun HydraSpeechBubble(
             ) {
                 Text(
                     text,
+                    style = textStyle.copy(fontWeight = FontWeight.Medium),
                     color = theme.accent,
                     textAlign = TextAlign.Center,
-                    lineHeight = 20.sp,
-                    style = textStyle.copy(fontWeight = FontWeight.Medium)
+                    lineHeight = 20.sp
                 )
             }
         }
@@ -286,7 +285,7 @@ fun HydraSpeechBubble(
                     .padding(horizontal = 18.dp, vertical = 12.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Text(text, color = theme.textSoft, textAlign = TextAlign.Center, lineHeight = 20.sp, style = textStyle)
+                Text(text, style = textStyle, color = theme.textSoft, textAlign = TextAlign.Center, lineHeight = 20.sp)
             }
         }
     }
