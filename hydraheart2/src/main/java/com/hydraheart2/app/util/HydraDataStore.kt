@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.google.gson.Gson
@@ -67,6 +68,8 @@ object HydraDataStore {
     private val KEY_LONGEST_STREAK = intPreferencesKey("longest_streak")
     private val KEY_UNLOCKED_PERSONALITIES = stringPreferencesKey("unlocked_personalities")
     private val KEY_REMINDER_IGNORE_COUNT = intPreferencesKey("reminder_ignore_count")
+    private val KEY_OPEN_STREAK = intPreferencesKey("open_streak")
+    private val KEY_FIRST_OPENED_TODAY_AT = longPreferencesKey("first_opened_today_at")
     private val KEY_EQUIPPED_ACCESSORIES = stringPreferencesKey("equipped_accessories")
     private val KEY_CUSTOM_SPEECH_LINES = stringPreferencesKey("custom_speech_lines")
     private val KEY_CUSTOM_SPEECH_ENABLED = booleanPreferencesKey("custom_speech_enabled")
@@ -86,6 +89,27 @@ object HydraDataStore {
     private val KEY_FULL_GLOW_ENABLED = booleanPreferencesKey("full_glow_enabled")
 
     private fun today(): String = SimpleDateFormat("yyyy-MM-dd", Locale.UK).format(Date())
+
+    private fun dayBefore(date: String): String {
+        val fmt = SimpleDateFormat("yyyy-MM-dd", Locale.UK)
+        val cal = Calendar.getInstance()
+        cal.time = fmt.parse(date) ?: Date()
+        cal.add(Calendar.DAY_OF_YEAR, -1)
+        return fmt.format(cal.time)
+    }
+
+    // Days in a row the app was used up to [date], going by the days that have a daily record.
+    private fun usedDaysEndingOn(date: String, records: List<DailyRecord>): Int {
+        if (date.isBlank()) return 1
+        val dates = records.map { it.date }.toSet()
+        var n = 1
+        var d = dayBefore(date)
+        while (d in dates) {
+            n++
+            d = dayBefore(d)
+        }
+        return n
+    }
 
     suspend fun load(context: Context, vm: HydraViewModel) {
         val prefs = context.dataStore.data.first()
@@ -213,8 +237,10 @@ object HydraDataStore {
             vm.unlockedPersonalities.addAll(personalities)
         }
         prefs[KEY_REMINDER_IGNORE_COUNT]?.let { vm.reminderIgnoreCount = it }
+        prefs[KEY_FIRST_OPENED_TODAY_AT]?.let { vm.firstOpenedTodayAt = it }
 
         val savedDate = prefs[KEY_TODAY_DRINKS_DATE] ?: ""
+        vm.openStreak = prefs[KEY_OPEN_STREAK] ?: usedDaysEndingOn(savedDate, vm.dailyRecords)
         if (savedDate == today()) {
             prefs[KEY_TODAY_DRINKS]?.let {
                 val type = object : TypeToken<List<LoggedDrink>>() {}.type
@@ -238,14 +264,22 @@ object HydraDataStore {
                 val logHours = yesterdayDrinks.map { d ->
                     Calendar.getInstance().apply { timeInMillis = d.timestamp }.get(Calendar.HOUR_OF_DAY)
                 }
-                val record = DailyRecord(savedDate, pct, yesterdayDrinks.size, logHours, pct >= 100f, vm.currentMood ?: "")
+                val record = DailyRecord(
+                    savedDate, pct, yesterdayDrinks.size, logHours, pct >= 100f, vm.currentMood ?: "",
+                    waterMl = effective,
+                    sizeMl = yesterdayDrinks.sumOf { it.drink.sizeMl },
+                    drinkNames = yesterdayDrinks.groupingBy { it.drink.name }.eachCount()
+                )
                 vm.dailyRecords.add(0, record)
-                while (vm.dailyRecords.size > 30) vm.dailyRecords.removeAt(vm.dailyRecords.lastIndex)
+                while (vm.dailyRecords.size > 400) vm.dailyRecords.removeAt(vm.dailyRecords.lastIndex)
             }
             val yesterdayHit = vm.dailyRecords.firstOrNull { it.date == savedDate }?.goalHit ?: false
             vm.streak = if (yesterdayHit) vm.streak + 1 else 0
             vm.longestStreak = maxOf(vm.longestStreak, vm.streak)
             vm.checkPersonalityUnlocks()
+            vm.checkDayTrophies(yesterdayDrinks)
+            vm.openStreak = if (savedDate == dayBefore(today())) vm.openStreak + 1 else 1
+            vm.firstOpenedTodayAt = System.currentTimeMillis()
             vm.moodLoggedToday = false
             vm.appOpenedToday = false
         }
@@ -313,6 +347,8 @@ object HydraDataStore {
             prefs[KEY_LONGEST_STREAK] = vm.longestStreak
             prefs[KEY_UNLOCKED_PERSONALITIES] = gson.toJson(vm.unlockedPersonalities.map { it.name })
             prefs[KEY_REMINDER_IGNORE_COUNT] = vm.reminderIgnoreCount
+            prefs[KEY_OPEN_STREAK] = vm.openStreak
+            prefs[KEY_FIRST_OPENED_TODAY_AT] = vm.firstOpenedTodayAt
         }
     }
 

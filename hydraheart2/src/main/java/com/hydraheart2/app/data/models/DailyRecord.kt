@@ -6,5 +6,8 @@ data class DailyRecord(
     val drinkCount: Int,
     val logHours: List<Int>,
     val goalHit: Boolean,
-    val moodValue: String = ""
+    val moodValue: String = "",
+    val waterMl: Int = 0,
+    val sizeMl: Int = 0,
+    val drinkNames: Map<String, Int>? = null
 )

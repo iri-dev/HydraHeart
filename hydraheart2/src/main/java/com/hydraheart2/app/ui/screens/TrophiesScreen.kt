@@ -79,13 +79,14 @@ import com.hydraheart2.app.viewmodel.HydraViewModel
 
 private fun trophyCurrentProgress(id: String, vm: HydraViewModel): Int = when (id) {
     "three_day", "five_day", "week_streak", "two_week",
-    "thirty_streak", "sixty_streak", "committed",
+    "thirty_streak", "sixty_streak",
     -> vm.streak
+    "committed" -> vm.loggedDaysInARow()
     "ten_drinks", "twenty_five_drinks", "fifty_drinks", "hundred_drinks",
     "two_fifty", "five_hundred", "seven_fifty", "thousand_drinks" -> vm.totalDrinksAllTime
     "level5", "level10" -> vm.levelInfo.level
-    "hydration_five" -> minOf(vm.dailyRecords.takeLast(5).count { it.goalHit }, 5)
-    "perfect_week" -> minOf(vm.dailyRecords.takeLast(7).count { it.goalHit }, 7)
+    "hydration_five" -> minOf(vm.hitDaysInARow(), 5)
+    "perfect_week" -> minOf(vm.hitDaysInARow(), 7)
     else -> 0
 }
 
@@ -104,7 +105,7 @@ fun TrophiesScreen(viewModel: HydraViewModel) {
     val theme = viewModel.currentTheme
     val earned = viewModel.earnedTrophyIds.toSet()
     val gender = viewModel.profile.gender
-    val totalHpFromTrophies = earned.size * 25
+    val totalHpFromTrophies = earned.sumOf { id -> TrophyData.trophies.find { it.id == id }?.hpReward ?: 25 }
     val context = LocalContext.current
     val royal = stringResource(gender.royalRes())
 

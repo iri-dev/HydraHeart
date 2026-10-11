@@ -30,6 +30,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import kotlin.math.abs
 
 class HydraViewModel : ViewModel() {
 
@@ -151,6 +152,8 @@ class HydraViewModel : ViewModel() {
     var currentMood by mutableStateOf<String?>(null)
     var moodLoggedToday by mutableStateOf(false)
     var appOpenedToday by mutableStateOf(false)
+    var openStreak by mutableIntStateOf(0)
+    var firstOpenedTodayAt by mutableStateOf(0L)
     var totalDrinksAllTime by mutableIntStateOf(0)
     val dailyRecords = mutableStateListOf<DailyRecord>()
     var longestStreak by mutableIntStateOf(0)
@@ -1964,7 +1967,7 @@ class HydraViewModel : ViewModel() {
             hp = hp + streak * 10
             justHitGoal = true
         }
-        checkTrophies()
+        checkTrophies(prevPct)
         if (levelInfo.level >= 5) {
             val tf = SimpleDateFormat("HH:mm", Locale.UK)
             diaryEntries.add(0, DiaryEntry(tf.format(Date()), diaryText(drink.name, cat?.id)))
@@ -2061,6 +2064,7 @@ class HydraViewModel : ViewModel() {
             hp = hp + 2
             appOpenedToday = true
         }
+        if (firstOpenedTodayAt == 0L) firstOpenedTodayAt = now
     }
 
     fun onAppBackgrounded() {
@@ -2117,7 +2121,7 @@ class HydraViewModel : ViewModel() {
         disabledPresetIndices.clear()
     }
 
-    private fun checkTrophies() {
+    private fun checkTrophies(prevPct: Float) {
         var hpGain = 0
         fun award(id: String) { if (!earnedTrophyIds.contains(id)) { earnedTrophyIds.add(id); hpGain += TrophyData.trophies.find { it.id == id }?.hpReward ?: 25 } }
         if (todayDrinks.isNotEmpty()) award("first_sip")
@@ -2154,6 +2158,128 @@ class HydraViewModel : ViewModel() {
         if (waterPercent >= 100f && totalCalcium >= goals.calciumMg &&
             totalCaffeine <= goals.caffeineMg && totalSugar <= goals.sugarG && totalAlcohol <= goals.alcoholG
         ) award("perfect_day")
+
+        if (hour < 9) award("morning_starter")
+        if (hour in 12..13) award("midday_check")
+        if (todayDrinks.size >= 3) award("triple_log")
+        if (todayDrinks.size >= 10) award("double_digits")
+        val ordered = todayDrinks.sortedBy { it.timestamp }
+        val cats = ordered.map { DrinkDatabase.getCategoryForDrink(it.drink.id)?.id }
+        if (cats.firstOrNull() == "water") {
+            award("water_first")
+            if (cats.any { it != "water" }) award("hydration_priority")
+        }
+        if (cats.size >= 2 && cats.last() == "water" && cats[cats.size - 2] == "alcohol") award("water_rescue")
+        val hours = ordered.map { Calendar.getInstance().apply { timeInMillis = it.timestamp }.get(Calendar.HOUR_OF_DAY) }
+        if (hours.any { it in 5..11 } && hours.any { it in 12..16 } && hours.any { it in 17..23 }) award("all_day_flow")
+        if (hours.toSet().size >= 5) award("steady_sipper")
+        // Steady Rhythm: three drinks, each at least six hours after the one before
+        var spaced = 0
+        var lastSpacedAt = 0L
+        ordered.forEach {
+            if (spaced == 0 || it.timestamp - lastSpacedAt >= 6 * 3_600_000L) {
+                spaced++
+                lastSpacedAt = it.timestamp
+            }
+        }
+        if (spaced >= 3) award("steady_rhythm")
+        // Early Hydration: the first time you open the app in the morning counts as waking up
+        if (firstOpenedTodayAt > 0 && System.currentTimeMillis() - firstOpenedTodayAt <= 30 * 60_000L &&
+            Calendar.getInstance().apply { timeInMillis = firstOpenedTodayAt }.get(Calendar.HOUR_OF_DAY) < 11
+        ) award("early_hydration")
+        if (ordered.any { it.drink.sodiumMg >= 100 && it.drink.potassiumMg >= 300 && it.drink.magnesiumMg >= 25 }) award("electrolyte")
+        if (waterPercent >= 100f &&
+            totalCaffeine <= goals.caffeineMg && totalSugar <= goals.sugarG && totalAlcohol <= goals.alcoholG
+        ) award("hydration_focus")
+        if (goals.waterMl > 0 && effectiveWater >= goals.waterMl * 1.2f) award("overachiever")
+        if (prevPct < 100f && waterPercent >= 100f && cats.lastOrNull() == "water" && effectiveWater <= goals.waterMl * 1.02f) {
+            award("perfect_flow")
+        }
+        val day1 = dailyRecords.firstOrNull { it.date == dateKey(1) }
+        val day2 = dailyRecords.firstOrNull { it.date == dateKey(2) }
+        val day3 = dailyRecords.firstOrNull { it.date == dateKey(3) }
+        if (waterPercent >= 100f) {
+            if (day1?.goalHit != true && dailyRecords.any { it.date < dateKey(1) }) award("comeback")
+            if (day1?.goalHit == true && day2?.goalHit == true && day3?.goalHit != true &&
+                dailyRecords.any { it.date < dateKey(3) }
+            ) award("glow_up")
+        }
+        if (day1 != null && day2 != null &&
+            hours.any { h -> day1.logHours.any { abs(it - h) <= 1 } && day2.logHours.any { abs(it - h) <= 1 } }
+        ) award("routine_builder")
+        hp = hp + hpGain
+        checkProgressTrophies()
+    }
+
+    private fun dateKey(daysAgo: Int): String =
+        SimpleDateFormat("yyyy-MM-dd", Locale.UK).format(Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, -daysAgo) }.time)
+
+    // Days in a row with at least one drink, counting today once you've had something.
+    fun loggedDaysInARow(): Int {
+        val dates = dailyRecords.map { it.date }.toSet()
+        var n = if (todayDrinks.isNotEmpty()) 1 else 0
+        var d = 1
+        while (dateKey(d) in dates) {
+            n++
+            d++
+        }
+        return n
+    }
+
+    // Finished days in a row that hit the goal, going back from yesterday.
+    fun hitDaysInARow(): Int {
+        val byDate = dailyRecords.associateBy { it.date }
+        var n = 0
+        while (byDate[dateKey(n + 1)]?.goalHit == true) n++
+        return n
+    }
+
+    // Trophies that build up over days, so they're checked when the app starts as well as after each drink.
+    fun checkProgressTrophies() {
+        var hpGain = 0
+        fun award(id: String) { if (!earnedTrophyIds.contains(id)) { earnedTrophyIds.add(id); hpGain += TrophyData.trophies.find { it.id == id }?.hpReward ?: 25 } }
+        if (totalDrinksAllTime >= 10) award("ten_drinks")
+        if (totalDrinksAllTime >= 25) award("twenty_five_drinks")
+        if (totalDrinksAllTime >= 50) award("fifty_drinks")
+        if (totalDrinksAllTime >= 100) award("hundred_drinks")
+        if (totalDrinksAllTime >= 250) award("two_fifty")
+        if (totalDrinksAllTime >= 500) award("five_hundred")
+        if (totalDrinksAllTime >= 750) award("seven_fifty")
+        if (totalDrinksAllTime >= 1000) award("thousand_drinks")
+        if (streak >= 3) award("three_day")
+        if (streak >= 5) award("five_day")
+        if (streak >= 7) award("week_streak")
+        if (streak >= 14) award("two_week")
+        if (streak >= 30) award("thirty_streak")
+        if (streak >= 60) {
+            award("sixty_streak")
+            award("hydra_loyalist")
+        }
+        val hitDays = hitDaysInARow()
+        if (hitDays >= 5) award("hydration_five")
+        if (hitDays >= 7) award("perfect_week")
+        val loggedDays = loggedDaysInARow()
+        if (loggedDays >= 7) award("committed")
+        if (loggedDays >= 30) award("thirty_ritual")
+        if (openStreak >= 7) award("seven_day_devotion")
+        if (levelInfo.level >= 5) award("level5")
+        if (levelInfo.level >= 10) award("level10")
+        if (TrophyData.trophies.all { it.id == "completionist" || it.id in earnedTrophyIds }) award("completionist")
+        hp = hp + hpGain
+    }
+
+    // Trophies for a whole day, checked once that day is over so a late coffee still counts.
+    fun checkDayTrophies(day: List<LoggedDrink>) {
+        if (day.isEmpty()) return
+        var hpGain = 0
+        fun award(id: String) { if (!earnedTrophyIds.contains(id)) { earnedTrophyIds.add(id); hpGain += TrophyData.trophies.find { it.id == id }?.hpReward ?: 25 } }
+        val cats = day.map { DrinkDatabase.getCategoryForDrink(it.drink.id)?.id }
+        if (day.size >= 3) {
+            if (day.all { it.drink.caffeineMg == 0 }) award("no_caffeine")
+            if (day.all { it.drink.sugarG == 0f }) award("no_sugar")
+            if (day.indices.all { cats[it] == "water" || day[it].drink.id in setOf("blacktea", "greentea", "herbal") }) award("green")
+        }
+        if ("water" in cats && cats.any { it != "water" } && day.all { it.drink.alcoholG == 0f }) award("balanced_day")
         hp = hp + hpGain
     }
 
@@ -2266,6 +2392,7 @@ class HydraViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 HydraDataStore.load(context, this@HydraViewModel)
+                if (onboardingComplete) checkProgressTrophies()
             } catch (e: Exception) {
                 Log.e("HydraLoad", "DataStore load failed: ${e.message}", e)
             } finally {
