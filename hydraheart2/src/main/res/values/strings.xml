@@ -124,6 +124,8 @@
     <string name="history_insight_logs">%1$d logs so far — solid %2$s consistency.</string>
     <string name="history_insight_streak">🔥 %1$d-day streak — you peak in %2$s.</string>
     <string name="history_no_data">No data recorded</string>
+    <string name="history_past_day_hit">Goal reached that day 💧</string>
+    <string name="history_past_day_pct">You got to %1$d%% of your goal that day</string>
     <string name="history_past_no_data">No data stored for past periods yet — keep logging daily! 💧</string>
     <string name="history_period_today">Today</string>
     <string name="history_period_yesterday">Yesterday</string>
@@ -398,4 +400,8 @@
     <string name="trophy_rarity_legendary">Legendary</string>
     <string name="trophy_rarity_rare">Rare</string>
     <string name="trophy_rarity_uncommon">Uncommon</string>
+    <plurals name="history_goal_days">
+        <item quantity="one">You hit your goal on %1$d of %2$d day 💧</item>
+        <item quantity="other">You hit your goal on %1$d of %2$d days 💧</item>
+    </plurals>
 </resources>

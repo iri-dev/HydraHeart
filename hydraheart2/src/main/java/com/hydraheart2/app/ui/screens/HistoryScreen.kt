@@ -123,16 +123,77 @@ fun HistoryScreen(viewModel: HydraViewModel, onNavigate: (String) -> Unit = {}) 
     val isCurrentPeriod = selectedOffset >= 0
     val todayLabel = stringResource(R.string.history_period_today)
     val yesterdayLabel = stringResource(R.string.history_period_yesterday)
-    val total = viewModel.effectiveWater
-    val avgSize = if (viewModel.todayDrinks.isNotEmpty()) {
-        viewModel.todayDrinks.sumOf { it.drink.sizeMl } / viewModel.todayDrinks.size
-    } else {
-        0
-    }
-    val mostLogged = viewModel.todayDrinks.groupBy { it.drink.name }
-        .maxByOrNull { it.value.size }?.key ?: "—"
-    val goalHit = isCurrentPeriod && viewModel.waterPercent >= 100f
     val goalTarget = viewModel.goals.waterMl.toFloat()
+    val dayFmt = remember { SimpleDateFormat("yyyy-MM-dd", Locale.UK) }
+    val todayKey = dayFmt.format(Date())
+    val records = viewModel.dailyRecords.associateBy { it.date }
+    // Older daily records only kept a percentage of the goal, so their water is estimated from today's goal.
+    fun waterOn(key: String): Float = if (key == todayKey) {
+        viewModel.effectiveWater.toFloat()
+    } else {
+        records[key]?.let { if (it.waterMl > 0) it.waterMl.toFloat() else it.completionPct / 100f * goalTarget } ?: 0f
+    }
+    val rangeKeys = remember(period, selectedOffset, todayKey) {
+        val cal = Calendar.getInstance()
+        val days = when (period) {
+            "day" -> {
+                cal.add(Calendar.DAY_OF_YEAR, selectedOffset)
+                1
+            }
+            "week" -> {
+                cal.add(Calendar.DAY_OF_YEAR, -((cal.get(Calendar.DAY_OF_WEEK) - 2 + 7) % 7))
+                cal.add(Calendar.WEEK_OF_YEAR, selectedOffset)
+                7
+            }
+            "month" -> {
+                cal.add(Calendar.MONTH, selectedOffset)
+                cal.set(Calendar.DAY_OF_MONTH, 1)
+                cal.getActualMaximum(Calendar.DAY_OF_MONTH)
+            }
+            else -> {
+                cal.add(Calendar.YEAR, selectedOffset)
+                cal.set(Calendar.DAY_OF_YEAR, 1)
+                cal.getActualMaximum(Calendar.DAY_OF_YEAR)
+            }
+        }
+        List(days) { i ->
+            if (i > 0) cal.add(Calendar.DAY_OF_YEAR, 1)
+            dayFmt.format(cal.time)
+        }
+    }
+    val loggedKeys = rangeKeys.filter { key ->
+        if (key == todayKey) viewModel.todayDrinks.isNotEmpty() else records.containsKey(key)
+    }
+    val hasData = loggedKeys.isNotEmpty()
+    val showValues = hasData || isCurrentPeriod
+    val total = loggedKeys.sumOf { waterOn(it).toDouble() }.toInt()
+    val shownValue = if (period == "day" || loggedKeys.isEmpty()) total else total / loggedKeys.size
+    var sizeSum = 0
+    var sizeCount = 0
+    val drinkCounts = mutableMapOf<String, Int>()
+    loggedKeys.forEach { key ->
+        if (key == todayKey) {
+            viewModel.todayDrinks.forEach {
+                sizeSum += it.drink.sizeMl
+                sizeCount++
+                drinkCounts[it.drink.name] = (drinkCounts[it.drink.name] ?: 0) + 1
+            }
+        } else {
+            records[key]?.let { r ->
+                if (r.sizeMl > 0) {
+                    sizeSum += r.sizeMl
+                    sizeCount += r.drinkCount
+                }
+                r.drinkNames?.forEach { (name, n) -> drinkCounts[name] = (drinkCounts[name] ?: 0) + n }
+            }
+        }
+    }
+    val avgSize = if (sizeCount > 0) sizeSum / sizeCount else 0
+    val mostLogged = drinkCounts.maxByOrNull { it.value }?.key ?: "—"
+    val goalDays = loggedKeys.count { key ->
+        if (key == todayKey) viewModel.waterPercent >= 100f else records[key]?.goalHit == true
+    }
+    val goalHit = if (period == "day") goalDays > 0 else isCurrentPeriod && viewModel.waterPercent >= 100f
     val periodLabel = remember(period, selectedOffset, todayLabel, yesterdayLabel, locale) {
         val cal = Calendar.getInstance()
         when (period) {
@@ -172,6 +233,14 @@ fun HistoryScreen(viewModel: HydraViewModel, onNavigate: (String) -> Unit = {}) 
             }
         }
     }
+    // A finished day only kept the hour of each drink, so share its water out evenly between them.
+    val pastHourly = FloatArray(24).apply {
+        records[rangeKeys.first()]?.let { r ->
+            if (period == "day" && r.drinkCount > 0) {
+                r.logHours.forEach { h -> if (h in 0..23) this[h] += waterOn(r.date) / r.drinkCount }
+            }
+        }
+    }
     val nowHour = remember { Calendar.getInstance().get(Calendar.HOUR_OF_DAY) }
     val todayDow = remember { (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 2 + 7) % 7 }
     val todayDom = remember { Calendar.getInstance().get(Calendar.DAY_OF_MONTH) - 1 }
@@ -204,7 +273,17 @@ fun HistoryScreen(viewModel: HydraViewModel, onNavigate: (String) -> Unit = {}) 
         stringResource(R.string.history_time_evenings)
     )
     val pastNoData = stringResource(R.string.history_past_no_data)
-    val insight = if (isCurrentPeriod) historyInsight(viewModel, insightStrings) else pastNoData
+    val pastDayHit = stringResource(R.string.history_past_day_hit)
+    val pastDayPct = stringResource(R.string.history_past_day_pct)
+    val insight = when {
+        period == "day" && isCurrentPeriod -> historyInsight(viewModel, insightStrings)
+        !hasData -> if (isCurrentPeriod) historyInsight(viewModel, insightStrings) else pastNoData
+        period == "day" -> {
+            val pct = records[rangeKeys.first()]?.completionPct ?: 0f
+            if (pct >= 100f) pastDayHit else String.format(pastDayPct, pct.toInt())
+        }
+        else -> ctx.resources.getQuantityString(R.plurals.history_goal_days, loggedKeys.size, goalDays, loggedKeys.size)
+    }
 
     Box(
         modifier = Modifier
@@ -337,10 +416,10 @@ fun HistoryScreen(viewModel: HydraViewModel, onNavigate: (String) -> Unit = {}) 
                 Row(verticalAlignment = Alignment.Bottom) {
                     Column {
                         Text(
-                            if (!isCurrentPeriod) {
+                            if (!showValues) {
                                 stringResource(R.string.history_no_data)
                             } else if (period == "day") {
-                                stringResource(R.string.history_total_today)
+                                stringResource(if (isCurrentPeriod) R.string.history_total_today else R.string.history_stat_total)
                             } else {
                                 stringResource(R.string.history_daily_avg)
                             },
@@ -349,12 +428,12 @@ fun HistoryScreen(viewModel: HydraViewModel, onNavigate: (String) -> Unit = {}) 
                         )
                         Spacer(Modifier.height(2.dp))
                         AnimatedContent(
-                            targetState = if (!isCurrentPeriod) {
+                            targetState = if (!showValues) {
                                 "—"
-                            } else if (total >= 1000) {
-                                String.format(Locale.UK, "%.1f", total / 1000f) + " L"
+                            } else if (shownValue >= 1000) {
+                                String.format(Locale.UK, "%.1f", shownValue / 1000f) + " L"
                             } else {
-                                "$total ml"
+                                "$shownValue ml"
                             },
                             transitionSpec = {
                                 (fadeIn(tween(300)) + slideInVertically { -it / 3 }) togetherWith
@@ -415,17 +494,13 @@ fun HistoryScreen(viewModel: HydraViewModel, onNavigate: (String) -> Unit = {}) 
                             val goalLineVal: Float
                             when (p) {
                                 "day" -> {
-                                    barData = if (isCurrentPeriod) hourlyData else FloatArray(24)
+                                    barData = if (isCurrentPeriod) hourlyData else pastHourly
                                     barCount = 24
                                     highlightIdx = if (isCurrentPeriod) nowHour else -1
                                     goalLineVal = goalTarget
                                 }
                                 "week" -> {
-                                    barData = if (isCurrentPeriod) {
-                                        FloatArray(7) { if (it == todayDow) total.toFloat() else 0f }
-                                    } else {
-                                        FloatArray(7)
-                                    }
+                                    barData = FloatArray(7) { waterOn(rangeKeys[it]) }
                                     barCount = 7
                                     highlightIdx = if (isCurrentPeriod) todayDow else -1
                                     goalLineVal = goalTarget
@@ -434,20 +509,14 @@ fun HistoryScreen(viewModel: HydraViewModel, onNavigate: (String) -> Unit = {}) 
                                     val days = Calendar.getInstance()
                                         .apply { add(Calendar.MONTH, selectedOffset) }
                                         .getActualMaximum(Calendar.DAY_OF_MONTH)
-                                    barData = if (isCurrentPeriod) {
-                                        FloatArray(days) { if (it == todayDom) total.toFloat() else 0f }
-                                    } else {
-                                        FloatArray(days)
-                                    }
+                                    barData = FloatArray(days) { if (it < rangeKeys.size) waterOn(rangeKeys[it]) else 0f }
                                     barCount = days
                                     highlightIdx = if (isCurrentPeriod) todayDom else -1
                                     goalLineVal = goalTarget
                                 }
                                 else -> {
-                                    barData = if (isCurrentPeriod) {
-                                        FloatArray(12) { if (it == todayMonth) total.toFloat() else 0f }
-                                    } else {
-                                        FloatArray(12)
+                                    barData = FloatArray(12).apply {
+                                        loggedKeys.forEach { key -> this[key.substring(5, 7).toInt() - 1] += waterOn(key) }
                                     }
                                     barCount = 12
                                     highlightIdx = if (isCurrentPeriod) todayMonth else -1

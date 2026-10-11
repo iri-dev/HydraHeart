@@ -84,6 +84,8 @@
     <string name="history_insight_logs">%1$d registros hasta ahora — buena constancia por %2$s.</string>
     <string name="history_insight_streak">🔥 Racha de %1$d días — tu pico es por %2$s.</string>
     <string name="history_no_data">Sin datos registrados</string>
+    <string name="history_past_day_hit">Ese día alcanzaste tu objetivo 💧</string>
+    <string name="history_past_day_pct">Ese día llegaste al %1$d %% de tu objetivo</string>
     <string name="history_past_no_data">Aún no hay datos de períodos pasados — ¡sigue registrando! 💧</string>
     <string name="history_period_today">Hoy</string>
     <string name="history_period_yesterday">Ayer</string>
@@ -273,4 +275,8 @@
     <string name="trophy_rarity_legendary">Legendario</string>
     <string name="trophy_rarity_rare">Raro</string>
     <string name="trophy_rarity_uncommon">Poco común</string>
+    <plurals name="history_goal_days">
+        <item quantity="one">Alcanzaste tu objetivo %1$d de %2$d día 💧</item>
+        <item quantity="other">Alcanzaste tu objetivo %1$d de %2$d días 💧</item>
+    </plurals>
 </resources>
