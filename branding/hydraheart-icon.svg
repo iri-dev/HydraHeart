@@ -2,21 +2,21 @@
   <title>HydraHeart</title>
   <defs>
     <linearGradient id="hh-bg" x1="54" y1="18" x2="54" y2="90" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#1D62DA"/>
-      <stop offset="1" stop-color="#0B2F86"/>
+      <stop offset="0" stop-color="#5CC6FF"/>
+      <stop offset="1" stop-color="#1E8FF6"/>
     </linearGradient>
     <linearGradient id="hh-heart" x1="38" y1="33" x2="70" y2="77" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#FFFFFF"/>
-      <stop offset="1" stop-color="#EAF5FF"/>
+      <stop offset="1" stop-color="#F2FAFF"/>
     </linearGradient>
-    <linearGradient id="hh-water" x1="54" y1="49.27" x2="54" y2="75.37" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#B5E8FF"/>
-      <stop offset="1" stop-color="#66C4FF"/>
+    <linearGradient id="hh-water" x1="54" y1="52.26" x2="54" y2="75.37" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#E3F6FF"/>
+      <stop offset="1" stop-color="#BDE8FF"/>
     </linearGradient>
-    <clipPath id="hh-clip"><path d="M54,38.09 A13.18,13.18 0 0 0 35.36,56.73 L52.14,73.51 Q54,75.37 55.86,73.51 L72.64,56.73 A13.18,13.18 0 0 0 54,38.09Z"/></clipPath>
+    <clipPath id="hh-clip"><path d="M51.27,36 A13.18,13.18 0 0 0 35.36,56.73 L50.27,71.64 Q54,75.37 57.73,71.64 L72.64,56.73 A13.18,13.18 0 0 0 56.73,36 Q54,41.07 51.27,36Z"/></clipPath>
   </defs>
   <rect x="18" y="18" width="72" height="72" rx="16" fill="url(#hh-bg)"/>
-  <path d="M54,38.09 A13.18,13.18 0 0 0 35.36,56.73 L52.14,73.51 Q54,75.37 55.86,73.51 L72.64,56.73 A13.18,13.18 0 0 0 54,38.09Z" fill="url(#hh-heart)"/>
+  <path d="M51.27,36 A13.18,13.18 0 0 0 35.36,56.73 L50.27,71.64 Q54,75.37 57.73,71.64 L72.64,56.73 A13.18,13.18 0 0 0 56.73,36 Q54,41.07 51.27,36Z" fill="url(#hh-heart)"/>
   <path d="M27.21,52.26 Q32.56,49.65 37.92,52.26 T48.64,52.26 T59.36,52.26 T70.08,52.26 T80.79,52.26 T91.51,52.26 L91.51,80.96 L27.21,80.96Z" fill="url(#hh-water)" clip-path="url(#hh-clip)"/>
-  
+  <path d="M44.96,43.68 a1.58,1.58 0 1,0 3.17,0 a1.58,1.58 0 1,0 -3.17,0Z M59.87,43.68 a1.58,1.58 0 1,0 3.17,0 a1.58,1.58 0 1,0 -3.17,0Z" fill="#24476F"/><path d="M51.02,46.48 Q54,49.46 56.98,46.48" fill="none" stroke="#24476F" stroke-width="1.12" stroke-linecap="round"/>
 </svg>

@@ -6,12 +6,12 @@
     android:viewportWidth="24"
     android:viewportHeight="24">
     <path
-        android:pathData="M12,5.19 A5.56,5.56 0 0 0 4.13,13.06 L11.21,20.15 Q12,20.94 12.79,20.15 L19.87,13.06 A5.56,5.56 0 0 0 12,5.19Z"
+        android:pathData="M10.85,4.31 A5.56,5.56 0 0 0 4.13,13.06 L10.43,19.36 Q12,20.94 13.57,19.36 L19.87,13.06 A5.56,5.56 0 0 0 13.15,4.31 Q12,6.45 10.85,4.31Z"
         android:strokeColor="#FFFFFF"
         android:strokeWidth="1.9"
         android:strokeLineJoin="round" />
     <group>
-        <clip-path android:pathData="M12,5.19 A5.56,5.56 0 0 0 4.13,13.06 L11.21,20.15 Q12,20.94 12.79,20.15 L19.87,13.06 A5.56,5.56 0 0 0 12,5.19Z" />
+        <clip-path android:pathData="M10.85,4.31 A5.56,5.56 0 0 0 4.13,13.06 L10.43,19.36 Q12,20.94 13.57,19.36 L19.87,13.06 A5.56,5.56 0 0 0 13.15,4.31 Q12,6.45 10.85,4.31Z" />
         <path
             android:fillColor="#FFFFFF"
             android:pathData="M0.69,11.18 Q2.95,10.07 5.21,11.18 T9.74,11.18 T14.26,11.18 T18.79,11.18 T23.31,11.18 T27.84,11.18 L27.84,23.3 L0.69,23.3Z" />
