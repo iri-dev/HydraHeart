@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">HydraHeart2</string>
+    <string name="app_name">HydraHeart</string>
     <string name="drink_cat_alcohol">Alcohol</string>
     <string name="drink_cat_coffee">Café y Té</string>
     <string name="drink_cat_energy">Bebidas Energéticas</string>

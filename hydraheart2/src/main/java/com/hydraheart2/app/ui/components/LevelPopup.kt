@@ -51,7 +51,7 @@ data class LevelDisplay(
 )
 
 val ALL_LEVELS = listOf(
-    LevelDisplay(1, 0, "Welcome to HydraHeart2!", "💧"),
+    LevelDisplay(1, 0, "Welcome to HydraHeart!", "💧"),
     LevelDisplay(2, 500, "Cute necklace for Hydra", "💎"),
     LevelDisplay(3, 1200, "Sparkle particle effect", "✨"),
     LevelDisplay(4, 2000, "New speech bubble styles", "🎨"),
