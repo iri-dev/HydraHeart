@@ -14,7 +14,7 @@
                 android:endX="70"
                 android:endY="77"
                 android:startColor="#FFFFFF"
-                android:endColor="#FFE6F0" />
+                android:endColor="#E9F5FF" />
         </aapt:attr>
     </path>
     <group>
@@ -27,8 +27,8 @@
                     android:startY="49.27"
                     android:endX="54"
                     android:endY="75.37"
-                    android:startColor="#7FD0FF"
-                    android:endColor="#3B8EFF" />
+                    android:startColor="#A4E0FF"
+                    android:endColor="#58B9FF" />
             </aapt:attr>
         </path>
     </group>
