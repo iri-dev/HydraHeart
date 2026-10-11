@@ -40,6 +40,8 @@ import com.hydraheart2.app.data.HydraTheme
 import com.hydraheart2.app.viewmodel.HydraViewModel
 import kotlinx.coroutines.delay
 import kotlin.math.PI
+import kotlin.math.abs
+import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.max
 import kotlin.math.min
@@ -109,6 +111,21 @@ fun HydraHeartCanvas(
         0f, 1f,
         infiniteRepeatable(tween(4800, easing = LinearEasing), RepeatMode.Restart),
         label = "bk"
+    )
+    val rainbowSweep by inf.animateFloat(
+        0f, 1f,
+        infiniteRepeatable(tween(7000, easing = LinearEasing), RepeatMode.Restart),
+        label = "rs"
+    )
+    val flightPath by inf.animateFloat(
+        0f, (2 * PI).toFloat(),
+        infiniteRepeatable(tween(16000, easing = LinearEasing), RepeatMode.Restart),
+        label = "fp"
+    )
+    val flap by inf.animateFloat(
+        0f, (2 * PI).toFloat(),
+        infiniteRepeatable(tween(420, easing = LinearEasing), RepeatMode.Restart),
+        label = "fl"
     )
     val bubblePhase by inf.animateFloat(
         0f, 1f,
@@ -189,6 +206,21 @@ fun HydraHeartCanvas(
                 radius = w * 1.55f
             )
         )
+
+        // Level 10: her legendary form starts with a warm golden glow
+        if (level >= 10) {
+            val goldAlpha = 0.16f + glowPulse * 0.08f
+            drawRect(
+                brush = Brush.radialGradient(
+                    0f to Color(0xFFFFD54F).copy(alpha = goldAlpha),
+                    0.4f to Color(0xFFFFC107).copy(alpha = goldAlpha * 0.55f),
+                    0.7f to Color(0xFFFFB300).copy(alpha = goldAlpha * 0.18f),
+                    1f to Color.Transparent,
+                    center = Offset(cx, cy),
+                    radius = w * 0.82f
+                )
+            )
+        }
 
         // Drop shadow
         val shadowAlpha = if (theme.isLight) 0.1f else 0.2f
@@ -412,6 +444,25 @@ fun HydraHeartCanvas(
                 )
             )
 
+            // Level 8: a rainbow shimmer sweeps across the glass every few seconds
+            if (level >= 8) {
+                val bandX = -w * 0.8f + rainbowSweep * w * 3.2f
+                val a = if (theme.isLight) 0.2f else 0.15f
+                drawRect(
+                    brush = Brush.linearGradient(
+                        0f to Color.Transparent,
+                        0.2f to Color(0xFFFF7EB3).copy(alpha = a),
+                        0.36f to Color(0xFFFFD27E).copy(alpha = a),
+                        0.5f to Color(0xFFB9F5A0).copy(alpha = a),
+                        0.64f to Color(0xFF8ED8FF).copy(alpha = a),
+                        0.8f to Color(0xFFC3A6FF).copy(alpha = a),
+                        1f to Color.Transparent,
+                        start = Offset(bandX - w * 0.32f, h * 0.1f),
+                        end = Offset(bandX + w * 0.32f, h * 0.9f)
+                    )
+                )
+            }
+
             if (showFace) {
                 drawFace(
                     cx, cy, w, h, hydraShape, mood, theme, eyeOpen, level, showNecklace, sparkle,
@@ -430,6 +481,18 @@ fun HydraHeartCanvas(
             ),
             style = Stroke(width = 0.9f, cap = StrokeCap.Round, join = StrokeJoin.Round)
         )
+        if (level >= 10) {
+            drawPath(
+                shapePath,
+                brush = Brush.linearGradient(
+                    listOf(Color(0xFFFFF3C4), Color(0xFFFFD54F), Color(0xFFFFB300), Color(0xFFFFF3C4)),
+                    start = Offset(0f, 0f),
+                    end = Offset(w, h)
+                ),
+                alpha = 0.62f + sparkle * 0.26f,
+                style = Stroke(width = max(2f, w * 0.0045f), cap = StrokeCap.Round, join = StrokeJoin.Round)
+            )
+        }
 
         if (equippedAccessories.isNotEmpty()) {
             val s = when (hydraShape) {
@@ -517,6 +580,18 @@ fun HydraHeartCanvas(
             }
         }
 
+        // Level 9: a butterfly loops round Hydra in a slow figure of eight
+        if (level >= 9) {
+            val bx = cx + sin(flightPath) * w * 0.44f
+            val by = cy - h * 0.3f + sin(2f * flightPath) * h * 0.09f
+            val heading = atan2(2f * cos(2f * flightPath) * h * 0.09f, cos(flightPath) * w * 0.44f)
+            drawButterfly(
+                bx, by, w * 0.05f,
+                open = 0.28f + 0.72f * abs(sin(flap)),
+                degrees = heading * 180f / PI.toFloat() + 90f
+            )
+        }
+
         // Celebration sparkles at 99%+
         if (fill >= 99f) {
             for (i in 0 until 8) {
@@ -530,6 +605,45 @@ fun HydraHeartCanvas(
                 )
             }
         }
+    }
+}
+
+// Seen from above: four wings that close in and out as [open] goes from 0 to 1, head pointing up before rotating.
+private fun DrawScope.drawButterfly(x: Float, y: Float, wing: Float, open: Float, degrees: Float) {
+    val dark = Color(0xFF5A2A46)
+    withTransform({ rotate(degrees, Offset(x, y)) }) {
+        for (side in listOf(-1f, 1f)) {
+            val sx = side * open
+            val upper = Path()
+            upper.moveTo(x, y - wing * 0.05f)
+            upper.cubicTo(x + sx * wing * 0.3f, y - wing * 1.1f, x + sx * wing * 1.3f, y - wing * 1f, x + sx * wing * 1.1f, y - wing * 0.12f)
+            upper.cubicTo(x + sx * wing * 0.95f, y + wing * 0.12f, x + sx * wing * 0.35f, y + wing * 0.1f, x, y - wing * 0.05f)
+            upper.close()
+            drawPath(
+                upper,
+                brush = Brush.linearGradient(
+                    listOf(Color(0xFF7FA8FF), Color(0xFFC79BFF), Color.White.copy(alpha = 0.9f)),
+                    start = Offset(x, y),
+                    end = Offset(x + sx * wing * 1.2f, y - wing)
+                )
+            )
+            drawPath(upper, dark.copy(alpha = 0.28f), style = Stroke(width = wing * 0.04f, join = StrokeJoin.Round))
+            val lower = Path()
+            lower.moveTo(x, y + wing * 0.05f)
+            lower.cubicTo(x + sx * wing * 0.85f, y + wing * 0.05f, x + sx * wing * 0.9f, y + wing * 0.8f, x + sx * wing * 0.38f, y + wing * 0.86f)
+            lower.cubicTo(x + sx * wing * 0.1f, y + wing * 0.88f, x, y + wing * 0.45f, x, y + wing * 0.05f)
+            lower.close()
+            drawPath(lower, Color(0xFFFF8CC6).copy(alpha = 0.92f))
+            drawPath(lower, dark.copy(alpha = 0.24f), style = Stroke(width = wing * 0.04f, join = StrokeJoin.Round))
+            drawCircle(Color.White.copy(alpha = 0.7f), wing * 0.12f, Offset(x + sx * wing * 0.72f, y - wing * 0.45f))
+        }
+        drawLine(dark, Offset(x, y - wing * 0.32f), Offset(x, y + wing * 0.62f), strokeWidth = wing * 0.13f, cap = StrokeCap.Round)
+        val antennae = Path()
+        antennae.moveTo(x, y - wing * 0.32f)
+        antennae.quadraticBezierTo(x - wing * 0.12f, y - wing * 0.72f, x - wing * 0.3f, y - wing * 0.86f)
+        antennae.moveTo(x, y - wing * 0.32f)
+        antennae.quadraticBezierTo(x + wing * 0.12f, y - wing * 0.72f, x + wing * 0.3f, y - wing * 0.86f)
+        drawPath(antennae, dark.copy(alpha = 0.8f), style = Stroke(width = wing * 0.05f, cap = StrokeCap.Round))
     }
 }
 
