@@ -883,7 +883,7 @@ private val ALL_ACCESSORIES = listOf(
     AccessoryItem("pearl_ring", "Pearl Ring", "💍", "Timeless elegance on every sip", AccessoryCategory.JEWELLERY, 8),
     AccessoryItem("crown", "Mini Crown", "👑", "Because you're royalty, obviously", AccessoryCategory.HEAD_FACE, 6),
     AccessoryItem("bow", "Silk Bow", "🎀", "Sweet and perfectly placed", AccessoryCategory.HEAD_FACE, 5),
-    AccessoryItem("halo", "Golden Halo", "😇", "Earned through pure devotion", AccessoryCategory.HEAD_FACE, unlockTrophy = "streak_7"),
+    AccessoryItem("halo", "Golden Halo", "😇", "Earned through pure devotion", AccessoryCategory.HEAD_FACE, unlockTrophy = "week_streak"),
     AccessoryItem("sparkles", "Sparkles", "✨", "A sprinkle of magic around her", AccessoryCategory.EFFECTS, 3),
     AccessoryItem("aura", "Rose Aura", "🌸", "A warm glow that follows her", AccessoryCategory.EFFECTS, 7),
     AccessoryItem("stardust", "Stardust", "⭐", "Traces of light wherever she goes", AccessoryCategory.EFFECTS, 10),
@@ -909,7 +909,7 @@ private fun toggleAccessory(a: AccessoryItem, vm: HydraViewModel) {
 }
 
 private fun unlockRequirement(a: AccessoryItem): String = when {
-    a.unlockTrophy == "streak_7" -> "7-day streak"
+    a.unlockTrophy == "week_streak" -> "7-day streak"
     a.unlockTrophy != null -> "Trophy"
     else -> "Lvl ${a.unlockLevel}"
 }
