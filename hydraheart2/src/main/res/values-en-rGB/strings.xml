@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="general_device_reduce_motion_desc">Simplify animations for accessibility</string>
+    <string name="general_section_device">DEVICE BEHAVIOUR</string>
+    <string name="home_dehydration_hint">Alcohol &amp; energy drinks remove water from your body</string>
+    <string name="lang_en_uk">English (UK)</string>
+    <string name="lang_en_us">English (US)</string>
+</resources>
