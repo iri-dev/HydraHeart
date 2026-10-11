@@ -1,49 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="18 18 72 72">
   <title>HydraHeart</title>
   <defs>
-    <linearGradient id="bg" x1="512" y1="0" x2="512" y2="1024" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#1C2752"/>
-      <stop offset="0.55" stop-color="#111937"/>
-      <stop offset="1" stop-color="#080D22"/>
+    <linearGradient id="hh-bg" x1="54" y1="18" x2="54" y2="90" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FF8DBB"/>
+      <stop offset="1" stop-color="#EF4C88"/>
     </linearGradient>
-    <radialGradient id="glow" cx="512" cy="499.7" r="470" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#6E9BFF" stop-opacity="0.5"/>
-      <stop offset="0.5" stop-color="#6E9BFF" stop-opacity="0.1"/>
-      <stop offset="1" stop-color="#6E9BFF" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="heartFill" cx="335.2" cy="294.3" r="748" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#8FAAFF"/>
-      <stop offset="0.36" stop-color="#4F76D8"/>
-      <stop offset="0.72" stop-color="#25427F"/>
-      <stop offset="1" stop-color="#172A5A"/>
-    </radialGradient>
-    <linearGradient id="water" x1="512" y1="521.1" x2="512" y2="832.6" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#8FDCFF"/>
-      <stop offset="0.42" stop-color="#4D90F6"/>
-      <stop offset="1" stop-color="#2A55C3"/>
+    <linearGradient id="hh-heart" x1="38" y1="33" x2="70" y2="77" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#FFE6F0"/>
     </linearGradient>
-    <linearGradient id="shine" x1="362.4" y1="244.7" x2="246.8" y2="464.3" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.70"/>
-      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    <linearGradient id="hh-water" x1="54" y1="49.27" x2="54" y2="75.37" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7FD0FF"/>
+      <stop offset="1" stop-color="#3B8EFF"/>
     </linearGradient>
-    <linearGradient id="rim" x1="546" y1="0" x2="838.4" y2="0" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#B4CCFF" stop-opacity="0"/>
-      <stop offset="1" stop-color="#C9DAFF" stop-opacity="0.60"/>
-    </linearGradient>
-    <clipPath id="heartClip">
-      <path d="M512 832.6 C438.6 784.5 340.6 698 277.4 591.8 C218.2 492.6 192.4 382.8 237.3 292.9 C284.9 198 393.7 195.1 441.3 237.6 C481.4 273 502.5 324 512 373.6 C521.5 324 542.6 273 582.7 237.6 C630.3 195.1 739.1 198 786.7 292.9 C831.6 382.8 805.8 492.6 746.6 591.8 C683.4 698 585.4 784.5 512 832.6 Z"/>
-    </clipPath>
+    <clipPath id="hh-clip"><path d="M54,38.09 A13.18,13.18 0 0 0 35.36,56.73 L52.14,73.51 Q54,75.37 55.86,73.51 L72.64,56.73 A13.18,13.18 0 0 0 54,38.09Z"/></clipPath>
   </defs>
-
-  <rect width="1024" height="1024" fill="url(#bg)"/>
-  <circle cx="512" cy="499.7" r="470" fill="url(#glow)"/>
-
-  <path d="M512 832.6 C438.6 784.5 340.6 698 277.4 591.8 C218.2 492.6 192.4 382.8 237.3 292.9 C284.9 198 393.7 195.1 441.3 237.6 C481.4 273 502.5 324 512 373.6 C521.5 324 542.6 273 582.7 237.6 C630.3 195.1 739.1 198 786.7 292.9 C831.6 382.8 805.8 492.6 746.6 591.8 C683.4 698 585.4 784.5 512 832.6 Z" fill="url(#heartFill)"/>
-  <g clip-path="url(#heartClip)">
-    <path d="M-258 535.1 C-233.5 528 -210.1 521.1 -183 521.1 C-155.9 521.1 -132.5 528 -108 535.1 C-83.5 542.3 -60.1 549.1 -33 549.1 C-5.9 549.1 17.5 542.3 42 535.1 C66.5 528 89.9 521.1 117 521.1 C144.1 521.1 167.5 528 192 535.1 C216.5 542.3 239.9 549.1 267 549.1 C294.1 549.1 317.5 542.3 342 535.1 C366.5 528 389.9 521.1 417 521.1 C444.1 521.1 467.5 528 492 535.1 C516.5 542.3 539.9 549.1 567 549.1 C594.1 549.1 617.5 542.3 642 535.1 C666.5 528 689.9 521.1 717 521.1 C744.1 521.1 767.5 528 792 535.1 C816.5 542.3 839.9 549.1 867 549.1 C894.1 549.1 917.5 542.3 942 535.1 C966.5 528 989.9 521.1 1017 521.1 C1044.1 521.1 1067.5 528 1092 535.1 C1116.5 542.3 1139.9 549.1 1167 549.1 C1194.1 549.1 1217.5 542.3 1242 535.1 L1242 915.1 L-228 915.1 Z" fill="url(#water)"/>
-    <path d="M-258 535.1 C-233.5 528 -210.1 521.1 -183 521.1 C-155.9 521.1 -132.5 528 -108 535.1 C-83.5 542.3 -60.1 549.1 -33 549.1 C-5.9 549.1 17.5 542.3 42 535.1 C66.5 528 89.9 521.1 117 521.1 C144.1 521.1 167.5 528 192 535.1 C216.5 542.3 239.9 549.1 267 549.1 C294.1 549.1 317.5 542.3 342 535.1 C366.5 528 389.9 521.1 417 521.1 C444.1 521.1 467.5 528 492 535.1 C516.5 542.3 539.9 549.1 567 549.1 C594.1 549.1 617.5 542.3 642 535.1 C666.5 528 689.9 521.1 717 521.1 C744.1 521.1 767.5 528 792 535.1 C816.5 542.3 839.9 549.1 867 549.1 C894.1 549.1 917.5 542.3 942 535.1 C966.5 528 989.9 521.1 1017 521.1 C1044.1 521.1 1067.5 528 1092 535.1 C1116.5 542.3 1139.9 549.1 1167 549.1 C1194.1 549.1 1217.5 542.3 1242 535.1" fill="none" stroke="#E4F7FF" stroke-opacity="0.85" stroke-width="7"/>
-  </g>
-  <path d="M512 832.6 C438.6 784.5 340.6 698 277.4 591.8 C218.2 492.6 192.4 382.8 237.3 292.9 C284.9 198 393.7 195.1 441.3 237.6 C481.4 273 502.5 324 512 373.6 C521.5 324 542.6 273 582.7 237.6 C630.3 195.1 739.1 198 786.7 292.9 C831.6 382.8 805.8 492.6 746.6 591.8 C683.4 698 585.4 784.5 512 832.6 Z M512 827.5 C439.8 780.1 343.5 695.1 281.3 590.6 C223.1 493.1 197.7 385.2 241.9 296.7 C288.7 203.4 395.7 200.6 442.5 242.4 C481.9 277.2 502.6 327.3 512 376.1 C521.4 327.3 542.1 277.2 581.5 242.4 C628.3 200.6 735.3 203.4 782.1 296.7 C826.3 385.2 800.9 493.1 742.7 590.6 C680.5 695.1 584.2 780.1 512 827.5 Z" fill="#D6E4FF" fill-opacity="0.22" fill-rule="evenodd"/>
-  <path d="M512 832.6 C438.6 784.5 340.6 698 277.4 591.8 C218.2 492.6 192.4 382.8 237.3 292.9 C284.9 198 393.7 195.1 441.3 237.6 C481.4 273 502.5 324 512 373.6 C521.5 324 542.6 273 582.7 237.6 C630.3 195.1 739.1 198 786.7 292.9 C831.6 382.8 805.8 492.6 746.6 591.8 C683.4 698 585.4 784.5 512 832.6 Z M512 823.3 C440.8 776.6 345.8 692.8 284.4 589.7 C227.1 493.5 202 387 245.5 299.8 C291.7 207.7 397.2 204.9 443.4 246.2 C482.3 280.5 502.8 330 512 378.1 C521.2 330 541.7 280.5 580.6 246.2 C626.8 204.9 732.3 207.7 778.5 299.8 C822 387 796.9 493.5 739.6 589.7 C678.2 692.8 583.2 776.6 512 823.3 Z" fill="url(#rim)" fill-rule="evenodd"/>
-  <path d="M252.2 460.8 C231.8 372.2 263.8 283.7 352.2 257.5" fill="none" stroke="url(#shine)" stroke-width="23.1" stroke-linecap="round"/>
+  <rect x="18" y="18" width="72" height="72" rx="16" fill="url(#hh-bg)"/>
+  <path d="M54,38.09 A13.18,13.18 0 0 0 35.36,56.73 L52.14,73.51 Q54,75.37 55.86,73.51 L72.64,56.73 A13.18,13.18 0 0 0 54,38.09Z" fill="url(#hh-heart)"/>
+  <path d="M27.21,52.26 Q32.56,49.65 37.92,52.26 T48.64,52.26 T59.36,52.26 T70.08,52.26 T80.79,52.26 T91.51,52.26 L91.51,80.96 L27.21,80.96Z" fill="url(#hh-water)" clip-path="url(#hh-clip)"/>
+  
 </svg>

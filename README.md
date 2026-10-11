@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/hydraheart-icon.png" alt="The HydraHeart icon, a glass heart half full of water" width="112">
+<img src="branding/hydraheart-icon.svg" alt="The HydraHeart icon, a white heart half full of water" width="112">
 
 # HydraHeart – your water tracker
 
@@ -253,7 +253,7 @@ day of your streak, and every trophy pays out too. HP takes Hydra through ten le
 20,000 HP, and each level unlocks something new for her.
 
 There are 60 trophies in five rarities: 13 Common, 16 Uncommon, 13 Rare, 9 Epic and 9 Legendary.
-Your first sip, two litres in a day, a sugar-free day, a week-long streak, a Perfect Day where you
+Your first sip, your first coffee, two litres in a day, a week-long streak, a Perfect Day where you
 hit every goal without going over a single limit... Plenty of the locked ones show how close you
 are.
 
