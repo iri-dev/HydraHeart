@@ -257,11 +257,7 @@ fun MoodCalendarScreen(viewModel: HydraViewModel, onBack: () -> Unit) {
                                     )
                                     .border(
                                         if (isToday) 1.5.dp else 0.75.dp,
-                                        when {
-                                            isToday -> theme.accent.copy(alpha = 0.65f)
-                                            mc != null -> mc.copy(alpha = 0.3f)
-                                            else -> theme.cardBorder.copy(alpha = 0.2f)
-                                        },
+                                        if (isToday) theme.accent.copy(alpha = 0.65f) else if (mc != null) mc.copy(alpha = 0.3f) else theme.cardBorder.copy(alpha = 0.2f),
                                         RoundedCornerShape(14.dp)
                                     )
                                     .clickable(

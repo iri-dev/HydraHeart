@@ -39,6 +39,12 @@ android {
     }
 }
 
+kotlin {
+    compilerOptions {
+        moduleName.set("app_debug")
+    }
+}
+
 dependencies {
     implementation(platform(libs.hh2.compose.bom))
     implementation(libs.hh2.activity.compose)

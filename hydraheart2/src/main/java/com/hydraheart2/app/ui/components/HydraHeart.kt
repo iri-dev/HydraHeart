@@ -433,20 +433,14 @@ fun HydraHeartCanvas(
 
         if (equippedAccessories.isNotEmpty()) {
             val s = when (hydraShape) {
-                "body_f", "body_m" -> 0.5f
-                "bottle" -> 0.6f
-                "bra" -> 0.65f
-                "cup" -> 0.7f
-                "droplet" -> 0.85f
-                else -> 0.95f
+                "body_f", "body_m" -> 0.5f; "bottle" -> 0.6f
+                "bra" -> 0.65f; "cup" -> 0.7f
+                "droplet" -> 0.85f; else -> 0.95f
             }
             val anchorY = when (hydraShape) {
-                "body_f", "body_m" -> h * 0.1f
-                "bottle" -> h * 0.28f
-                "bra" -> cy * 0.72f
-                "cup" -> cy * 0.58f
-                "droplet" -> cy * 0.7f
-                else -> cy * 0.72f
+                "body_f", "body_m" -> h * 0.1f; "bottle" -> h * 0.28f
+                "bra" -> cy * 0.72f; "cup" -> cy * 0.58f
+                "droplet" -> cy * 0.7f; else -> cy * 0.72f
             }
             if (equippedAccessories.contains("aura")) {
                 val auraAlpha = 0.1f + glowPulse * 0.07f
@@ -530,7 +524,7 @@ fun HydraHeartCanvas(
                 val dist = 20f + sin(wave1 * 1.4f + i) * 10f
                 val colours = listOf(theme.accent, theme.accent2, theme.accent3, Color(0xFFFFD700), Color.White)
                 drawCircle(
-                    colours[i % colours.size].copy(alpha = 0.36f * sparkle),
+                    colours[i % colours.size].copy(alpha = sparkle * 0.36f),
                     radius = 1.6f + sin(wave1 + i) * 0.8f,
                     center = Offset(cx + cos(angle) * dist * 3f, cy + sin(angle) * dist * 2f)
                 )

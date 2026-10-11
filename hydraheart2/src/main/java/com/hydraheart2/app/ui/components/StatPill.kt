@@ -1,6 +1,7 @@
 package com.hydraheart2.app.ui.components
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
@@ -37,26 +38,18 @@ fun StatPill(
 ) {
     val percent = minOf(value / max, 1f)
     val isOver = value > max
-    val barColour by animateColorAsState(
-        if (isOver) Color(0xFFEF4444) else colour,
-        tween(400),
-        label = "bc"
-    )
-    val fillPct by animateFloatAsState(
-        percent,
-        spring(dampingRatio = 0.75f, stiffness = 400f),
-        label = "fp"
-    )
+    val barColour by animateColorAsState(if (isOver) Color(0xFFEF4444) else colour, tween(400), label = "bc")
+    val fillPct by animateFloatAsState(percent, spring(Spring.DampingRatioLowBouncy, Spring.StiffnessMediumLow), label = "fp")
     Column(modifier = modifier) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(label, color = theme.textSoft, style = MaterialTheme.typography.labelMedium)
+            Text(label, style = MaterialTheme.typography.labelMedium, color = theme.textSoft)
             Text(
                 "${value.toInt()}/${max.toInt()}$unit",
-                color = if (isOver) Color(0xFFEF4444) else colour,
-                style = MaterialTheme.typography.labelMedium
+                style = MaterialTheme.typography.labelMedium,
+                color = if (isOver) Color(0xFFEF4444) else colour
             )
         }
         Spacer(Modifier.height(4.dp))

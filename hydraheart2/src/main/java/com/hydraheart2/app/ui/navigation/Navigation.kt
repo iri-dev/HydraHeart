@@ -108,10 +108,7 @@ fun HydraNavigation(viewModel: HydraViewModel) {
             }
         }
 
-        val hideNavBar = listOf(
-            "settings", "diary", "mood_tracking", "mood_calendar", "about",
-            "dev_profile", "privacy", "terms", "whats_new", "dev_level_control"
-        ).contains(currentScreen)
+        val hideNavBar = listOf("settings", "diary", "mood_tracking", "mood_calendar", "about", "dev_profile", "privacy", "terms", "whats_new", "dev_level_control").contains(currentScreen)
         if (!hideNavBar) {
             Box(modifier = Modifier.align(Alignment.BottomCenter)) {
                 NavBar(currentScreen, viewModel.currentTheme, onNavigate = { navigateTo(it) })

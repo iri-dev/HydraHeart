@@ -20,7 +20,7 @@ data class HydraTheme(
     val navBg: Color,
     val glow: Color,
     val hydraLiquid: Color,
-    val isLight: Boolean,
+    val isLight: Boolean = false,
     val unlockLevel: Int = 0,
     val unlockAchievement: String? = null
 )

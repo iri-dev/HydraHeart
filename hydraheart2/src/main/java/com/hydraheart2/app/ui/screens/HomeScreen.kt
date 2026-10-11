@@ -113,22 +113,9 @@ fun HomeScreen(viewModel: HydraViewModel, onNavigate: (String) -> Unit) {
 
     LaunchedEffect(viewModel.showDrinkAnimation) {
         if (viewModel.showDrinkAnimation) {
-            val amt = viewModel.convertMl(viewModel.lastLoggedAmount)
-            val u = viewModel.unitLabel()
-            if (viewModel.lastLoggedIsDehydrating) {
-                floatText = "+$amt$u ⚠️"
-                floatColour = Color(0xFFEF4444)
-            } else {
-                floatText = "+$amt$u"
-                floatColour = theme.accent
-            }
-            showFloating = true
-            HapticEngine.heavyClick(context)
-            delay(150)
-            HapticEngine.liquidPour(context)
-            delay(1200)
-            showFloating = false
-            viewModel.dismissDrinkAnimation()
+            val amt = viewModel.convertMl(viewModel.lastLoggedAmount); val u = viewModel.unitLabel()
+            if (viewModel.lastLoggedIsDehydrating) { floatText = "+$amt$u ⚠️"; floatColour = Color(0xFFEF4444) } else { floatText = "+$amt$u"; floatColour = theme.accent }
+            showFloating = true; HapticEngine.heavyClick(context); delay(150); HapticEngine.liquidPour(context); delay(1200); showFloating = false; viewModel.dismissDrinkAnimation()
         }
     }
 
@@ -684,26 +671,26 @@ fun HomeScreen(viewModel: HydraViewModel, onNavigate: (String) -> Unit) {
                     contentPadding = PaddingValues(horizontal = 20.dp),
                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
-                    items(viewModel.todayDrinks.reversed().take(8)) { logged ->
+                    items(viewModel.todayDrinks.reversed().take(8)) { l ->
                         FrostedGlass(
                             theme = theme,
                             padding = PaddingValues(horizontal = 16.dp, vertical = 12.dp)
                         ) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Text(logged.categoryIcon, fontSize = 22.sp)
+                                Text(l.categoryIcon, fontSize = 22.sp)
                                 Spacer(Modifier.height(4.dp))
                                 Text(
-                                    logged.drink.name,
+                                    l.drink.name,
                                     color = theme.textPrimary,
                                     maxLines = 1,
                                     style = MaterialTheme.typography.labelMedium
                                 )
                                 Text(
-                                    "${logged.drink.sizeMl}${viewModel.unitLabel()}",
+                                    "${l.drink.sizeMl}${viewModel.unitLabel()}",
                                     color = theme.textSoft,
                                     style = MaterialTheme.typography.labelSmall
                                 )
-                                if (logged.drink.dehydrationFactor > 0.05f) {
+                                if (l.drink.dehydrationFactor > 0.05f) {
                                     Text("⚠️", fontSize = 10.sp)
                                 }
                             }

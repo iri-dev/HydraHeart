@@ -28,18 +28,23 @@ object GoalCalculator {
         if (age > 65) waterMl = (waterMl * 0.9f).toInt()
         waterMl = waterMl.coerceIn(1200, 5000)
 
-        val caffeineMg = if (age < 18) 100 else 400
-        val calciumMg = if (age > 50 && gender == Gender.FEMALE) 1200 else 1000
-        val potassiumMg = when (gender) {
-            Gender.FEMALE -> 2600
-            Gender.MALE -> 3400
-            Gender.OTHER -> 3000
-        }
-        val magnesiumMg = when (gender) {
-            Gender.FEMALE -> 320
-            Gender.MALE -> 420
-            Gender.OTHER -> 370
-        }
-        return DailyGoals(waterMl, caffeineMg, 50, calciumMg, 16, 2300, potassiumMg, magnesiumMg)
+        return DailyGoals(
+            waterMl,
+            if (age < 18) 100 else 400,
+            50,
+            if (age > 50 && gender == Gender.FEMALE) 1200 else 1000,
+            16,
+            2300,
+            when (gender) {
+                Gender.FEMALE -> 2600
+                Gender.MALE -> 3400
+                Gender.OTHER -> 3000
+            },
+            when (gender) {
+                Gender.FEMALE -> 320
+                Gender.MALE -> 420
+                Gender.OTHER -> 370
+            }
+        )
     }
 }

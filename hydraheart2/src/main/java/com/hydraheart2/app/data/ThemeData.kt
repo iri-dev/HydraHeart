@@ -17,8 +17,7 @@ object ThemeData {
             Color(0xFF0B0D12), Color(0xFF141922), Color(0xFF0E1118),
             Color(0xFF6E8BFF), Color(0xFF8C7CFF), Color(0xFFA6B0C2),
             Color(0x14718BFF), Color(0x26273043),
-            Color(0xFFF4F7FB), Color(0xFFA6B0C2), Color(0xFF5D6780), Color(0xF20B0D12), Color(0xFF202C45), Color(0xFF5B7DFF),
-            isLight = false
+            Color(0xFFF4F7FB), Color(0xFFA6B0C2), Color(0xFF5D6780), Color(0xF20B0D12), Color(0xFF202C45), Color(0xFF5B7DFF)
         ),
         "pureWater" to HydraTheme(
             "pureWater", "Pure Water", "🫧",
@@ -33,8 +32,7 @@ object ThemeData {
             Color(0xFF1D1116), Color(0xFF341823), Color(0xFF28121C),
             Color(0xFFC94E7A), Color(0xFFE88AA9), Color(0xFFFFF5F8),
             Color(0x14C94E7A), Color(0x266B334B),
-            Color(0xFFFFF5F8), Color(0xFFD4A8B8), Color(0xFF8A6878), Color(0xF21D1116), Color(0xFF7D3652), Color(0xFFD85F89),
-            isLight = false
+            Color(0xFFFFF5F8), Color(0xFFD4A8B8), Color(0xFF8A6878), Color(0xF21D1116), Color(0xFF7D3652), Color(0xFFD85F89)
         ),
         "cherryBlossom" to HydraTheme(
             "cherryBlossom", "Cherry Blossom", "🌸",
@@ -138,7 +136,7 @@ object ThemeData {
             Color(0xFF8D6CFF), Color(0xFFC8C2E8), Color(0xFFF8F6FF),
             Color(0x148D6CFF), Color(0x2649336A),
             Color(0xFFF8F6FF), Color(0xFFBDB6D3), Color(0xFF8A82A0), Color(0xF2120C1D), Color(0xFF5A4590), Color(0xFF8B74F8),
-            isLight = false, unlockLevel = 4
+            unlockLevel = 4
         ),
         "champagne" to HydraTheme(
             "champagne", "Champagne", "🥂",
@@ -154,7 +152,7 @@ object ThemeData {
             Color(0xFF4EB9B3), Color(0xFF9BE3D7), Color(0xFFF2FFFD),
             Color(0x144EB9B3), Color(0x262C6670),
             Color(0xFFF2FFFD), Color(0xFFA7C8C4), Color(0xFF6A9A96), Color(0xF20D1D24), Color(0xFF1F555A), Color(0xFF59C6BF),
-            isLight = false, unlockLevel = 4
+            unlockLevel = 4
         ),
         "afterglow" to HydraTheme(
             "afterglow", "Afterglow", "🌇",
@@ -162,7 +160,7 @@ object ThemeData {
             Color(0xFFFF8C78), Color(0xFF9D8CFF), Color(0xFFFFF8FC),
             Color(0x1FFFC6A8), Color(0x26FFC6A8),
             Color(0xFFFFF8FC), Color(0xFFE3D1E8), Color(0xFFB0A0B8), Color(0xF22F1A10), Color(0xFFFFB6A1), Color(0xFFFF9A86),
-            isLight = false, unlockLevel = 4
+            unlockLevel = 4
         ),
         "sugarPlum" to HydraTheme(
             "sugarPlum", "Sugar Plum", "🧁",
@@ -178,7 +176,7 @@ object ThemeData {
             Color(0xFFC58CFF), Color(0xFF7FCBFF), Color(0xFFF4D8FF),
             Color(0x14C58CFF), Color(0x26F0E6FF),
             Color(0xFFF8F0FF), Color(0xFFBBA8D0), Color(0xFF8878A0), Color(0xF21A1020), Color(0xFFF4D8FF), Color(0xFFA88DFF),
-            isLight = false, unlockLevel = 5
+            unlockLevel = 5
         ),
         "starlight" to HydraTheme(
             "starlight", "Starlight", "🌌",
@@ -186,7 +184,7 @@ object ThemeData {
             Color(0xFFA698FF), Color(0xFF7AB8FF), Color(0xFFCAD0FF),
             Color(0x14A698FF), Color(0x26343A6A),
             Color(0xFFF6F7FF), Color(0xFFAAB0D3), Color(0xFF7880A8), Color(0xF20D1021), Color(0xFFCAD0FF), Color(0xFF7A8BFF),
-            isLight = false, unlockLevel = 5
+            unlockLevel = 5
         ),
         "cosmicGirl" to HydraTheme(
             "cosmicGirl", "Cosmic Girl", "🔮",
@@ -194,7 +192,7 @@ object ThemeData {
             Color(0xFFA179FF), Color(0xFFC9D4FF), Color(0xFFF7F8FF),
             Color(0x14A179FF), Color(0x264E4F7F),
             Color(0xFFF7F8FF), Color(0xFFAFB4D6), Color(0xFF7E82A8), Color(0xF20F1122), Color(0xFF7B6DFF), Color(0xFF8C83FF),
-            isLight = false, unlockLevel = 5
+            unlockLevel = 5
         ),
         "darkAcademia" to HydraTheme(
             "darkAcademia", "Dark Academia", "📚",
@@ -202,7 +200,7 @@ object ThemeData {
             Color(0xFFA57B3F), Color(0xFFD5B073), Color(0xFFF7F0E8),
             Color(0x14A57B3F), Color(0x264A382A),
             Color(0xFFF7F0E8), Color(0xFFB7A495), Color(0xFF887868), Color(0xF215110E), Color(0xFF5C4631), Color(0xFFB88A48),
-            isLight = false, unlockLevel = 5
+            unlockLevel = 5
         ),
         "sapphireNight" to HydraTheme(
             "sapphireNight", "Sapphire Night", "💎",
@@ -210,7 +208,7 @@ object ThemeData {
             Color(0xFF3F73FF), Color(0xFF7EA6FF), Color(0xFFF4F8FF),
             Color(0x143F73FF), Color(0x26304B88),
             Color(0xFFF4F8FF), Color(0xFFAAB9DC), Color(0xFF7888B0), Color(0xF20A1330), Color(0xFF294C9B), Color(0xFF4C7EFF),
-            isLight = false, unlockLevel = 5
+            unlockLevel = 5
         ),
         "barbie" to HydraTheme(
             "barbie", "Barbie", "💗",
@@ -226,7 +224,7 @@ object ThemeData {
             Color(0xFF9D5CFF), Color(0xFF42C8FF), Color(0xFFF7F6FF),
             Color(0x149D5CFF), Color(0x263A2F69),
             Color(0xFFF7F6FF), Color(0xFFA9A6C7), Color(0xFF787598), Color(0xF2090A12), Color(0xFF6A3CFF), Color(0xFF6F7DFF),
-            isLight = false, unlockAchievement = "week_streak"
+            unlockAchievement = "week_streak"
         ),
         "emberGlow" to HydraTheme(
             "emberGlow", "Ember Glow", "🔥",
@@ -234,7 +232,7 @@ object ThemeData {
             Color(0xFFE6672E), Color(0xFFB93B28), Color(0xFFFFF5EF),
             Color(0x14E6672E), Color(0x265A2C1F),
             Color(0xFFFFF5EF), Color(0xFFD1AAA0), Color(0xFFA08070), Color(0xF2120B09), Color(0xFF7D311A), Color(0xFFF2763F),
-            isLight = false, unlockAchievement = "two_litres"
+            unlockAchievement = "two_litres"
         ),
         "mintChoc" to HydraTheme(
             "mintChoc", "Mint Choc", "🍫",
@@ -248,11 +246,11 @@ object ThemeData {
 
     fun getTheme(id: String): HydraTheme = themes[id] ?: themes["skyLight"]!!
 
-    fun getUnlockedThemes(level: Int, achievements: List<String>): List<HydraTheme> =
-        themes.values.filter { theme ->
-            theme.unlockLevel <= level &&
-                (theme.unlockAchievement == null || achievements.contains(theme.unlockAchievement))
-        }
+    fun getUnlockedThemes(level: Int, achievements: List<String>): List<HydraTheme> = themes.values.filter { theme ->
+        val levelOk = theme.unlockLevel <= level
+        val achieveOk = theme.unlockAchievement == null || achievements.contains(theme.unlockAchievement)
+        levelOk && achieveOk
+    }
 
     fun isThemeUnlocked(id: String, level: Int, achievements: List<String>): Boolean {
         val theme = themes[id] ?: return false

@@ -10,6 +10,7 @@ import android.media.AudioAttributes
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
+import androidx.core.content.edit
 import com.google.gson.Gson
 import com.hydraheart2.app.data.models.CustomReminder
 import java.util.Calendar
@@ -70,29 +71,28 @@ object NotificationHelper {
             soundUriString == "default" -> "hydra_rem_default_v2"
             soundUriString == "silent" -> "hydra_rem_silent_v2"
             soundUriString.startsWith("hydra_") -> "hydra_rem_" + soundUriString + "_v2"
-            else -> {
-                val hash = soundUriString.hashCode()
-                val suffix = if (hash < 0) "n${-hash}" else "p$hash"
-                "hydra_rem_" + suffix + "_v2"
-            }
+            else -> "hydra_rem_" + soundUriString.hashCode().let { if (it < 0) "n${-it}" else "p$it" } + "_v2"
         }
         if (nm.getNotificationChannel(channelId) != null) return channelId
 
         val soundUri = getSoundUri(context, soundUriString)
-        val channel = NotificationChannel(channelId, "Hydration Reminders", NotificationManager.IMPORTANCE_HIGH)
-        channel.description = "Gentle reminders from Hydra to stay hydrated"
-        channel.enableVibration(true)
-        channel.vibrationPattern = longArrayOf(0, 100, 50, 100)
-        if (soundUri != null) {
-            channel.setSound(
-                soundUri,
-                AudioAttributes.Builder()
+
+        val channel = NotificationChannel(
+            channelId,
+            "Hydration Reminders",
+            NotificationManager.IMPORTANCE_HIGH
+        ).apply {
+            description = "Gentle reminders from Hydra to stay hydrated"
+            enableVibration(true)
+            vibrationPattern = longArrayOf(0, 100, 50, 100)
+            if (soundUri != null) {
+                setSound(soundUri, AudioAttributes.Builder()
                     .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                     .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                    .build()
-            )
-        } else {
-            channel.setSound(null, null)
+                    .build())
+            } else {
+                setSound(null, null)
+            }
         }
         nm.createNotificationChannel(channel)
         return channelId
@@ -180,12 +180,11 @@ object NotificationHelper {
         sound: String
     ) {
         val gson = Gson()
-        context.getSharedPreferences("hydra_prefs", Context.MODE_PRIVATE).edit().apply {
+        context.getSharedPreferences("hydra_prefs", Context.MODE_PRIVATE).edit {
             putBoolean("reminders_enabled", remindersEnabled)
             putString("custom_reminders", gson.toJson(reminders))
             putString("reminder_messages", gson.toJson(messages))
             putString("reminder_sound", sound)
-            apply()
         }
     }
 }

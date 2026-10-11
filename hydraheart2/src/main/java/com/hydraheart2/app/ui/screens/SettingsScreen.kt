@@ -2381,7 +2381,7 @@ private fun ReminderMessagesSection(
                 if (i !in viewModel.disabledPresetIndices) {
                     Row(
                         verticalAlignment = Alignment.Top,
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp, vertical = 5.dp)
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 5.dp, horizontal = 4.dp)
                     ) {
                         Box(Modifier.padding(top = 5.dp).size(4.dp).background(theme.accent.copy(alpha = 0.25f), CircleShape))
                         Spacer(Modifier.width(12.dp))
@@ -3672,7 +3672,7 @@ private fun BirthdayPickerSheet(current: String, theme: HydraTheme, onConfirm: (
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) { Text("Day", style = MaterialTheme.typography.labelSmall, color = theme.accent.copy(0.6f)); Spacer(Modifier.height(6.dp)); WheelPickerInternal(days, d, theme) { d = it } }
             Column(Modifier.weight(1.3f), horizontalAlignment = Alignment.CenterHorizontally) { Text("Month", style = MaterialTheme.typography.labelSmall, color = theme.accent.copy(0.6f)); Spacer(Modifier.height(6.dp)); WheelPickerInternal(months, m, theme) { m = it } }
-            Column(Modifier.weight(1.2f), horizontalAlignment = Alignment.CenterHorizontally) { Text("Year", style = MaterialTheme.typography.labelSmall, color = theme.accent.copy(0.6f)); Spacer(Modifier.height(6.dp)); WheelPickerInternal(years, y, theme) { y = it } }
+            Column(Modifier.weight(1.3f), horizontalAlignment = Alignment.CenterHorizontally) { Text("Year", style = MaterialTheme.typography.labelSmall, color = theme.accent.copy(0.6f)); Spacer(Modifier.height(6.dp)); WheelPickerInternal(years, y, theme) { y = it } }
         }
         Spacer(Modifier.height(24.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {

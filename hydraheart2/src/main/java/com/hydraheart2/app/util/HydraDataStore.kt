@@ -1,10 +1,13 @@
 package com.hydraheart2.app.util
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.hydraheart2.app.data.models.CustomReminder
@@ -19,6 +22,8 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "hydra_prefs")
 
 object HydraDataStore {
     private val gson = Gson()
@@ -225,22 +230,20 @@ object HydraDataStore {
             } ?: emptyList()
             if (yesterdayDrinks.isNotEmpty() && vm.dailyRecords.none { it.date == savedDate }) {
                 val goals = GoalCalculator.calculate(vm.profile)
-                val goalMl = if (vm.customGoalEnabled && vm.customWaterGoalMl != null) vm.customWaterGoalMl!! else goals.waterMl
+                val effectiveGoal = if (vm.customGoalEnabled && vm.customWaterGoalMl != null) vm.customWaterGoalMl!! else goals.waterMl
                 val rawWater = yesterdayDrinks.sumOf { it.drink.waterMl }
                 val penalty = yesterdayDrinks.sumOf { (it.drink.sizeMl * it.drink.dehydrationFactor).toInt() }
                 val effective = maxOf(0, rawWater - penalty)
-                val pct = if (goalMl > 0) minOf(effective.toFloat() / goalMl * 100f, 100f) else 0f
-                val logHours = yesterdayDrinks.map { drink ->
-                    Calendar.getInstance().apply { timeInMillis = drink.timestamp }.get(Calendar.HOUR_OF_DAY)
+                val pct = if (effectiveGoal > 0) minOf(effective.toFloat() / effectiveGoal * 100f, 100f) else 0f
+                val logHours = yesterdayDrinks.map { d ->
+                    Calendar.getInstance().apply { timeInMillis = d.timestamp }.get(Calendar.HOUR_OF_DAY)
                 }
-                vm.dailyRecords.add(
-                    0,
-                    DailyRecord(savedDate, pct, yesterdayDrinks.size, logHours, pct >= 100f, vm.currentMood ?: "")
-                )
+                val record = DailyRecord(savedDate, pct, yesterdayDrinks.size, logHours, pct >= 100f, vm.currentMood ?: "")
+                vm.dailyRecords.add(0, record)
                 while (vm.dailyRecords.size > 30) vm.dailyRecords.removeAt(vm.dailyRecords.lastIndex)
             }
-            val lastDay = vm.dailyRecords.firstOrNull { it.date == savedDate }
-            vm.streak = if (lastDay?.goalHit == true) vm.streak + 1 else 0
+            val yesterdayHit = vm.dailyRecords.firstOrNull { it.date == savedDate }?.goalHit ?: false
+            vm.streak = if (yesterdayHit) vm.streak + 1 else 0
             vm.longestStreak = maxOf(vm.longestStreak, vm.streak)
             vm.checkPersonalityUnlocks()
             vm.moodLoggedToday = false

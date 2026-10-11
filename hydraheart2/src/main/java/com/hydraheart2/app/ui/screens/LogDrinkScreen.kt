@@ -86,8 +86,10 @@ fun LogDrinkScreen(viewModel: HydraViewModel, onNavigateHome: () -> Unit) {
                             Text("←", fontSize = 22.sp, color = theme.accent)
                         }
                     }
+                    val titleText = selectedCategory?.let { stringResource(it.nameRes) }
+                        ?: stringResource(R.string.log_drink_title)
                     Text(
-                        selectedCategory?.let { stringResource(it.nameRes) } ?: stringResource(R.string.log_drink_title),
+                        titleText,
                         style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
                         color = theme.accent3
                     )

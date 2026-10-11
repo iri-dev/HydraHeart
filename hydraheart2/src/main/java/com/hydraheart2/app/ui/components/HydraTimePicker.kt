@@ -56,28 +56,28 @@ fun HydraTimePicker(
         properties = DialogProperties(usePlatformDefaultWidth = false)
     ) {
         FrostedGlass(
+            theme = theme,
+            cornerRadius = 28.dp,
             modifier = Modifier
                 .fillMaxWidth(0.88f)
                 .wrapContentHeight(),
-            theme = theme,
-            cornerRadius = 28.dp,
             padding = PaddingValues(28.dp)
         ) {
             Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
                     "💕 Reminder Time",
+                    style = MaterialTheme.typography.titleLarge,
                     color = theme.accent,
-                    fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.titleLarge
+                    fontWeight = FontWeight.Bold
                 )
                 Spacer(Modifier.height(2.dp))
                 Text(
                     "tap ▲▼ or hold to scroll fast",
-                    color = theme.textMuted,
-                    style = MaterialTheme.typography.labelSmall
+                    style = MaterialTheme.typography.labelSmall,
+                    color = theme.textMuted
                 )
             }
             Spacer(Modifier.height(24.dp))
@@ -89,8 +89,8 @@ fun HydraTimePicker(
                 TimeSpinner(value = hour, max = 23, label = "Hour", theme = theme, onValueChange = { hour = it })
                 Column(
                     modifier = Modifier.padding(horizontal = 14.dp),
-                    verticalArrangement = Arrangement.spacedBy(14.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(14.dp)
                 ) {
                     Box(
                         Modifier
@@ -171,7 +171,7 @@ private fun TimeSpinner(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                String.format("%02d", value),
+                "%02d".format(value),
                 color = theme.accent,
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.displaySmall

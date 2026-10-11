@@ -89,29 +89,29 @@ fun LevelPopup(
             contentAlignment = Alignment.Center
         ) {
             FrostedGlass(
-                modifier = Modifier
-                    .fillMaxWidth(0.9f)
-                    .fillMaxHeight(0.75f)
-                    .clickable(interactionSource = remember { MutableInteractionSource() }, indication = null) { },
                 theme = theme,
                 cornerRadius = 24.dp,
                 blurRadius = 30.dp,
-                padding = PaddingValues(24.dp)
+                padding = PaddingValues(24.dp),
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+                    .fillMaxHeight(0.75f)
+                    .clickable(interactionSource = remember { MutableInteractionSource() }, indication = null) { }
             ) {
                 Text(
                     "Hydra Levels",
-                    modifier = Modifier.fillMaxWidth(),
+                    style = MaterialTheme.typography.headlineMedium,
                     color = theme.accent3,
                     textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.headlineMedium
+                    modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(Modifier.height(4.dp))
                 Text(
                     "Total HP earned: $totalHp",
-                    modifier = Modifier.fillMaxWidth(),
+                    style = MaterialTheme.typography.labelMedium,
                     color = theme.textSoft,
                     textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.labelMedium
+                    modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(Modifier.height(16.dp))
                 Column(
@@ -127,11 +127,7 @@ fun LevelPopup(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clip(RoundedCornerShape(14.dp))
-                                .background(
-                                    if (isCurrent) theme.accent.copy(alpha = 0.15f)
-                                    else if (unlocked) theme.accent.copy(alpha = 0.06f)
-                                    else Color.Transparent
-                                )
+                                .background(if (isCurrent) theme.accent.copy(alpha = 0.15f) else if (unlocked) theme.accent.copy(alpha = 0.06f) else Color.Transparent)
                                 .padding(12.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {

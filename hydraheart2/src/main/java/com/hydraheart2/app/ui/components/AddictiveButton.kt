@@ -82,7 +82,7 @@ fun AddictiveButton(
             .drawBehind {
                 if (glowIntensity > 0f && enabled) {
                     drawRoundRect(
-                        Color.White.copy(alpha = 0.3f * glowIntensity),
+                        Color.White.copy(alpha = glowIntensity * 0.3f),
                         cornerRadius = CornerRadius(cornerRadius.toPx())
                     )
                 }
@@ -101,10 +101,10 @@ fun AddictiveButton(
     ) {
         Text(
             text,
+            style = MaterialTheme.typography.labelLarge,
             color = if (isPrimary) theme.bg1 else colour,
-            fontSize = 15.sp,
             fontWeight = FontWeight.Bold,
-            style = MaterialTheme.typography.labelLarge
+            fontSize = 15.sp
         )
     }
 }

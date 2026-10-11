@@ -129,7 +129,8 @@ fun HistoryScreen(viewModel: HydraViewModel, onNavigate: (String) -> Unit = {}) 
     } else {
         0
     }
-    val mostLogged = viewModel.todayDrinks.groupBy { it.drink.name }.maxByOrNull { it.value.size }?.key ?: "—"
+    val mostLogged = viewModel.todayDrinks.groupBy { it.drink.name }
+        .maxByOrNull { it.value.size }?.key ?: "—"
     val goalHit = isCurrentPeriod && viewModel.waterPercent >= 100f
     val goalTarget = viewModel.goals.waterMl.toFloat()
     val periodLabel = remember(period, selectedOffset, todayLabel, yesterdayLabel, locale) {
@@ -144,12 +145,14 @@ fun HistoryScreen(viewModel: HydraViewModel, onNavigate: (String) -> Unit = {}) 
                 }
             }
             "week" -> {
-                cal.add(Calendar.DAY_OF_YEAR, -((cal.get(Calendar.DAY_OF_WEEK) - 2 + 7) % 7))
+                val dow = cal.get(Calendar.DAY_OF_WEEK)
+                val daysToMon = (dow - 2 + 7) % 7
+                cal.add(Calendar.DAY_OF_YEAR, -daysToMon)
                 cal.add(Calendar.WEEK_OF_YEAR, selectedOffset)
-                val fmt = SimpleDateFormat("d MMM", locale)
-                val start = fmt.format(cal.time)
+                val df = SimpleDateFormat("d MMM", locale)
+                val start = df.format(cal.time)
                 cal.add(Calendar.DAY_OF_YEAR, 6)
-                "$start – ${fmt.format(cal.time)}"
+                "$start – ${df.format(cal.time)}"
             }
             "month" -> {
                 cal.add(Calendar.MONTH, selectedOffset)
@@ -225,9 +228,9 @@ fun HistoryScreen(viewModel: HydraViewModel, onNavigate: (String) -> Unit = {}) 
             ) {
                 Text(
                     stringResource(R.string.history_title),
-                    modifier = Modifier.weight(1f),
+                    style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold),
                     color = theme.accent.copy(alpha = if (theme.isLight) 0.82f else 0.92f),
-                    style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold)
+                    modifier = Modifier.weight(1f)
                 )
             }
             HorizontalDivider(
@@ -269,7 +272,7 @@ fun HistoryScreen(viewModel: HydraViewModel, onNavigate: (String) -> Unit = {}) 
                                     scaleY = tabScale
                                 }
                                 .clip(RoundedCornerShape(10.dp))
-                                .background(theme.accent.copy(alpha = pillAlpha * 0.16f))
+                                .background(theme.accent.copy(alpha = 0.16f * pillAlpha))
                                 .clickable(
                                     interactionSource = remember { MutableInteractionSource() },
                                     indication = null
@@ -319,10 +322,10 @@ fun HistoryScreen(viewModel: HydraViewModel, onNavigate: (String) -> Unit = {}) 
                     ) { label ->
                         Text(
                             label,
-                            modifier = Modifier.weight(1f),
+                            style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold),
                             color = theme.textPrimary,
                             textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold)
+                            modifier = Modifier.weight(1f)
                         )
                     }
                     NavArrow(symbol = "›", theme = theme, enabled = !isCurrentPeriod, onClick = {
@@ -601,11 +604,7 @@ fun HistoryScreen(viewModel: HydraViewModel, onNavigate: (String) -> Unit = {}) 
                 HistoryStatCard(
                     modifier = Modifier.weight(1f),
                     label = stringResource(R.string.history_stat_total),
-                    value = if (total >= 1000) {
-                        "${String.format(locale, "%.1f", total / 1000f)} L"
-                    } else {
-                        "$total ml"
-                    },
+                    value = if (total >= 1000) "${String.format(locale, "%.1f", total / 1000f)} L" else "$total ml",
                     icon = "💧",
                     theme = theme
                 )
@@ -642,9 +641,9 @@ fun HistoryScreen(viewModel: HydraViewModel, onNavigate: (String) -> Unit = {}) 
             Spacer(Modifier.height(28.dp))
             Text(
                 stringResource(R.string.history_today_logs),
-                modifier = Modifier.padding(horizontal = 20.dp),
+                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
                 color = theme.textPrimary,
-                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
+                modifier = Modifier.padding(horizontal = 20.dp)
             )
             Spacer(Modifier.height(10.dp))
             if (viewModel.todayDrinks.isEmpty()) {
