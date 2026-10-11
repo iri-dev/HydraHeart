@@ -848,7 +848,8 @@ private fun PersonalityUnlockDialog(
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 val iconScale = remember { Animatable(0.4f) }
                 LaunchedEffect(Unit) {
-                    iconScale.animateTo(1.12f, tween(500, easing = EaseOutBack))
+                    // EaseOutBack throws on the last float before 1 (Compose 1.7), which crashed this dialog
+                    iconScale.animateTo(1.12f, tween(500, easing = { if (it < 0.9999f) EaseOutBack.transform(it) else 1f }))
                     iconScale.animateTo(1f, spring(dampingRatio = 0.5f, stiffness = 400f))
                 }
                 Text(
