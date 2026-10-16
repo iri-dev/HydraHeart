@@ -50,11 +50,31 @@ fun HydraNavigation(viewModel: HydraViewModel) {
         )
     ) { mutableStateListOf<String>() }
 
+    // Opens a screen on top of the current one, so Back returns here.
     fun navigateTo(screen: String) {
         if (screen != currentScreen) {
             backStack.add(currentScreen)
             currentScreen = screen
         }
+    }
+
+    // Goes back to the previous screen (or Home if there isn't one), instead of opening a new copy.
+    fun goBack() {
+        currentScreen = if (backStack.isNotEmpty()) backStack.removeAt(backStack.lastIndex) else "home"
+    }
+
+    // Home starts fresh, so Back from Home leaves the app.
+    fun goHome() {
+        backStack.clear()
+        currentScreen = "home"
+    }
+
+    // The bottom bar tabs sit side by side: Back from any of them goes to Home.
+    fun selectTab(tab: String) {
+        if (tab == currentScreen) return
+        backStack.clear()
+        if (tab != "home") backStack.add("home")
+        currentScreen = tab
     }
 
     LaunchedEffect(viewModel.hapticsEnabled) {
@@ -74,9 +94,7 @@ fun HydraNavigation(viewModel: HydraViewModel) {
         }
     }
 
-    BackHandler(enabled = backStack.isNotEmpty()) {
-        currentScreen = backStack.removeAt(backStack.lastIndex)
-    }
+    BackHandler(enabled = backStack.isNotEmpty()) { goBack() }
 
     Box(modifier = Modifier.fillMaxSize()) {
         AnimatedContent(
@@ -87,31 +105,31 @@ fun HydraNavigation(viewModel: HydraViewModel) {
         ) { screen ->
             when (screen) {
                 "home" -> HomeScreen(viewModel, onNavigate = { navigateTo(it) })
-                "log" -> LogDrinkScreen(viewModel, onNavigateHome = { navigateTo("home") })
+                "log" -> LogDrinkScreen(viewModel, onNavigateHome = { goHome() })
                 "history" -> HistoryScreen(viewModel, onNavigate = { navigateTo(it) })
                 "education" -> EducationScreen(viewModel)
                 "trophies" -> TrophiesScreen(viewModel)
-                "settings" -> SettingsScreen(viewModel, onBack = { navigateTo("home") }, onNavigateTo = { navigateTo(it) })
-                "diary" -> DiaryScreen(viewModel, onBack = { navigateTo("home") })
-                "mood_tracking" -> MoodTrackingScreen(viewModel, onBack = { navigateTo("settings") })
-                "mood_calendar" -> MoodCalendarScreen(viewModel, onBack = { navigateTo("settings") })
-                "about" -> AboutScreen(viewModel, onBack = { navigateTo("settings") }, onNavigateTo = { route -> navigateTo(route) })
+                "settings" -> SettingsScreen(viewModel, onBack = { goBack() }, onNavigateTo = { navigateTo(it) })
+                "diary" -> DiaryScreen(viewModel, onBack = { goBack() })
+                "mood_tracking" -> MoodTrackingScreen(viewModel, onBack = { viewModel.pendingSettingsSection = "howwefeel"; goBack() })
+                "mood_calendar" -> MoodCalendarScreen(viewModel, onBack = { viewModel.pendingSettingsSection = "howwefeel"; goBack() })
+                "about" -> AboutScreen(viewModel, onBack = { goBack() }, onNavigateTo = { route -> navigateTo(route) })
                 "dev_profile" -> DeveloperProfileScreen(
                     viewModel,
-                    onBack = { navigateTo("about") },
+                    onBack = { goBack() },
                     onNavigateTo = { route -> navigateTo(route) }
                 )
-                "privacy" -> LegalContentScreen(viewModel, "Privacy Policy", "privacy", onBack = { navigateTo("about") })
-                "terms" -> LegalContentScreen(viewModel, "Terms of Service", "terms", onBack = { navigateTo("about") })
-                "whats_new" -> WhatsNewScreen(viewModel, onBack = { navigateTo("about") })
-                "dev_level_control" -> LevelControlScreen(viewModel, onBack = { navigateTo("about") })
+                "privacy" -> LegalContentScreen(viewModel, "Privacy Policy", "privacy", onBack = { goBack() })
+                "terms" -> LegalContentScreen(viewModel, "Terms of Service", "terms", onBack = { goBack() })
+                "whats_new" -> WhatsNewScreen(viewModel, onBack = { goBack() })
+                "dev_level_control" -> LevelControlScreen(viewModel, onBack = { goBack() })
             }
         }
 
         val hideNavBar = listOf("settings", "diary", "mood_tracking", "mood_calendar", "about", "dev_profile", "privacy", "terms", "whats_new", "dev_level_control").contains(currentScreen)
         if (!hideNavBar) {
             Box(modifier = Modifier.align(Alignment.BottomCenter)) {
-                NavBar(currentScreen, viewModel.currentTheme, onNavigate = { navigateTo(it) })
+                NavBar(currentScreen, viewModel.currentTheme, onNavigate = { if (it == "log") navigateTo(it) else selectTab(it) })
             }
         }
     }
