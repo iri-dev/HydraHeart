@@ -6,24 +6,9 @@
 
 **Hydrate beautifully.**
 
-*A little more hydration. A little more happiness. A healthier everyday.*
-
-![Android 8.0+](https://img.shields.io/badge/Android-8.0%2B-5CC6FF?logo=android&logoColor=white)
-![Kotlin](https://img.shields.io/badge/Kotlin-Jetpack_Compose-9B6BFF?logo=kotlin&logoColor=white)
-![Free forever](https://img.shields.io/badge/price-free_forever-1E8FF6)
-![No ads](https://img.shields.io/badge/ads-none-2ea44f)
+Your personal hydration and wellness companion.
 
 </div>
-
-A free, personal hydration and wellbeing companion for Android.
-
-Track what you drink, understand your habits, check in with how you're feeling, and make every day
-a little healthier, with Hydra by your side.
-
-**Thoughtful tracking. Endless personality. No subscriptions, ads or paywalls. Ever.**
-
-*Built by one developer who believes that looking after yourself should be simple, enjoyable and
-free.*
 
 <p align="center">
   <a href="docs/showcase-track.webp"><img src="docs/showcase-track.webp" alt="Track beautifully: the Log a Drink screen in the Matcha theme, with Water, Coffee and Tea, Energy Drinks, Soft Drinks, Fruit Juice, Milk and Calcium, and Alcohol" width="260"></a>
@@ -35,70 +20,42 @@ free.*
 </p>
 <p align="center"><em>Mia logs a litre of water and Hydra cheers up. (Mia is made up for these screenshots. Tap any image to see it full size.)</em></p>
 
-### HydraHeart at a glance
-
-<div align="center">
-
-<table>
-  <tr>
-    <td align="center" width="110"><h2>70</h2>drinks</td>
-    <td align="center" width="110"><h2>30</h2>themes</td>
-    <td align="center" width="110"><h2>8</h2>personalities</td>
-    <td align="center" width="110"><h2>60</h2>trophies</td>
-    <td align="center" width="110"><h2>10</h2>levels</td>
-    <td align="center" width="110"><h2>41</h2>lessons</td>
-  </tr>
-</table>
-
-</div>
-
-> **Your data, your device.** No account, no analytics, no ads, and no internet permission. What
-> you log stays in HydraHeart's private storage on your phone. [How your data is handled](#your-data-belongs-to-you)
-
-<table>
-  <tr>
-    <td valign="top"><strong>Start here</strong></td>
-    <td><a href="#why-hydraheart-exists">Why HydraHeart exists</a> · <a href="#meet-hydra-your-little-hydration-companion">Meet Hydra</a></td>
-  </tr>
-  <tr>
-    <td valign="top"><strong>The app</strong></td>
-    <td><a href="#your-hydration-your-way">Your hydration, your way</a> · <a href="#more-than-a-water-tracker">More than a water tracker</a> · <a href="#a-companion-with-personality">Personalities</a> · <a href="#progress-and-rewards">Progress and rewards</a> · <a href="#make-it-yours">Make it yours</a> · <a href="#gentle-reminders">Reminders</a></td>
-  </tr>
-  <tr>
-    <td valign="top"><strong>The promise</strong></td>
-    <td><a href="#a-healthier-habit-without-the-guilt">No guilt</a> · <a href="#free-forever-and-i-mean-forever">Free forever</a> · <a href="#your-data-belongs-to-you">Your data</a></td>
-  </tr>
-  <tr>
-    <td valign="top"><strong>Everything else</strong></td>
-    <td><a href="#get-hydraheart">Get HydraHeart</a> · <a href="#under-the-hood">Under the hood</a> · <a href="#a-note-from-the-developer">A note from the developer</a> · <a href="#licence-feedback-and-support">Feedback and licence</a></td>
-  </tr>
-</table>
-
 ## Why HydraHeart exists
 
-HydraHeart started with a problem I understood personally. I knew how important drinking enough
-water was, but knowing that didn't make it easy to stay
-motivated. I wanted to reach my daily goal, be more consistent, and feel like I was doing something
-good for myself.
+HydraHeart began with something personal. I've always understood the importance of staying
+hydrated, but knowing something is good for you doesn't necessarily make it easy to turn into a
+habit.
 
-So, like a lot of people, I tried hydration apps. And something bothered me. Some of the features I
-wanted were locked behind a subscription, and I kept coming back to the same question: **why should
-someone have to pay every month for tools that help them drink enough water?**
+I wanted to drink more water, reach my daily goal and become more consistent. The motivation just
+wasn't always there.
 
-I'm a developer myself, so I understand that software takes time and effort to build. But I don't
-believe looking after yourself should depend on whether you can afford another subscription. So I
-decided to make my own.
+So I tried existing hydration apps, hoping they'd make things easier. But I kept running into
+something that genuinely frustrated me: subscriptions and features locked behind payments.
 
-At first, HydraHeart was only going to be for me: something simple to track my water, reach my
-goals and stay motivated, without paying for the features I needed. As I built it, the idea grew. I
-didn't just want a tracker that recorded numbers. I wanted something I'd enjoy opening, something
-that made hydration feel less like another responsibility and more like an act of self-care. That's
-how Hydra came to life.
+**Why should someone have to pay every month for tools that help them drink enough water?**
 
-Eventually I realised that if I'd wanted an app like this, other people might want one too.
+I understand that software takes time, effort and resources to develop. But I've never believed
+that taking care of yourself should depend on whether you can afford another subscription.
 
-**HydraHeart started as something I built for myself. It became something I wanted to share with
-everyone.** Because taking care of yourself shouldn't come with a price tag.
+So I decided to build something different.
+
+HydraHeart started as a private project, something I was making purely for myself. I wanted a
+simple way to track my drinks, stay motivated and develop a healthier routine without
+advertisements, subscriptions or restrictions.
+
+But as I worked on it, I started imagining what would make hydration tracking genuinely enjoyable.
+What if the app could encourage you? What if it felt alive? What if you could make it completely
+your own?
+
+That idea became HydraHeart: a personal hydration companion with a little more character, a little
+more encouragement, and a lot of care behind it.
+
+And somewhere along the way, I realised I didn't want to keep it just for myself. If it could help
+me build a better habit, perhaps it could help someone else too.
+
+**What began as a personal project became something I wanted everyone to have access to.**
+
+Because looking after yourself shouldn't come with a price tag.
 
 ## Meet Hydra, your little hydration companion
 
@@ -465,24 +422,35 @@ for everyone, no ads, no subscriptions and no guilt.
 
 ## A note from the developer
 
-Hi, I'm Iri, the developer behind HydraHeart. This is my first app, and it means a lot to me.
+Hi, I'm Iri, the developer behind HydraHeart. This is my first app, and it's a project that means a
+lot to me.
 
-When I started building it, I wasn't thinking about how many people might download it, what rating
-it might get, or whether it could make money. I wanted to make something useful: something that
-makes taking care of yourself feel easier, more enjoyable and a little more rewarding. That's still
-what matters to me.
+When I first started building HydraHeart, I was building it for myself. I wanted to improve my own
+hydration habits, stay motivated, and have an app that worked the way I wanted it to. I never
+originally planned for it to become something I'd share with other people.
 
-**I don't measure HydraHeart's success in downloads, stars or revenue. I measure it in people
-helped.** I'm not a machine, and those numbers aren't the point.
+But as HydraHeart grew, so did my ambitions for it. What started as a little personal project
+became something I realised could make a difference to somebody else. And that's what matters to
+me now.
 
-If one person uses HydraHeart and it helps them drink more water, build a healthier routine, or
-simply feel a little better about looking after themselves, then building it was worth it. It
-doesn't need to be thousands of people. It doesn't even need to be hundreds. One person is enough.
+**I don't measure HydraHeart's success in downloads, ratings or revenue. I measure it by whether it
+genuinely helps someone.**
 
-You don't owe me a donation, a review or anything else in return. Knowing that something I built
-made a difference to someone is more than enough.
+If just one person uses HydraHeart and it helps them drink more water, develop a healthier routine,
+or feel a little better in their everyday life, then sharing this app was worth it.
 
-Thank you for giving HydraHeart a chance, and thank you for taking care of yourself.
+It doesn't have to reach thousands of people. It doesn't even have to reach hundreds.
+
+**One person is enough.**
+
+I don't expect anything in return. You don't owe me a donation, a five-star review, or even a
+thank-you. Knowing that something I created has made a difference to someone's life is enough for
+me.
+
+HydraHeart may have started as an app for myself, but I hope it can become something meaningful to
+you, too.
+
+Thank you for giving it a chance.
 
 — [Iri](https://github.com/iri-dev)
 
