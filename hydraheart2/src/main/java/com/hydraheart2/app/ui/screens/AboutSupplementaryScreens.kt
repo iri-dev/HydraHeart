@@ -132,7 +132,7 @@ fun DeveloperProfileScreen(viewModel: HydraViewModel, onBack: () -> Unit, onNavi
                         label = "GitHub",
                         theme = theme,
                         onClick = {
-                            runCatching { ctx.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com"))) }
+                            runCatching { ctx.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/iri-dev"))) }
                         }
                     )
                 }
