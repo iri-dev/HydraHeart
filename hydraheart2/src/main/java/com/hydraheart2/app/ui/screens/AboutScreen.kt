@@ -186,8 +186,8 @@ fun AboutScreen(viewModel: HydraViewModel, onBack: () -> Unit, onNavigateTo: (St
                     isLast = false,
                     onClick = {
                         val intent = Intent(Intent.ACTION_SENDTO).apply {
-                            data = Uri.parse("mailto:")
-                            putExtra(Intent.EXTRA_EMAIL, arrayOf("support@iri.dev"))
+                            data = Uri.parse("mailto:iri.devsupport@gmail.com")
+                            putExtra(Intent.EXTRA_EMAIL, arrayOf("iri.devsupport@gmail.com"))
                             putExtra(Intent.EXTRA_SUBJECT, "HydraHeart Support")
                             putExtra(Intent.EXTRA_TEXT, "\n\n---\nVersion: $versionName")
                         }
