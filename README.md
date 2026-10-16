@@ -6,16 +6,15 @@
 
 <p><strong>Hydrate beautifully.</strong></p>
 
-**A water and mood tracker, made with love, for everyone who forgets to look after themselves.**
+**A free water and mood tracker, built around a little glass heart who's always glad to see you.**
 
-HydraHeart exists because I want more people to give their bodies the water they need. So I built
-Hydra: a little glass heart who fills up with the colours of whatever you drink, asks how you're
-feeling, and is always glad to see you.
+*Taking care of yourself shouldn't come with a subscription.*
 
 ![Coming soon to Google Play](https://img.shields.io/badge/Google_Play-coming_soon-1E8FF6?logo=googleplay&logoColor=white)
 ![Android 8.0+](https://img.shields.io/badge/Android-8.0%2B-5CC6FF?logo=android&logoColor=white)
-![Free](https://img.shields.io/badge/price-free-9B6BFF)
+![Free forever](https://img.shields.io/badge/price-free_forever-9B6BFF)
 ![Ads: none](https://img.shields.io/badge/ads-none-2ea44f)
+![Subscriptions: none](https://img.shields.io/badge/subscriptions-none-2ea44f)
 ![Tracking: none](https://img.shields.io/badge/tracking-none-2ea44f)
 
 </div>
@@ -27,34 +26,36 @@ feeling, and is always glad to see you.
 </p>
 <p align="center"><em>Mia's had a latte, an orange juice and some milk today, and Hydra has opinions about the sugar. (Click any image to see it full size.)</em></p>
 
-**Jump to:** [The heart behind it](#the-heart-behind-hydraheart) · [Meet Hydra](#meet-hydra) · [Moods](#how-are-you-feeling) · [Personalities](#eight-personalities) · [Drinks](#logging-drinks) · [Goals](#a-goal-that-fits-your-body) · [Trophies](#levels-hp-and-60-trophies) · [Themes](#30-themes) · [Reminders](#reminders-that-sound-like-a-friend) · [Privacy](#privacy--permissions) · [What's next](#whats-next)
+HydraHeart is an Android app that helps you drink more water and keep an eye on how you're
+feeling, without it ever feeling like a chore. Every drink you log pours into Hydra in its own
+colour. She reacts, she talks, she remembers how your week has gone, and she grows with you.
 
-# The heart behind HydraHeart
+It's free, and it always will be. No ads, no subscription, no features held back for people who
+pay, and nothing you log ever leaves your phone.
 
-So many of us don't drink enough water. Not because we don't care about ourselves, but because
-life gets busy, thirst is easy to ignore, and by the time you notice, you're already running low.
-Losing just 1 to 2% of your body's water can dull your concentration, your mood and your energy,
-and thirst only turns up after that's already started. A lot of headaches, afternoon slumps and
-flat, foggy days are really just a body quietly asking for water.
+**The app:** [Why it exists](#why-hydraheart-exists) · [Free forever](#your-health-is-not-a-subscription) · [People, not profit](#built-for-people-not-profit) · [Meet Hydra](#meet-hydra) · [No guilt](#no-guilt-ever) · [Moods](#how-are-you-feeling) · [Personalities](#eight-personalities) · [Drinks](#logging-drinks) · [Goals](#a-goal-that-fits-your-body) · [Trophies](#levels-hp-and-60-trophies) · [Themes](#30-themes) · [Reminders](#reminders-that-sound-like-a-friend) · [Privacy](#privacy--permissions) · [What's next](#whats-next)
 
-That's why HydraHeart exists. I'm Iri, a solo developer, and I build software that helps, protects
-and improves people's lives. HydraHeart is the part of that about looking after yourself. I wanted
-to make something that helps people give their bodies what they need, gently, every single day,
-and that feels like care rather than a chore.
+**Behind the app:** [Built with](#built-with) · [Building it yourself](#building-it-yourself) · [Project layout](#project-layout) · [How it fits together](#how-it-fits-together) · [Contributing](#contributing) · [Licence](#licence--credits)
 
-Most water trackers treat you like a number: a counter, a progress bar and a notification you learn
-to swipe away. HydraHeart is built around someone who cares instead. Hydra is genuinely happy when
-you drink something, a little worried when you've had three coffees, and kind about it when you're
-having a rubbish day. She *is* the progress bar, but she's also the point.
+# Why HydraHeart exists
 
-**Every part of it is designed with care.**
+I'll be honest: I built HydraHeart for me.
 
-- **Kindness, never guilt.** Hydra won't shame you for a bad day. Her reminders sound like a friend checking in, not an alarm going off: "The audacity of forgetting to hydrate! (joking. drink water)"
-- **A goal for your body.** Not a generic 2 litres. Your goal is worked out from your weight, how active you are and the climate you live in, because every body needs something different.
-- **The truth about what you drink.** A 355 ml latte isn't 355 ml of water. It's 300 ml, minus a little for the caffeine. Every drink knows how much it really gives you, so you know what your body actually got.
-- **How you feel matters too.** The days you feel worst are often the days you drink least. So HydraHeart asks how you are, and when things have been hard, Hydra notices and gets gentler with you.
-- **Care without a catch.** It's free for everyone. No ads, no subscription, no tracking, and nothing you log ever leaves your phone. Looking after yourself shouldn't cost you money or your privacy.
-- **Joy that keeps you coming back.** A habit only sticks if it feels good, so there are levels, trophies, thirty themes and little rewards for Hydra along the way.
+I've always known how much water matters. Up to 60% of an adult body is water, and losing just 1
+to 2% of it is enough to dull your focus, your mood and your energy. It shows up in the small
+things too, like dry lips, tired-looking skin and that foggy afternoon feeling. I always wanted to
+drink more and actually reach my goal. What I struggled with was the motivation.
+
+So I tried the hydration apps that were already out there, and I kept running into the same thing:
+the features that would really have helped me were behind a subscription. A monthly fee to help
+you drink water. That, more than anything else, is why HydraHeart exists. Drinking water is about
+as basic as being human gets, and I don't think anybody should have to pay to be helped with it.
+
+So I made my own. A private little app, just for me: free, with no ads and nothing to buy. And once
+it was helping me, I wanted it to help other people too.
+
+I'm Iri, a solo developer, and I build software that helps, protects and improves people's lives.
+HydraHeart is the part of that about looking after yourself.
 
 ## Why the name?
 
@@ -65,16 +66,58 @@ having a rubbish day. She *is* the progress bar, but she's also the point.
 colours of what you've had. It's the bit that makes HydraHeart different from a counter: it cares
 how you're doing, not just how much you've had.
 
+# Your health is not a subscription
+
+This is the one promise HydraHeart will never break.
+
+- **Free, forever.** It will never cost anything to download or to use.
+- **No ads.** Not now, and not later.
+- **No subscriptions.** There's nothing to renew and nothing that runs out.
+- **No paywalls.** Every feature is for everyone. Nothing is locked away for people who pay.
+- **Donations are only ever optional.** The only money HydraHeart will ever accept is a donation someone chooses to give, and someone who never donates gets exactly the same app as someone who does.
+
+If HydraHeart grows and keeping it going starts to cost me money, that's mine to deal with. I won't
+hand the bill to the people I built it for, and I'd never ask anyone to pay me just so they can
+keep a healthy habit. I can't stand it when apps treat their users as something to squeeze money
+out of instead of people to help, and HydraHeart is never going to be one of them.
+
+<p align="center"><strong>Every feature. Every update. Every glass of water. Free, forever.</strong></p>
+
+# Built for people, not profit
+
+I don't measure HydraHeart in downloads, star ratings or numbers on a dashboard. I'm not a machine,
+and that isn't the point.
+
+What matters to me is that somebody, even just one person, uses HydraHeart and their life gets a
+little better because of it. Maybe they drink more. Maybe their skin feels better, or the afternoon
+slump stops being a daily thing. Maybe they're just in a better mood, because water affects that
+too. If that happens for one person, HydraHeart has done what it was made for. They don't owe me
+anything for it.
+
+So everything in it is built around you feeling better, not around keeping you on your phone:
+
+- **Kindness, never guilt.** Hydra won't shame you for a bad day. Her reminders sound like a friend checking in, not an alarm going off: "The audacity of forgetting to hydrate! (joking. drink water)"
+- **A goal for your body.** Not a generic 2 litres. Your goal is worked out from your weight, how active you are and the climate you live in, because every body needs something different.
+- **The truth about what you drink.** A 355 ml latte isn't 355 ml of water. It's 300 ml, minus a little for the caffeine. Every drink knows how much it really gives you.
+- **How you feel matters too.** The days you feel worst are often the days you drink least. So HydraHeart asks how you are, and when things have been hard, Hydra notices and gets gentler with you.
+- **Joy that makes it stick.** A habit only lasts if it feels good, so there are levels, trophies, thirty themes and little rewards for Hydra along the way.
+- **Your privacy, kept.** No account, no analytics, no internet permission. What you log is yours.
+
 <p align="center">
   <img src="docs/divider-hydraheart.svg" alt="" width="100%">
 </p>
 
 # Meet Hydra
 
-Hydra is there so that looking after yourself feels less like a task and more like being cared
-for. She lives on the Home screen, and she *is* your progress. Every drink you log pours into her in
-its own colour. Water is blue, coffee is brown, orange juice is, well, orange, and milk is white.
-A big glass of water fills her a lot more than an espresso does.
+A plain tracker is easy to ignore. A counter can't ask whether you've had anything to drink today,
+and it can't be happy for you when you hit your goal. I wanted HydraHeart to feel alive: something
+that notices, cheers you on and gives you a gentle push in the right direction. That's Hydra. She's
+there to keep you motivated, and to give you a reason to come back that has nothing to do with
+guilt.
+
+She lives on the Home screen, and she *is* your progress. Every drink you log pours into her in its
+own colour. Water is blue, coffee is brown, orange juice is, well, orange, and milk is white. A big
+glass of water fills her a lot more than an espresso does.
 
 - **She has moods.** Her face goes from concerned to content to happy to ecstatic as you get closer to your goal. Go over your caffeine or alcohol limit and she gets worried, whatever your water says.
 - **She talks.** What she says depends on the time of day, how far along you are, what you've just had, which limit you're pushing, your streak and the personality you picked. There are well over a thousand lines.
@@ -84,12 +127,33 @@ A big glass of water fills her a lot more than an espresso does.
 Under her you get today's total, your caffeine, sugar, calcium and alcohol, your electrolytes,
 your streak and your recent drinks with a one-tap **Undo**.
 
+**Not a Hydra person? That's completely fine.** Not everyone wants a companion, so she's optional.
+**Focus Mode** takes away her face and her speech bubbles and leaves a clean, quiet tracker: just
+your goal, your progress and your numbers. You can pick it on day one or switch whenever you like.
+
 <p align="center">
   <a href="docs/screenshots/01-home.webp"><img src="docs/screenshots/01-home.webp" alt="Home in Sapphire Night with Hydra's heart filled to 81% with water, latte, orange juice, green tea and milk" width="260"></a>
   <a href="docs/screenshots/01-home-details.webp"><img src="docs/screenshots/01-home-details.webp" alt="The rest of Home: the progress bar, nutrient and electrolyte bars, diary, streak, trophies, the next reward and recent drinks" width="260"></a>
   <a href="docs/screenshots/01-level-popup.webp"><img src="docs/screenshots/01-level-popup.webp" alt="The Hydra Levels list with the reward for each level" width="260"></a>
 </p>
 <p align="center"><em>Home, the rest of Home, and the level list you get by tapping the level at the top.</em></p>
+
+# No guilt, ever
+
+Missing a day is normal. You were busy, you forgot, or it was one of those stressful days when you
+didn't have the energy for anything at all. Everyone's life is different, and HydraHeart is built
+for real ones.
+
+A missed day doesn't undo the work you've already put in, and it doesn't send you back to zero.
+Your streak starts counting again, but your level, your HP, your trophies, your best streak and
+your whole history stay exactly where they were. One day off doesn't cancel out a month of
+showing up.
+
+Hydra sees it the same way. She won't tell you off. When you come back after a few days away, she's
+just glad you're here. In Heartbreak Era she'll say something like *"You've been away for a few
+days Mia 💔 no judgment. I'm just glad you're here. One drink?"*
+
+No guilt. No pressure. You just pick up where you are and keep going.
 
 # How are you feeling?
 
@@ -177,10 +241,10 @@ heart. Hit your goal and the whole screen celebrates with you.
 
 # A goal that fits your body
 
-Your body isn't average, so your goal isn't a flat 2 litres. HydraHeart works it out from your weight, how active you are and
-your climate, and eases off a little if you're over 65. **Why this goal?** shows you exactly how
-yours was worked out. Would rather pick your own? Switch to **Custom**. After a good streak, Hydra
-might suggest it's time to aim a bit higher.
+Your body isn't average, so your goal isn't a flat 2 litres. HydraHeart works it out from your
+weight, how active you are and your climate, and eases off a little if you're over 65.
+**Why this goal?** shows you exactly how yours was worked out. Would rather pick your own? Switch to
+**Custom**. After a good streak, Hydra might suggest it's time to aim a bit higher.
 
 You also get daily limits for caffeine, sugar and alcohol, and targets for calcium, sodium,
 potassium and magnesium, adjusted for your age and gender.
@@ -195,7 +259,7 @@ potassium and magnesium, adjusted for your age and gender.
 
 Everything you do earns HP: every drink, every mood check-in, every goal you hit (with a bonus for
 your streak) and every trophy. HP takes Hydra through ten levels, and each one gives her something
-new.
+new. Missed days never take HP away, so a quiet week never costs you a level.
 
 There are 60 trophies to earn, from your first sip and your first coffee to a month-long streak and
 a Perfect Day where you hit every goal without going over a single limit. The locked ones show how
@@ -224,7 +288,8 @@ example, wants a Perfect Day.
 Hydra doesn't have to be a heart. She can be a droplet, a bottle, a cup, a woman or a bra, and she
 fills up just the same. Dress her up with twelve accessories (a crown, a silk bow, a golden halo,
 sparkles, a rose aura...), pick one of eight speech bubble styles, or give her your own lines to
-say. Prefer things quiet? Switch off her face and speech altogether.
+say. The Level 8 to 10 rewards each have their own switch, so you can keep the golden glow and skip
+the butterfly.
 
 <p align="center">
   <a href="docs/shapes.webp">
@@ -258,8 +323,8 @@ From Level 5 Hydra keeps a **diary**, too. Every drink gets an entry, written by
 It's easier to look after your body when you know what it's asking for. Learn has 41 short,
 friendly articles on hydration, electrolytes, caffeine, sugar, alcohol, energy drinks, skin,
 wellbeing and habits, from why afternoon headaches so often come down to water to why thirst is a
-late signal. There's a new **Today's Lesson** every day. There are a dozen myth-busters
-along the way. ("You need exactly 8 glasses a day" isn't true, by the way.)
+late signal. There's a new **Today's Lesson** every day, and a dozen myth-busters along the way.
+("You need exactly 8 glasses a day" isn't true, by the way.)
 
 <p align="center">
   <a href="docs/screenshots/10-learn.webp"><img src="docs/screenshots/10-learn.webp" alt="Learn in Botanical Garden with search, Today's Lesson and the Hydration topics" width="260"></a>
@@ -269,9 +334,10 @@ along the way. ("You need exactly 8 glasses a day" isn't true, by the way.)
 # Reminders that sound like a friend
 
 A reminder should feel like someone who cares checking in, not a nag. Set as many as you like, at
-the times that suit your day, and they come through in Hydra's voice. Not "Time to drink water", but things like "I'm not saying you forgot... but you forgot" or
-"Your future self is texting you: please drink water". Pick from 50 messages, switch off the ones
-you don't like, write your own, and choose the sound.
+the times that suit your day, and they come through in Hydra's voice. Not "Time to drink water",
+but things like "I'm not saying you forgot... but you forgot" or "Your future self is texting you:
+please drink water". Pick from 50 messages, switch off the ones you don't like, write your own, and
+choose the sound.
 
 <p align="center">
   <a href="docs/screenshots/11-notification.webp">
@@ -322,7 +388,7 @@ and grows with you, or **Focus Mode**, which is clean and quiet. You can change 
 | **Your Profile** | Name, birthday, gender, height, weight, activity level and climate |
 | **How We Feel** | Your mood check-in and the Mood Calendar |
 | **Personality** | Hydra's personalities, including any hidden ones you've unlocked |
-| **Hydra's Look** | Face, speech, shape, accessories, speech bubbles and your own lines |
+| **Hydra's Look** | Face, speech, shape, accessories, level rewards, speech bubbles and your own lines |
 | **Daily Goals** | Your goal, worked out or custom, and the limits for everything else |
 | **Calendar** | Day or month first, a 12 or 24-hour clock, and which day your week starts |
 | **Reminders** | Times, messages and the sound |
@@ -347,7 +413,8 @@ HydraHeart speaks English (with US or UK spelling), German and Spanish.
 # Privacy & permissions
 
 Caring about you includes caring about your privacy. HydraHeart doesn't have the internet
-permission, so it couldn't send your drinks, moods or notes anywhere if it wanted to. It asks for four permissions, and that's all:
+permission, so it couldn't send your drinks, moods or notes anywhere if it wanted to. It asks for
+four permissions, and that's all:
 
 | Permission | What it's for |
 | --- | --- |
@@ -365,23 +432,121 @@ affects how much you should drink, your doctor's advice comes first.
 
 # What's next
 
-My hope for HydraHeart is simple: that it helps more people drink the water their bodies need, and
-feel a little more looked after while they do.
-
 **Google Play is next.** HydraHeart is getting ready for the Play Store, so anyone can install it in
-one tap. When it gets there, the promises above come with it. It'll stay free, with no ads and no
-tracking, and your data will stay on your phone.
+one tap. Every promise on this page comes with it: free forever, no ads, no subscriptions, no
+tracking, and your data stays on your phone.
 
 After that, Hydra keeps growing, and a lot of what she learns next will come from the people using
 her. If there's something you'd love her to do, I'd really like to hear it.
+
+<p align="center">
+  <img src="docs/divider-hydraheart.svg" alt="" width="100%">
+</p>
+
+# Behind the app
+
+This half is for anyone curious about how HydraHeart is made. It's a native Android app written in
+Kotlin with Jetpack Compose, and it runs entirely on the phone: there's no server, no account
+system and no network code.
+
+## Built with
+
+| | |
+| --- | --- |
+| **Language** | Kotlin 2.2 |
+| **UI** | Jetpack Compose (BOM 2024.12.01) with Material 3 and Material icons |
+| **Navigation** | Navigation Compose |
+| **State** | One AndroidX `ViewModel` with Compose state |
+| **Storage** | Jetpack DataStore (Preferences), with lists saved as JSON through Gson |
+| **Reminders** | `AlarmManager` with a boot receiver to put them back after a restart |
+| **Fonts** | Playfair Display and DM Sans as Google downloadable fonts |
+| **Android** | 8.0 (API 26) and up, targeting API 36 |
+| **Build** | Gradle 9.6 (wrapper) and Android Gradle Plugin 9.4 |
+
+Hydra herself is drawn in code on a Compose `Canvas`: every shape, the layered colours of each
+drink, her face, her accessories and her level effects. There are no images or animation files
+behind her.
+
+## Building it yourself
+
+**You'll need**
+
+- Android Studio, recent enough for Android Gradle Plugin 9.4
+- JDK 17 or newer (the one that comes with Android Studio is fine)
+- The Android SDK for API 36
+- A phone or emulator running Android 8.0 or newer
+
+Clone the repository:
+
+```bash
+git clone https://github.com/iri-dev/HydraHeart.git
+```
+
+Open the folder in Android Studio, let Gradle sync, pick the **HydraHeart** run configuration and
+press Run. Or from a terminal in the project folder, build a debug APK:
+
+```bash
+./gradlew :hydraheart2:assembleDebug
+```
+
+It lands in `hydraheart2/build/outputs/apk/debug/`. To build and install it on a connected phone or
+emulator in one go:
+
+```bash
+./gradlew :hydraheart2:installDebug
+```
+
+The project has two Android modules. **`hydraheart2` is HydraHeart**, so that's the one to build and
+run. `app` is an earlier version of the interface that's no longer worked on.
+
+## Project layout
+
+```
+hydraheart2/src/main/
+├── java/com/hydraheart2/app/
+│   ├── MainActivity.kt      Start-up, splash screen and the first-run check
+│   ├── Hydraapp.kt          The app's root: onboarding or the main screens
+│   ├── data/                Drinks, themes, trophies, Learn articles and the data models
+│   ├── ui/screens/          One file per screen: Home, Log Drink, History, Diary, moods,
+│   │                        Trophies, Learn, Settings, About and onboarding
+│   ├── ui/components/       Hydra herself (HydraHeart.kt), her speech bubble, the level
+│   │                        popup, the bottom bar and the time picker
+│   ├── ui/theme/            Colours, type and the Compose theme
+│   ├── ui/navigation/       The navigation graph
+│   ├── viewmodel/           HydraViewModel: app state, HP, levels, trophies and everything
+│   │                        Hydra says
+│   └── util/                Saving, the goal calculator, reminders, haptics and language
+└── res/                     Strings in US English, UK English, German and Spanish, icons
+branding/                    The app icon as an SVG
+docs/                        The images on this page
+```
+
+## How it fits together
+
+- **`HydraViewModel`** holds the whole app: today's drinks, your goals, HP and levels, trophies, moods, the diary and Hydra's settings. Her lines live here too, chosen by personality, time of day, progress, what you just drank and her memory of the last two weeks.
+- **`HydraDataStore`** saves and loads that state on the phone. When a new day starts it files yesterday into your history and updates your streak.
+- **`GoalCalculator`** turns your profile into a daily water goal, your caffeine, sugar and alcohol limits, and your calcium and electrolyte targets.
+- **`NotificationHelper`** schedules reminders with `AlarmManager`, **`ReminderReceiver`** shows them in Hydra's voice, and **`BootReceiver`** reschedules them after the phone restarts.
+- **`HydraHeartCanvas`** in `ui/components/HydraHeart.kt` draws Hydra from the drinks you've logged, layer by layer.
+
+## Contributing
+
+HydraHeart isn't open source (see the licence below), but it's still shaped by the people who use
+it, and help is very welcome.
+
+- **Found a bug?** [Open an issue](https://github.com/iri-dev/HydraHeart/issues/new) and say what you were doing and what happened. A screenshot and what Hydra was doing at the time help the most.
+- **Got an idea?** Open an issue and tell me about it. Anything that makes looking after yourself easier or kinder is exactly what I'm looking for.
+- **Want to work on something yourself?** Open an issue first so we can talk it through before you start.
+
+Every idea gets measured against the promises at the top of this page: free for everyone, no ads,
+no tracking, and no guilt.
 
 # Say hello
 
 I'm [Iri](https://github.com/iri-dev), and I make HydraHeart on my own (I also make
 [WardenOne](https://github.com/iri-dev/WardenOne)). Found a bug, got an idea, or just want to say
 hi? [Open an issue](https://github.com/iri-dev/HydraHeart/issues/new) or email me at
-[iri.devsupport@gmail.com](mailto:iri.devsupport@gmail.com). A screenshot and what Hydra was doing
-at the time help the most. I read every message myself 💜
+[iri.devsupport@gmail.com](mailto:iri.devsupport@gmail.com). I read every message myself 💜
 
 # Licence & credits
 
