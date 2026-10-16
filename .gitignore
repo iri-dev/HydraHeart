@@ -24,3 +24,6 @@ local.properties
 # APKs
 *.apk
 *.aab
+
+# Per-machine Android Studio state (device paths)
+/.idea/deploymentTargetSelector.xml
