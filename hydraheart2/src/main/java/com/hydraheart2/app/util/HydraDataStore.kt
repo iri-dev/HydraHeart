@@ -101,9 +101,9 @@ object HydraDataStore {
 
     private const val DIARY_KEEP_DAYS = 60
 
-    private fun today(): String = SimpleDateFormat("yyyy-MM-dd", Locale.UK).format(Date())
+    internal fun today(): String = SimpleDateFormat("yyyy-MM-dd", Locale.UK).format(Date())
 
-    private fun dayBefore(date: String): String {
+    internal fun dayBefore(date: String): String {
         val fmt = SimpleDateFormat("yyyy-MM-dd", Locale.UK)
         val cal = Calendar.getInstance()
         cal.time = fmt.parse(date) ?: Date()
@@ -333,47 +333,14 @@ object HydraDataStore {
 
         val savedDate = prefs[KEY_TODAY_DRINKS_DATE] ?: ""
         vm.openStreak = prefs[KEY_OPEN_STREAK] ?: usedDaysEndingOn(savedDate, vm.dailyRecords)
-        if (savedDate == today()) {
-            prefs.readKey(KEY_TODAY_DRINKS, recovery) {
-                val drinks = listFrom<LoggedDrink>(it).mapNotNull { d -> d.sanitised() }
-                vm.todayDrinks.clear()
-                vm.todayDrinks.addAll(drinks)
-            }
-        } else if (savedDate.isNotBlank()) {
-            // A new day: turn the drinks saved on the last day into its daily record.
-            var yesterdayDrinks: List<LoggedDrink> = emptyList()
-            prefs.readKey(KEY_TODAY_DRINKS, recovery) {
-                yesterdayDrinks = listFrom<LoggedDrink>(it).mapNotNull { d -> d.sanitised() }
-            }
-            if (yesterdayDrinks.isNotEmpty() && vm.dailyRecords.none { it.date == savedDate }) {
-                val goals = GoalCalculator.calculate(vm.profile)
-                val effectiveGoal = if (vm.customGoalEnabled && vm.customWaterGoalMl != null) vm.customWaterGoalMl!! else goals.waterMl
-                val rawWater = yesterdayDrinks.sumOf { it.drink.waterMl }
-                val penalty = yesterdayDrinks.sumOf { (it.drink.sizeMl * it.drink.dehydrationFactor).toInt() }
-                val effective = maxOf(0, rawWater - penalty)
-                val pct = if (effectiveGoal > 0) minOf(effective.toFloat() / effectiveGoal * 100f, 100f) else 0f
-                val logHours = yesterdayDrinks.map { d ->
-                    Calendar.getInstance().apply { timeInMillis = d.timestamp }.get(Calendar.HOUR_OF_DAY)
-                }
-                val record = DailyRecord(
-                    savedDate, pct, yesterdayDrinks.size, logHours, pct >= 100f, vm.currentMood ?: "",
-                    waterMl = effective,
-                    sizeMl = yesterdayDrinks.sumOf { it.drink.sizeMl },
-                    drinkNames = yesterdayDrinks.groupingBy { it.drink.name }.eachCount()
-                )
-                vm.dailyRecords.add(0, record)
-                while (vm.dailyRecords.size > 400) vm.dailyRecords.removeAt(vm.dailyRecords.lastIndex)
-            }
-            val yesterdayHit = vm.dailyRecords.firstOrNull { it.date == savedDate }?.goalHit ?: false
-            vm.streak = if (yesterdayHit) vm.streak + 1 else 0
-            vm.longestStreak = maxOf(vm.longestStreak, vm.streak)
-            vm.checkPersonalityUnlocks()
-            vm.checkDayTrophies(yesterdayDrinks)
-            vm.openStreak = if (savedDate == dayBefore(today())) vm.openStreak + 1 else 1
-            vm.firstOpenedTodayAt = System.currentTimeMillis()
-            vm.moodLoggedToday = false
-            vm.appOpenedToday = false
+        prefs.readKey(KEY_TODAY_DRINKS, recovery) {
+            val drinks = listFrom<LoggedDrink>(it).mapNotNull { d -> d.sanitised() }
+            vm.todayDrinks.clear()
+            vm.todayDrinks.addAll(drinks)
         }
+        // The saved drinks belong to the day they were saved on. If that day is over, file it away now.
+        vm.drinksDate = savedDate
+        vm.rollOverIfNewDay()
 
         vm.recoveryBackup.clear()
         vm.recoveryBackup.putAll(recovery)
@@ -438,7 +405,7 @@ object HydraDataStore {
             prefs[KEY_MOOD_LOGGED_TODAY] = vm.moodLoggedToday
             prefs[KEY_APP_OPENED_TODAY] = vm.appOpenedToday
             prefs[KEY_TODAY_DRINKS] = gson.toJson(vm.todayDrinks.toList())
-            prefs[KEY_TODAY_DRINKS_DATE] = today()
+            prefs[KEY_TODAY_DRINKS_DATE] = vm.drinksDate.ifBlank { today() }
             prefs[KEY_MOOD_ENTRIES] = gson.toJson(vm.moodEntries.toList())
             prefs[KEY_DAILY_RECORDS] = gson.toJson(vm.dailyRecords.toList())
             prefs[KEY_LONGEST_STREAK] = vm.longestStreak

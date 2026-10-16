@@ -28,6 +28,7 @@ import com.hydraheart2.app.ui.theme.HydraHeart2Theme
 import com.hydraheart2.app.util.AppLocale
 import com.hydraheart2.app.util.NotificationHelper
 import com.hydraheart2.app.viewmodel.HydraViewModel
+import kotlinx.coroutines.delay
 
 @Composable
 fun HydraApp(viewModel: HydraViewModel, prefs: SharedPreferences) {
@@ -60,6 +61,15 @@ fun HydraApp(viewModel: HydraViewModel, prefs: SharedPreferences) {
         viewModel.animationsEnabled, viewModel.fullGlowEnabled
     ) {
         if (viewModel.isLoaded) viewModel.save(context)
+    }
+
+    // Keeps the day current while the app stays open past midnight.
+    LaunchedEffect(viewModel.isLoaded) {
+        if (!viewModel.isLoaded) return@LaunchedEffect
+        while (true) {
+            delay(30_000)
+            viewModel.onClockTick()
+        }
     }
 
     LaunchedEffect(viewModel.isLoaded, viewModel.appLanguage) {

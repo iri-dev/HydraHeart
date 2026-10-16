@@ -176,6 +176,11 @@ class HydraViewModel : ViewModel() {
     var lastLoggedIsDehydrating by mutableStateOf(false)
     var showLevelPopup by mutableStateOf(false)
     var justHitGoal by mutableStateOf(false)
+    // The day today's drinks belong to (yyyy-MM-dd). When the calendar moves past it, rollOverIfNewDay()
+    // files those drinks away as that day's record and starts a fresh day.
+    var drinksDate by mutableStateOf("")
+    // Bumped every half minute so the date and time on Home stay current.
+    var clockTick by mutableIntStateOf(0)
 
     val allReminderMessages: List<String>
         get() = PRESET_REMINDER_MESSAGES.filterIndexed { index, _ -> !disabledPresetIndices.contains(index) } +
@@ -1960,7 +1965,55 @@ class HydraViewModel : ViewModel() {
         }
     }
 
+    // Starts a new day if the calendar has moved past the day today's drinks belong to: that day becomes a
+    // daily record (once), the streak and day trophies are settled, and today starts empty. Runs on load,
+    // when the app comes back, when something is logged and on a timer, so midnight is never missed.
+    fun rollOverIfNewDay(): Boolean {
+        val today = HydraDataStore.today()
+        if (drinksDate.isBlank()) {
+            drinksDate = today
+            return false
+        }
+        if (drinksDate >= today) return false
+        val day = drinksDate
+        val drinks = todayDrinks.toList()
+        if (drinks.isNotEmpty() && dailyRecords.none { it.date == day }) {
+            val pct = waterPercent
+            val logHours = drinks.map { d ->
+                Calendar.getInstance().apply { timeInMillis = d.timestamp }.get(Calendar.HOUR_OF_DAY)
+            }
+            val record = DailyRecord(
+                day, pct, drinks.size, logHours, pct >= 100f, currentMood ?: "",
+                waterMl = effectiveWater,
+                sizeMl = drinks.sumOf { it.drink.sizeMl },
+                drinkNames = drinks.groupingBy { it.drink.name }.eachCount()
+            )
+            dailyRecords.add(0, record)
+            while (dailyRecords.size > 400) dailyRecords.removeAt(dailyRecords.lastIndex)
+        }
+        val dayHit = dailyRecords.firstOrNull { it.date == day }?.goalHit ?: false
+        streak = if (dayHit) streak + 1 else 0
+        longestStreak = maxOf(longestStreak, streak)
+        checkPersonalityUnlocks()
+        checkDayTrophies(drinks)
+        openStreak = if (day == HydraDataStore.dayBefore(today)) openStreak + 1 else 1
+        firstOpenedTodayAt = System.currentTimeMillis()
+        moodLoggedToday = false
+        appOpenedToday = false
+        currentMood = null
+        todayDrinks.clear()
+        drinksDate = today
+        return true
+    }
+
+    fun onClockTick() {
+        if (!isLoaded || loadFailed) return
+        rollOverIfNewDay()
+        clockTick++
+    }
+
     fun logDrink(drink: Drink) {
+        rollOverIfNewDay()
         val prevPct = waterPercent
         val cat = DrinkDatabase.getCategoryForDrink(drink.id)
         todayDrinks.add(LoggedDrink(drink, categoryName = cat?.name ?: "", categoryIcon = cat?.icon ?: "💧"))
@@ -1983,6 +2036,7 @@ class HydraViewModel : ViewModel() {
     }
 
     fun logMood(mood: String, note: String = "") {
+        rollOverIfNewDay()
         val today = SimpleDateFormat("yyyy-MM-dd", Locale.UK).format(Date())
         val entry = MoodEntry(today, mood, note)
         val existingIndex = moodEntries.indexOfFirst { it.date == today }
@@ -2064,6 +2118,9 @@ class HydraViewModel : ViewModel() {
         get() = currentMood?.let { moodResponseFor(it) } ?: ""
 
     fun onAppOpened() {
+        // On a cold start this runs again once loading has finished, with the real saved values.
+        if (!isLoaded || loadFailed) return
+        rollOverIfNewDay()
         val now = System.currentTimeMillis()
         if (appLastBackgroundedAt > 0 && now - appLastBackgroundedAt >= 600_000) {
             appReOpenedAt = now
@@ -2088,6 +2145,7 @@ class HydraViewModel : ViewModel() {
     }
 
     fun undoLastDrink() {
+        rollOverIfNewDay()
         if (todayDrinks.isEmpty()) return
         todayDrinks.removeAt(todayDrinks.lastIndex)
         hp = (hp - 5).coerceAtLeast(0)
@@ -2306,6 +2364,7 @@ class HydraViewModel : ViewModel() {
     }
 
     fun formattedCalDate(): String {
+        @Suppress("UNUSED_VARIABLE") val tick = clockTick // re-read so the card updates as time passes
         val cal = Calendar.getInstance()
         val day = cal.get(Calendar.DAY_OF_MONTH).toString()
         val month = SimpleDateFormat("MMM", Locale.UK).format(cal.time)
@@ -2371,6 +2430,7 @@ class HydraViewModel : ViewModel() {
             reminderSmartSnooze = false
             reminderDailySummary = false
             todayDrinks.clear()
+            drinksDate = ""
             hp = 0
             earnedTrophyIds.clear()
             streak = 0
@@ -2413,6 +2473,7 @@ class HydraViewModel : ViewModel() {
             } finally {
                 isLoaded = true
             }
+            onAppOpened()
         }
     }
 }
