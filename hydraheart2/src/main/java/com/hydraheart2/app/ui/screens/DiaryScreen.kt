@@ -16,17 +16,24 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.hydraheart2.app.R
 import com.hydraheart2.app.ui.components.FrostedGlass
 import com.hydraheart2.app.util.HapticEngine
 import com.hydraheart2.app.viewmodel.HydraViewModel
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 @Composable
 fun DiaryScreen(viewModel: HydraViewModel, onBack: () -> Unit) {
@@ -82,22 +89,50 @@ fun DiaryScreen(viewModel: HydraViewModel, onBack: () -> Unit) {
                     }
                 }
             } else {
-                viewModel.diaryEntries.forEach { entry ->
-                    FrostedGlass(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 10.dp),
-                        theme = theme,
-                        blurRadius = 18.dp
-                    ) {
-                        Text(entry.time, color = theme.textMuted, style = MaterialTheme.typography.labelSmall)
-                        Spacer(Modifier.height(6.dp))
-                        Text(
-                            entry.text,
-                            color = theme.textSoft,
-                            lineHeight = 20.sp,
-                            style = MaterialTheme.typography.bodyMedium.copy(fontStyle = FontStyle.Italic)
-                        )
+                // Entries are newest first; group them by the day they were written.
+                val todayLabel = stringResource(R.string.history_period_today)
+                val yesterdayLabel = stringResource(R.string.history_period_yesterday)
+                val locale = Locale.getDefault()
+                val days = remember(viewModel.diaryEntries.size, locale) {
+                    val key = SimpleDateFormat("yyyy-MM-dd", Locale.UK)
+                    val today = key.format(Date())
+                    val yesterday = key.format(Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, -1) }.time)
+                    val heading = SimpleDateFormat("EEEE d MMMM", locale)
+                    viewModel.diaryEntries.toList()
+                        .groupBy { key.format(Date(it.timestamp)) }
+                        .map { (day, entries) ->
+                            val label = when (day) {
+                                today -> todayLabel
+                                yesterday -> yesterdayLabel
+                                else -> heading.format(Date(entries.first().timestamp))
+                            }
+                            label to entries
+                        }
+                }
+                days.forEachIndexed { i, (label, entries) ->
+                    Text(
+                        label,
+                        color = theme.textMuted,
+                        style = MaterialTheme.typography.labelLarge,
+                        modifier = Modifier.padding(top = if (i == 0) 0.dp else 14.dp, bottom = 8.dp, start = 4.dp)
+                    )
+                    entries.forEach { entry ->
+                        FrostedGlass(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 10.dp),
+                            theme = theme,
+                            blurRadius = 18.dp
+                        ) {
+                            Text(entry.time, color = theme.textMuted, style = MaterialTheme.typography.labelSmall)
+                            Spacer(Modifier.height(6.dp))
+                            Text(
+                                entry.text,
+                                color = theme.textSoft,
+                                lineHeight = 20.sp,
+                                style = MaterialTheme.typography.bodyMedium.copy(fontStyle = FontStyle.Italic)
+                            )
+                        }
                     }
                 }
             }

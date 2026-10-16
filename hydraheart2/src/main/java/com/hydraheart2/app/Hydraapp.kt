@@ -36,7 +36,7 @@ fun HydraApp(viewModel: HydraViewModel, prefs: SharedPreferences) {
 
     LaunchedEffect(
         viewModel.isLoaded, viewModel.profile, viewModel.todayDrinks.size, viewModel.hp,
-        viewModel.themeId, viewModel.streak, viewModel.earnedTrophyIds.size,
+        viewModel.themeId, viewModel.streak, viewModel.earnedTrophyIds.size, viewModel.diaryEntries.size,
         viewModel.onboardingComplete, viewModel.reminderSound
     ) {
         if (viewModel.isLoaded) viewModel.save(context)

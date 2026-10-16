@@ -16,6 +16,7 @@ import com.hydraheart2.app.data.models.ActivityLevel
 import com.hydraheart2.app.data.models.Climate
 import com.hydraheart2.app.data.models.CustomReminder
 import com.hydraheart2.app.data.models.DailyRecord
+import com.hydraheart2.app.data.models.DiaryEntry
 import com.hydraheart2.app.data.models.Drink
 import com.hydraheart2.app.data.models.Gender
 import com.hydraheart2.app.data.models.LoggedDrink
@@ -95,7 +96,10 @@ object HydraDataStore {
     private val KEY_PARTICLES_ENABLED = booleanPreferencesKey("particles_enabled")
     private val KEY_ANIMATIONS_ENABLED = booleanPreferencesKey("animations_enabled")
     private val KEY_FULL_GLOW_ENABLED = booleanPreferencesKey("full_glow_enabled")
+    private val KEY_DIARY_ENTRIES = stringPreferencesKey("diary_entries")
     private val KEY_RECOVERY_BACKUP = stringPreferencesKey("recovery_backup")
+
+    private const val DIARY_KEEP_DAYS = 60
 
     private fun today(): String = SimpleDateFormat("yyyy-MM-dd", Locale.UK).format(Date())
 
@@ -181,6 +185,12 @@ object HydraDataStore {
     @Suppress("USELESS_CAST")
     private fun CustomReminder.sanitised(): CustomReminder =
         copy(id = (id as String?) ?: System.nanoTime().toString(), time = (time as String?) ?: "12:00")
+
+    @Suppress("USELESS_CAST")
+    private fun DiaryEntry.sanitised(): DiaryEntry? {
+        val t = (text as String?) ?: return null
+        return copy(time = (time as String?) ?: "", text = t)
+    }
 
     suspend fun load(context: Context, vm: HydraViewModel) {
         val prefs = context.dataStore.data.first()
@@ -303,6 +313,12 @@ object HydraDataStore {
             val records = listFrom<DailyRecord>(it).mapNotNull { r -> r.sanitised() }
             vm.dailyRecords.clear()
             vm.dailyRecords.addAll(records)
+        }
+        prefs.readKey(KEY_DIARY_ENTRIES, recovery) {
+            val cutoff = System.currentTimeMillis() - DIARY_KEEP_DAYS * 86_400_000L
+            val entries = listFrom<DiaryEntry>(it).mapNotNull { e -> e.sanitised() }.filter { e -> e.timestamp >= cutoff }
+            vm.diaryEntries.clear()
+            vm.diaryEntries.addAll(entries)
         }
         prefs.readKey(KEY_LONGEST_STREAK, recovery) { vm.longestStreak = it }
         prefs.readKey(KEY_UNLOCKED_PERSONALITIES, recovery) { json ->
@@ -430,6 +446,7 @@ object HydraDataStore {
             prefs[KEY_REMINDER_IGNORE_COUNT] = vm.reminderIgnoreCount
             prefs[KEY_OPEN_STREAK] = vm.openStreak
             prefs[KEY_FIRST_OPENED_TODAY_AT] = vm.firstOpenedTodayAt
+            prefs[KEY_DIARY_ENTRIES] = gson.toJson(vm.diaryEntries.toList())
             if (vm.recoveryBackup.isNotEmpty()) prefs[KEY_RECOVERY_BACKUP] = gson.toJson(vm.recoveryBackup.toMap())
         }
     }
