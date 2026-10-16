@@ -8,6 +8,9 @@
 
 Your personal hydration and wellness companion.
 
+A free Android app for tracking what you drink and building a healthier hydration habit, with no
+ads, subscriptions or paywalls.
+
 </div>
 
 <p align="center">
@@ -388,8 +391,9 @@ Uninstalling HydraHeart deletes what's on your phone, but not a backup Android h
 
 ## Under the hood
 
-HydraHeart is a native Android app written in Kotlin with Jetpack Compose. It runs entirely on the
-phone: there's no server, no account system and no network code.
+If you're curious about how HydraHeart is made, this part is for you. It's a native Android app
+written in Kotlin with Jetpack Compose, and it runs entirely on the phone: there's no server, no
+account system and no network code.
 
 ### Tech stack
 
@@ -414,11 +418,12 @@ log a drink, change shape or theme, or reach a new level.
 
 ### Contributing
 
-I'm not taking code contributions (pull requests) at the moment, because HydraHeart isn't open
-source (see the [licence](#licence)). Bug reports and ideas are very welcome, though, and they're
-the best way to help: [open an issue](https://github.com/iri-dev/HydraHeart/issues/new) and tell me
-what happened or what you'd love to see. Every idea gets measured against the promises above: free
-for everyone, no ads, no subscriptions and no guilt.
+I'm not taking code contributions (pull requests) at the moment, because HydraHeart is
+source-available rather than open source (see the [licence](#licence)). Bug reports and ideas are
+very welcome, though, and they're the best way to help: [open an
+issue](https://github.com/iri-dev/HydraHeart/issues/new) and tell me what happened or what you'd
+love to see. Every idea gets measured against the promises above: free for everyone, no ads, no
+subscriptions and no guilt.
 
 ## A note from the developer
 
@@ -474,9 +479,10 @@ me what works and what doesn't, and sharing HydraHeart with someone who might li
 
 Copyright (C) 2026 Iri. All rights reserved.
 
-HydraHeart isn't open source. You're welcome to read the code and build the app for your own use,
-but please don't copy, modify or redistribute it, or reuse parts of it in other projects, without
-my written permission.
+HydraHeart is source-available, not open source. You're welcome to read the code and build the app
+for your own personal use, but please don't copy, modify or redistribute it, publish it on an app
+store, or reuse parts of it in other projects without my written permission. The full terms are in
+[LICENSE](LICENSE).
 
 ### Credits
 

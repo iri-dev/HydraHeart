@@ -1,0 +1,55 @@
+HydraHeart Source-Available Licence
+
+Copyright (c) 2026 Iri (https://github.com/iri-dev). All rights reserved.
+
+This repository contains the source code, artwork, text and other material that make up
+HydraHeart (together, "the Software"). It is published so that people can see how HydraHeart
+works. Publishing it does not make it open source, and it does not give you any rights beyond the
+ones written below.
+
+1. What you may do
+
+   You may, free of charge:
+
+   a. read, study and learn from the Software;
+   b. view and fork this repository on GitHub, as GitHub's Terms of Service allow; and
+   c. build the Software and install the result on devices you own or personally use, for your
+      own personal, non-commercial use.
+
+2. What you may not do without my written permission
+
+   a. Copy or reuse the Software, or any part of it, in another project. This includes the code,
+      the artwork, the app icon, the text, and Hydra's character, personalities and dialogue.
+   b. Modify the Software, or distribute or publish modified versions of it.
+   c. Distribute, publish, share, sell, rent or sublicense the Software or any build of it
+      (including APK and AAB files), in whole or in part.
+   d. Publish the Software, or anything based on it, on Google Play or any other app store or
+      download site.
+   e. Use the Software for any commercial purpose.
+   f. Use the names "HydraHeart" or "Hydra", the app icon or Hydra's likeness in a way that
+      suggests your project is HydraHeart or is endorsed by me.
+
+3. Third-party material
+
+   Some files and components are not mine, such as the Gradle wrapper, the libraries Gradle
+   downloads when the Software is built, and the fonts the app downloads on your device. They stay
+   under their own licences, and nothing in this licence changes those.
+
+4. Ending your permission
+
+   If you break any of these terms, your permission under section 1 ends automatically.
+
+5. No warranty
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+   BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+   NON-INFRINGEMENT. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+   CONNECTION WITH THE SOFTWARE OR THE USE OF OR OTHER DEALINGS IN THE SOFTWARE.
+
+   HydraHeart is a wellbeing app, not a medical device, and nothing in it is medical advice.
+
+6. Asking for permission
+
+   If you'd like to do something this licence doesn't allow, ask me first at
+   iri.devsupport@gmail.com.
