@@ -288,8 +288,7 @@ with, not yours.
 ### Availability
 
 HydraHeart isn't on Google Play yet. It's on its way, and when it gets there the link will be right
-here. There are no APK downloads in the meantime, so for now the only way to try it is to
-[build it yourself](#build-and-run).
+here. There are no APK downloads in the meantime.
 
 ### Your first few minutes
 
@@ -369,80 +368,6 @@ behind her.
 - JDK 17 or newer (the one bundled with Android Studio works)
 - The Android SDK Platform for API 36.1
 - A phone or emulator running Android 8.0 or newer
-
-### Build and run
-
-Clone the repository:
-
-```bash
-git clone https://github.com/iri-dev/HydraHeart.git
-```
-
-Then open the folder in Android Studio, let Gradle sync, pick the **HydraHeart** run configuration
-and press Run. Or, from a terminal in the project folder, build a debug APK:
-
-```bash
-./gradlew :hydraheart2:assembleDebug
-```
-
-It lands at `hydraheart2/build/outputs/apk/debug/hydraheart2-debug.apk`. To build and install it on
-a connected phone or a running emulator in one go:
-
-```bash
-./gradlew :hydraheart2:installDebug
-```
-
-- **Build `hydraheart2`.** That module is HydraHeart. The `app` module is an earlier version of the interface that's no longer worked on.
-- **Building from a terminal only?** Gradle needs to know where your Android SDK is. Opening the project in Android Studio once sets that up, or set `ANDROID_HOME`, or add `sdk.dir` to a `local.properties` file in the project folder.
-
-### Project structure
-
-```
-hydraheart2/src/main/
-├── java/com/hydraheart2/app/
-│   ├── MainActivity.kt      Start-up, the splash screen and the first-run check
-│   ├── Hydraapp.kt          The app's root: onboarding or the main screens
-│   ├── data/                Drinks, themes, trophies, Learn articles and the data models
-│   ├── ui/screens/          One file per screen
-│   ├── ui/components/       Hydra herself, her speech bubble, the level popup,
-│   │                        the bottom bar and the time picker
-│   ├── ui/theme/            Colours, type and the Compose theme
-│   ├── ui/navigation/       The navigation graph
-│   ├── viewmodel/           HydraViewModel: the whole app's state and logic
-│   └── util/                Saving, the goal calculator, reminders, haptics and language
-└── res/                     Strings in US English, UK English, German and Spanish, and icons
-branding/                    The app icon as an SVG
-docs/                        The images in this README
-```
-
-### Architecture
-
-- **`HydraViewModel`** holds the whole app: today's drinks, your goals, HP and levels, trophies, moods, the diary and Hydra's settings. Her lines live here too, chosen from your personality, the time of day, your progress, what you just drank and her memory of the last two weeks.
-- **`HydraDataStore`** saves and loads that state. When a new day starts, it files yesterday into your history, updates your streak and checks the day's trophies.
-- **`GoalCalculator`** turns your profile into your water goal, your caffeine, sugar and alcohol limits, and your calcium and electrolyte targets.
-- **`NotificationHelper`** schedules reminders with `AlarmManager`, **`ReminderReceiver`** shows them in Hydra's voice, and **`BootReceiver`** reschedules them after the phone restarts.
-- **`HydraHeartCanvas`** in `ui/components/HydraHeart.kt` draws Hydra from the drinks you've logged, layer by layer.
-
-<details>
-<summary><strong>Where to find things</strong></summary>
-
-Paths are inside `hydraheart2/src/main/java/com/hydraheart2/app/` unless they start with `res/`.
-
-| If you're looking for... | It's in |
-| --- | --- |
-| The 70 drinks and their numbers | `data/DrinkDatabase.kt` |
-| Everything Hydra says: speech, mood replies, reminders and diary entries | `viewmodel/HydraViewModel.kt` |
-| How hidden personalities unlock and trophies are awarded | `viewmodel/HydraViewModel.kt` (`checkPersonalityUnlocks`, `checkTrophies`) |
-| The 30 themes | `data/ThemeData.kt` |
-| The 60 trophies | `data/TrophyData.kt` |
-| The Learn articles and myth-busters | `data/EducationData.kt` |
-| The goal maths | `util/GoalCalculator.kt` |
-| How Hydra is drawn | `ui/components/HydraHeart.kt` |
-| Saving, loading and the change of day | `util/HydraDataStore.kt` |
-| Scheduling reminders | `util/NotificationHelper.kt`, `util/ReminderReceiver.kt`, `util/BootReceiver.kt` |
-| Screen text and translations | `res/values*/strings.xml` |
-
-</details>
 
 ### Contributing
 
