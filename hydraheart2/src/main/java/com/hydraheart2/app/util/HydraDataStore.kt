@@ -39,6 +39,9 @@ object HydraDataStore {
     private val KEY_CUSTOM_WATER_GOAL = intPreferencesKey("custom_water_goal")
     private val KEY_CUSTOM_GOAL_ENABLED = booleanPreferencesKey("custom_goal_enabled")
     private val KEY_SHOW_NECKLACE = booleanPreferencesKey("show_necklace")
+    private val KEY_SHOW_RAINBOW_SHIMMER = booleanPreferencesKey("show_rainbow_shimmer")
+    private val KEY_SHOW_BUTTERFLY = booleanPreferencesKey("show_butterfly")
+    private val KEY_SHOW_GOLDEN_GLOW = booleanPreferencesKey("show_golden_glow")
     private val KEY_CAL_CLICK_ACTION = stringPreferencesKey("cal_click_action")
     private val KEY_CAL_DAY_FIRST = booleanPreferencesKey("cal_day_first")
     private val KEY_CAL_SHOW_DAY_NAME = booleanPreferencesKey("cal_show_day_name")
@@ -125,6 +128,9 @@ object HydraDataStore {
         prefs[KEY_CUSTOM_GOAL_ENABLED]?.let { vm.customGoalEnabled = it }
         prefs[KEY_CUSTOM_WATER_GOAL]?.let { vm.customWaterGoalMl = it }
         prefs[KEY_SHOW_NECKLACE]?.let { vm.showNecklace = it }
+        prefs[KEY_SHOW_RAINBOW_SHIMMER]?.let { vm.showRainbowShimmer = it }
+        prefs[KEY_SHOW_BUTTERFLY]?.let { vm.showButterfly = it }
+        prefs[KEY_SHOW_GOLDEN_GLOW]?.let { vm.showGoldenGlow = it }
         prefs[KEY_EQUIPPED_ACCESSORIES]?.let {
             val type = object : TypeToken<List<String>>() {}.type
             val ids: List<String> = gson.fromJson(it, type)
@@ -301,6 +307,9 @@ object HydraDataStore {
             prefs[KEY_CUSTOM_GOAL_ENABLED] = vm.customGoalEnabled
             vm.customWaterGoalMl?.let { prefs[KEY_CUSTOM_WATER_GOAL] = it }
             prefs[KEY_SHOW_NECKLACE] = vm.showNecklace
+            prefs[KEY_SHOW_RAINBOW_SHIMMER] = vm.showRainbowShimmer
+            prefs[KEY_SHOW_BUTTERFLY] = vm.showButterfly
+            prefs[KEY_SHOW_GOLDEN_GLOW] = vm.showGoldenGlow
             prefs[KEY_EQUIPPED_ACCESSORIES] = gson.toJson(vm.equippedAccessoryIds.toList())
             prefs[KEY_CUSTOM_SPEECH_LINES] = gson.toJson(vm.customSpeechLines.toList())
             prefs[KEY_CUSTOM_SPEECH_ENABLED] = vm.customSpeechEnabled

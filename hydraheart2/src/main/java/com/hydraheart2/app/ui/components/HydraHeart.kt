@@ -57,6 +57,9 @@ fun HydraHeartCanvas(
     drinkColours: List<HydraViewModel.DrinkColourPortion>,
     level: Int,
     showNecklace: Boolean = true,
+    showRainbowShimmer: Boolean = true,
+    showButterfly: Boolean = true,
+    showGoldenGlow: Boolean = true,
     equippedAccessories: Set<String> = emptySet(),
     size: Dp = 280.dp,
     onTap: (() -> Unit)? = null
@@ -208,17 +211,21 @@ fun HydraHeartCanvas(
         )
 
         // Level 10: her legendary form starts with a warm golden glow
-        if (level >= 10) {
+        if (level >= 10 && showGoldenGlow) {
+            // Fades out before the edge of the canvas so it never shows as a box
             val goldAlpha = 0.16f + glowPulse * 0.08f
-            drawRect(
+            val goldRadius = min(w, h) * 0.5f
+            drawCircle(
                 brush = Brush.radialGradient(
                     0f to Color(0xFFFFD54F).copy(alpha = goldAlpha),
                     0.4f to Color(0xFFFFC107).copy(alpha = goldAlpha * 0.55f),
                     0.7f to Color(0xFFFFB300).copy(alpha = goldAlpha * 0.18f),
                     1f to Color.Transparent,
                     center = Offset(cx, cy),
-                    radius = w * 0.82f
-                )
+                    radius = goldRadius
+                ),
+                radius = goldRadius,
+                center = Offset(cx, cy)
             )
         }
 
@@ -445,7 +452,7 @@ fun HydraHeartCanvas(
             )
 
             // Level 8: a rainbow shimmer sweeps across the glass every few seconds
-            if (level >= 8) {
+            if (level >= 8 && showRainbowShimmer) {
                 val bandX = -w * 0.8f + rainbowSweep * w * 3.2f
                 val a = if (theme.isLight) 0.2f else 0.15f
                 drawRect(
@@ -481,7 +488,7 @@ fun HydraHeartCanvas(
             ),
             style = Stroke(width = 0.9f, cap = StrokeCap.Round, join = StrokeJoin.Round)
         )
-        if (level >= 10) {
+        if (level >= 10 && showGoldenGlow) {
             drawPath(
                 shapePath,
                 brush = Brush.linearGradient(
@@ -581,7 +588,7 @@ fun HydraHeartCanvas(
         }
 
         // Level 9: a butterfly loops round Hydra in a slow figure of eight
-        if (level >= 9) {
+        if (level >= 9 && showButterfly) {
             val bx = cx + sin(flightPath) * w * 0.44f
             val by = cy - h * 0.3f + sin(2f * flightPath) * h * 0.09f
             val heading = atan2(2f * cos(2f * flightPath) * h * 0.09f, cos(flightPath) * w * 0.44f)

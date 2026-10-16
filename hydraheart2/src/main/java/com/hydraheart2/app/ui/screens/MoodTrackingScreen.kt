@@ -175,6 +175,9 @@ fun MoodTrackingScreen(viewModel: HydraViewModel, onBack: () -> Unit) {
                             hydraShape = viewModel.hydraShape,
                             drinkColours = viewModel.drinkColourPortions,
                             level = viewModel.levelInfo.level,
+                            showRainbowShimmer = viewModel.showRainbowShimmer,
+                            showButterfly = viewModel.showButterfly,
+                            showGoldenGlow = viewModel.showGoldenGlow,
                             showNecklace = viewModel.showNecklace,
                             size = 160.dp
                         )

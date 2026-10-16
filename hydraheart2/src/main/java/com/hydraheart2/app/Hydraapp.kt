@@ -37,7 +37,8 @@ fun HydraApp(viewModel: HydraViewModel, prefs: SharedPreferences) {
 
     LaunchedEffect(
         viewModel.isLoaded, viewModel.showFace, viewModel.showSpeechBubble, viewModel.hydraShape,
-        viewModel.showNecklace, viewModel.unitSystem, viewModel.customGoalEnabled, viewModel.customWaterGoalMl,
+        viewModel.showNecklace, viewModel.showRainbowShimmer, viewModel.showButterfly, viewModel.showGoldenGlow,
+        viewModel.unitSystem, viewModel.customGoalEnabled, viewModel.customWaterGoalMl,
         viewModel.calDayFirst, viewModel.calShowDayName, viewModel.calShowTime, viewModel.cal12Hour,
         viewModel.calWeekStartMonday, viewModel.calDayResetHour, viewModel.customSpeechEnabled,
         viewModel.speechBubbleStyleId, viewModel.equippedAccessoryIds.toList(), viewModel.customSpeechLines.toList()

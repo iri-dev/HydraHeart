@@ -336,6 +336,9 @@ fun HomeScreen(viewModel: HydraViewModel, onNavigate: (String) -> Unit) {
                         hydraShape = viewModel.hydraShape,
                         drinkColours = viewModel.drinkColourPortions,
                         level = viewModel.levelInfo.level,
+                        showRainbowShimmer = viewModel.showRainbowShimmer,
+                        showButterfly = viewModel.showButterfly,
+                        showGoldenGlow = viewModel.showGoldenGlow,
                         showNecklace = viewModel.showNecklace,
                         equippedAccessories = viewModel.equippedAccessoryIds.toSet()
                     )

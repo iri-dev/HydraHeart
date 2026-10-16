@@ -106,6 +106,9 @@ class HydraViewModel : ViewModel() {
     var customWaterGoalMl by mutableStateOf<Int?>(null)
     var customGoalEnabled by mutableStateOf(false)
     var showNecklace by mutableStateOf(true)
+    var showRainbowShimmer by mutableStateOf(true)
+    var showButterfly by mutableStateOf(true)
+    var showGoldenGlow by mutableStateOf(true)
     val equippedAccessoryIds = mutableStateListOf<String>()
     val customSpeechLines = mutableStateListOf<String>()
     var customSpeechEnabled by mutableStateOf(false)
@@ -2337,6 +2340,9 @@ class HydraViewModel : ViewModel() {
             customWaterGoalMl = null
             customGoalEnabled = false
             showNecklace = true
+            showRainbowShimmer = true
+            showButterfly = true
+            showGoldenGlow = true
             calendarClickAction = "edit"
             calDayFirst = true
             calShowDayName = true

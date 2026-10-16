@@ -452,6 +452,9 @@ private fun ProfileSettingsSection(viewModel: HydraViewModel, theme: HydraTheme)
                             hydraShape = viewModel.hydraShape,
                             drinkColours = viewModel.drinkColourPortions,
                             level = viewModel.levelInfo.level,
+                            showRainbowShimmer = viewModel.showRainbowShimmer,
+                            showButterfly = viewModel.showButterfly,
+                            showGoldenGlow = viewModel.showGoldenGlow,
                             showNecklace = viewModel.showNecklace,
                             size = 110.dp
                         )
@@ -702,6 +705,9 @@ private fun PersonalitySettingsSection(viewModel: HydraViewModel, theme: HydraTh
                     hydraShape = viewModel.hydraShape,
                     drinkColours = viewModel.drinkColourPortions,
                     level = viewModel.levelInfo.level,
+                    showRainbowShimmer = viewModel.showRainbowShimmer,
+                    showButterfly = viewModel.showButterfly,
+                    showGoldenGlow = viewModel.showGoldenGlow,
                     showNecklace = viewModel.showNecklace,
                     size = 88.dp
                 )
@@ -976,6 +982,9 @@ private fun HydraLookSettingsSection(viewModel: HydraViewModel, theme: HydraThem
                     hydraShape = viewModel.hydraShape,
                     drinkColours = viewModel.drinkColourPortions,
                     level = viewModel.levelInfo.level,
+                    showRainbowShimmer = viewModel.showRainbowShimmer,
+                    showButterfly = viewModel.showButterfly,
+                    showGoldenGlow = viewModel.showGoldenGlow,
                     showNecklace = viewModel.showNecklace,
                     equippedAccessories = viewModel.equippedAccessoryIds.toSet(),
                     size = 140.dp
@@ -1018,6 +1027,39 @@ private fun HydraLookSettingsSection(viewModel: HydraViewModel, theme: HydraThem
             enabled = viewModel.showFace,
             theme = theme,
             onToggle = { viewModel.showSpeechBubble = it }
+        )
+    }
+
+    Spacer(Modifier.height(24.dp))
+    SectionLabel("Level Rewards", theme)
+    Spacer(Modifier.height(8.dp))
+    val level = viewModel.levelInfo.level
+    FrostedGlass(theme = theme, padding = PaddingValues(0.dp)) {
+        LookToggleRow(
+            label = "Rainbow Shimmer",
+            microcopy = if (level >= 8) "A rainbow sweeps across her glass every few seconds" else "Unlocks at Level 8",
+            checked = viewModel.showRainbowShimmer,
+            enabled = level >= 8,
+            theme = theme,
+            onToggle = { viewModel.showRainbowShimmer = it }
+        )
+        Box(Modifier.fillMaxWidth().padding(horizontal = 16.dp).height(0.5.dp).background(theme.accent.copy(alpha = 0.06f)))
+        LookToggleRow(
+            label = "Butterfly",
+            microcopy = if (level >= 9) "A little butterfly keeps her company" else "Unlocks at Level 9",
+            checked = viewModel.showButterfly,
+            enabled = level >= 9,
+            theme = theme,
+            onToggle = { viewModel.showButterfly = it }
+        )
+        Box(Modifier.fillMaxWidth().padding(horizontal = 16.dp).height(0.5.dp).background(theme.accent.copy(alpha = 0.06f)))
+        LookToggleRow(
+            label = "Golden Glow",
+            microcopy = if (level >= 10) "Her legendary golden glow and rim" else "Unlocks at Level 10",
+            checked = viewModel.showGoldenGlow,
+            enabled = level >= 10,
+            theme = theme,
+            onToggle = { viewModel.showGoldenGlow = it }
         )
     }
 
@@ -1886,6 +1928,9 @@ private fun UnifiedReminderHero(viewModel: HydraViewModel, theme: HydraTheme, ti
                         hydraShape = viewModel.hydraShape,
                         drinkColours = viewModel.drinkColourPortions,
                         level = viewModel.levelInfo.level,
+                        showRainbowShimmer = viewModel.showRainbowShimmer,
+                        showButterfly = viewModel.showButterfly,
+                        showGoldenGlow = viewModel.showGoldenGlow,
                         showNecklace = false,
                         equippedAccessories = emptySet(),
                         size = 120.dp
@@ -2908,6 +2953,9 @@ private fun UnitSettingsSection(viewModel: HydraViewModel, theme: HydraTheme) {
                         hydraShape = viewModel.hydraShape,
                         drinkColours = viewModel.drinkColourPortions,
                         level = viewModel.levelInfo.level,
+                        showRainbowShimmer = viewModel.showRainbowShimmer,
+                        showButterfly = viewModel.showButterfly,
+                        showGoldenGlow = viewModel.showGoldenGlow,
                         showNecklace = false,
                         equippedAccessories = emptySet(),
                         size = 88.dp
@@ -3992,6 +4040,9 @@ private fun GeneralHeroSection(viewModel: HydraViewModel, theme: HydraTheme, rea
                         hydraShape = viewModel.hydraShape,
                         drinkColours = viewModel.drinkColourPortions,
                         level = viewModel.levelInfo.level,
+                        showRainbowShimmer = viewModel.showRainbowShimmer,
+                        showButterfly = viewModel.showButterfly,
+                        showGoldenGlow = viewModel.showGoldenGlow,
                         showNecklace = false,
                         equippedAccessories = emptySet(),
                         size = 120.dp
