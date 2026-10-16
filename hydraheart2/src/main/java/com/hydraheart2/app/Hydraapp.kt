@@ -9,8 +9,15 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
@@ -92,6 +99,26 @@ fun HydraApp(viewModel: HydraViewModel, prefs: SharedPreferences) {
     }
 
     HydraHeart2Theme(theme) {
+        var loadNoticeSeen by remember { mutableStateOf(false) }
+        if (viewModel.loadFailed && !loadNoticeSeen) {
+            AlertDialog(
+                onDismissRequest = { loadNoticeSeen = true },
+                containerColor = theme.bg2,
+                titleContentColor = theme.textPrimary,
+                textContentColor = theme.textSoft,
+                confirmButton = {
+                    TextButton(onClick = { loadNoticeSeen = true }) { Text("OK", color = theme.accent) }
+                },
+                title = { Text("Your data couldn't be opened") },
+                text = {
+                    Text(
+                        "HydraHeart couldn't read what you've saved, so it won't save anything over it. " +
+                            "Close the app and open it again to try once more. If this keeps happening, " +
+                            "email iri.devsupport@gmail.com."
+                    )
+                }
+            )
+        }
         if (!viewModel.isLoaded) {
             Box(Modifier.fillMaxSize().background(Brush.linearGradient(listOf(theme.bg1, theme.bg2, theme.bg3))))
         } else {

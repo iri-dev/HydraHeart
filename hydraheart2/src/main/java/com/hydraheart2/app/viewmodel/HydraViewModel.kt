@@ -164,6 +164,11 @@ class HydraViewModel : ViewModel() {
     var pendingUnlockPersonality by mutableStateOf<Personality?>(null)
     var reminderIgnoreCount by mutableIntStateOf(0)
     var isLoaded by mutableStateOf(false)
+    // True when the saved data couldn't be read at all. Nothing is saved while it's set, so the
+    // unreadable file is never overwritten with defaults.
+    var loadFailed by mutableStateOf(false)
+    // Saved values that couldn't be read, kept as they were so a save never throws them away.
+    val recoveryBackup = mutableMapOf<String, String>()
     var pendingSettingsSection by mutableStateOf<String?>(null)
     var showDrinkAnimation by mutableStateOf(false)
     var lastLoggedDrinkName by mutableStateOf("")
@@ -2331,6 +2336,8 @@ class HydraViewModel : ViewModel() {
     fun resetAllData(context: Context) {
         viewModelScope.launch {
             HydraDataStore.clear(context)
+            loadFailed = false
+            recoveryBackup.clear()
             profile = Profile()
             themeId = "skyLight"
             showFace = true
@@ -2389,6 +2396,7 @@ class HydraViewModel : ViewModel() {
     }
 
     fun save(context: Context) {
+        if (loadFailed) return
         viewModelScope.launch {
             HydraDataStore.save(context, this@HydraViewModel)
         }
@@ -2401,6 +2409,7 @@ class HydraViewModel : ViewModel() {
                 if (onboardingComplete) checkProgressTrophies()
             } catch (e: Exception) {
                 Log.e("HydraLoad", "DataStore load failed: ${e.message}", e)
+                loadFailed = true
             } finally {
                 isLoaded = true
             }

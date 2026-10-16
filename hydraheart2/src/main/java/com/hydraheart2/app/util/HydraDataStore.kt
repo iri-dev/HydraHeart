@@ -1,6 +1,7 @@
 package com.hydraheart2.app.util
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -11,8 +12,12 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.hydraheart2.app.data.models.ActivityLevel
+import com.hydraheart2.app.data.models.Climate
 import com.hydraheart2.app.data.models.CustomReminder
 import com.hydraheart2.app.data.models.DailyRecord
+import com.hydraheart2.app.data.models.Drink
+import com.hydraheart2.app.data.models.Gender
 import com.hydraheart2.app.data.models.LoggedDrink
 import com.hydraheart2.app.data.models.MoodEntry
 import com.hydraheart2.app.data.models.Personality
@@ -90,6 +95,7 @@ object HydraDataStore {
     private val KEY_PARTICLES_ENABLED = booleanPreferencesKey("particles_enabled")
     private val KEY_ANIMATIONS_ENABLED = booleanPreferencesKey("animations_enabled")
     private val KEY_FULL_GLOW_ENABLED = booleanPreferencesKey("full_glow_enabled")
+    private val KEY_RECOVERY_BACKUP = stringPreferencesKey("recovery_backup")
 
     private fun today(): String = SimpleDateFormat("yyyy-MM-dd", Locale.UK).format(Date())
 
@@ -114,44 +120,111 @@ object HydraDataStore {
         return n
     }
 
+
+    // Reads one saved value. If it can't be used, the rest still loads, and the raw value is kept in
+    // [recovery] so the next save doesn't throw it away.
+    private fun <T> Preferences.readKey(key: Preferences.Key<T>, recovery: MutableMap<String, String>, use: (T) -> Unit) {
+        val raw = try {
+            this[key]
+        } catch (e: Exception) {
+            Log.w("HydraLoad", "Couldn't read ${key.name}", e)
+            return
+        } ?: return
+        try {
+            use(raw)
+        } catch (e: Exception) {
+            Log.w("HydraLoad", "Couldn't use ${key.name}", e)
+            if (raw is String) recovery[key.name] = raw
+        }
+    }
+
+    private inline fun <reified T> listFrom(json: String): List<T> {
+        val type = object : TypeToken<List<T>>() {}.type
+        val list: List<T?>? = gson.fromJson(json, type)
+        return list?.filterNotNull() ?: emptyList()
+    }
+
+    // Gson can leave Kotlin's non-null fields as null when a saved value is missing or unknown, so every
+    // loaded object gets checked and filled in before the app uses it.
+    @Suppress("USELESS_CAST")
+    private fun Profile.sanitised(): Profile = Profile(
+        name = (name as String?) ?: "",
+        gender = (gender as Gender?) ?: Gender.FEMALE,
+        birthDate = (birthDate as String?) ?: "",
+        heightCm = heightCm,
+        weightKg = weightKg,
+        activityLevel = (activityLevel as ActivityLevel?) ?: ActivityLevel.LIGHTLY_ACTIVE,
+        climate = (climate as Climate?) ?: Climate.MODERATE,
+        personality = (personality as Personality?) ?: Personality.BESTIE
+    )
+
+    @Suppress("USELESS_CAST")
+    private fun DailyRecord.sanitised(): DailyRecord? {
+        val d = (date as String?) ?: return null
+        return copy(date = d, logHours = (logHours as List<Int>?) ?: emptyList(), moodValue = (moodValue as String?) ?: "")
+    }
+
+    @Suppress("USELESS_CAST")
+    private fun MoodEntry.sanitised(): MoodEntry? {
+        val d = (date as String?) ?: return null
+        val m = (mood as String?) ?: return null
+        return copy(date = d, mood = m, note = (note as String?) ?: "")
+    }
+
+    @Suppress("USELESS_CAST")
+    private fun LoggedDrink.sanitised(): LoggedDrink? {
+        val d = (drink as Drink?) ?: return null
+        if ((d.id as String?) == null || (d.name as String?) == null) return null
+        return copy(categoryName = (categoryName as String?) ?: "", categoryIcon = (categoryIcon as String?) ?: "")
+    }
+
+    @Suppress("USELESS_CAST")
+    private fun CustomReminder.sanitised(): CustomReminder =
+        copy(id = (id as String?) ?: System.nanoTime().toString(), time = (time as String?) ?: "12:00")
+
     suspend fun load(context: Context, vm: HydraViewModel) {
         val prefs = context.dataStore.data.first()
+        val recovery = mutableMapOf<String, String>()
+        prefs.readKey(KEY_RECOVERY_BACKUP, recovery) { json ->
+            val type = object : TypeToken<Map<String, String>>() {}.type
+            gson.fromJson<Map<String, String>?>(json, type)?.let { recovery.putAll(it) }
+        }
 
-        prefs[KEY_PROFILE]?.let { vm.profile = gson.fromJson(it, Profile::class.java) }
-        prefs[KEY_ONBOARDING]?.let { vm.onboardingComplete = it }
-        prefs[KEY_THEME_ID]?.let { vm.themeId = it }
-        prefs[KEY_SHOW_FACE]?.let { vm.showFace = it }
-        prefs[KEY_SHOW_BUBBLE]?.let { vm.showSpeechBubble = it }
+        prefs.readKey(KEY_PROFILE, recovery) { vm.profile = gson.fromJson(it, Profile::class.java).sanitised() }
+        prefs.readKey(KEY_ONBOARDING, recovery) { vm.onboardingComplete = it }
+        prefs.readKey(KEY_THEME_ID, recovery) { vm.themeId = it }
+        prefs.readKey(KEY_SHOW_FACE, recovery) { vm.showFace = it }
+        prefs.readKey(KEY_SHOW_BUBBLE, recovery) { vm.showSpeechBubble = it }
         if (!vm.showFace) vm.showSpeechBubble = false
-        prefs[KEY_HYDRA_SHAPE]?.let { vm.hydraShape = it }
-        prefs[KEY_UNIT_SYSTEM]?.let { vm.unitSystem = it }
-        prefs[KEY_CUSTOM_GOAL_ENABLED]?.let { vm.customGoalEnabled = it }
-        prefs[KEY_CUSTOM_WATER_GOAL]?.let { vm.customWaterGoalMl = it }
-        prefs[KEY_SHOW_NECKLACE]?.let { vm.showNecklace = it }
-        prefs[KEY_SHOW_RAINBOW_SHIMMER]?.let { vm.showRainbowShimmer = it }
-        prefs[KEY_SHOW_BUTTERFLY]?.let { vm.showButterfly = it }
-        prefs[KEY_SHOW_GOLDEN_GLOW]?.let { vm.showGoldenGlow = it }
-        prefs[KEY_EQUIPPED_ACCESSORIES]?.let {
+        prefs.readKey(KEY_HYDRA_SHAPE, recovery) { vm.hydraShape = it }
+        prefs.readKey(KEY_UNIT_SYSTEM, recovery) { vm.unitSystem = it }
+        prefs.readKey(KEY_CUSTOM_GOAL_ENABLED, recovery) { vm.customGoalEnabled = it }
+        prefs.readKey(KEY_CUSTOM_WATER_GOAL, recovery) { vm.customWaterGoalMl = it }
+        prefs.readKey(KEY_SHOW_NECKLACE, recovery) { vm.showNecklace = it }
+        prefs.readKey(KEY_SHOW_RAINBOW_SHIMMER, recovery) { vm.showRainbowShimmer = it }
+        prefs.readKey(KEY_SHOW_BUTTERFLY, recovery) { vm.showButterfly = it }
+        prefs.readKey(KEY_SHOW_GOLDEN_GLOW, recovery) { vm.showGoldenGlow = it }
+        prefs.readKey(KEY_EQUIPPED_ACCESSORIES, recovery) {
             val type = object : TypeToken<List<String>>() {}.type
-            val ids: List<String> = gson.fromJson(it, type)
+            val ids: List<String> = gson.fromJson<List<String>?>(it, type)?.filterNotNull() ?: emptyList()
             vm.equippedAccessoryIds.clear()
             vm.equippedAccessoryIds.addAll(ids)
         }
-        prefs[KEY_CUSTOM_SPEECH_LINES]?.let {
+        prefs.readKey(KEY_CUSTOM_SPEECH_LINES, recovery) {
             val type = object : TypeToken<List<String>>() {}.type
-            val lines: List<String> = gson.fromJson(it, type)
+            val lines: List<String> = gson.fromJson<List<String>?>(it, type)?.filterNotNull() ?: emptyList()
             vm.customSpeechLines.clear()
             vm.customSpeechLines.addAll(lines)
         }
-        prefs[KEY_CUSTOM_SPEECH_ENABLED]?.let { vm.customSpeechEnabled = it }
-        prefs[KEY_SPEECH_BUBBLE_STYLE]?.let { vm.speechBubbleStyleId = it }
-        prefs[KEY_HAPTICS_ENABLED]?.let { vm.hapticsEnabled = it }
-        prefs[KEY_SOUND_EFFECTS_ENABLED]?.let { vm.soundEffectsEnabled = it }
-        prefs[KEY_VISUAL_EFFECTS_ENABLED]?.let { vm.visualEffectsEnabled = it }
-        prefs[KEY_PERFORMANCE_MODE]?.let { vm.performanceMode = it }
-        prefs[KEY_KEEP_SCREEN_ON]?.let { vm.keepScreenOn = it }
-        prefs[KEY_APP_LANGUAGE]?.let { vm.appLanguage = it }
-        prefs[KEY_INTERACTION_INTENSITY]?.let { intensity ->
+        prefs.readKey(KEY_CUSTOM_SPEECH_ENABLED, recovery) { vm.customSpeechEnabled = it }
+        prefs.readKey(KEY_SPEECH_BUBBLE_STYLE, recovery) { vm.speechBubbleStyleId = it }
+        prefs.readKey(KEY_HAPTICS_ENABLED, recovery) { vm.hapticsEnabled = it }
+        prefs.readKey(KEY_SOUND_EFFECTS_ENABLED, recovery) { vm.soundEffectsEnabled = it }
+        prefs.readKey(KEY_VISUAL_EFFECTS_ENABLED, recovery) { vm.visualEffectsEnabled = it }
+        prefs.readKey(KEY_PERFORMANCE_MODE, recovery) { vm.performanceMode = it }
+        prefs.readKey(KEY_KEEP_SCREEN_ON, recovery) { vm.keepScreenOn = it }
+        prefs.readKey(KEY_APP_LANGUAGE, recovery) { vm.appLanguage = it }
+        prefs.readKey(KEY_INTERACTION_INTENSITY, recovery) { intensity ->
             vm.interactionIntensity = intensity.coerceIn(0, 3)
             vm.hapticsEnabled = intensity > 0
             vm.soundEffectsEnabled = intensity > 1
@@ -165,12 +238,12 @@ object HydraDataStore {
                 else -> 2
             }
         }
-        prefs[KEY_REDUCE_MOTION]?.let { vm.reduceMotion = it }
-        prefs[KEY_BATTERY_AWARE_MODE]?.let { vm.batteryAwareMode = it }
-        prefs[KEY_AUTO_PERFORMANCE]?.let { vm.autoPerformance = it }
-        prefs[KEY_PARTICLES_ENABLED]?.let { vm.particlesEnabled = it }
-        prefs[KEY_ANIMATIONS_ENABLED]?.let { vm.animationsEnabled = it }
-        prefs[KEY_FULL_GLOW_ENABLED]?.let { vm.fullGlowEnabled = it }
+        prefs.readKey(KEY_REDUCE_MOTION, recovery) { vm.reduceMotion = it }
+        prefs.readKey(KEY_BATTERY_AWARE_MODE, recovery) { vm.batteryAwareMode = it }
+        prefs.readKey(KEY_AUTO_PERFORMANCE, recovery) { vm.autoPerformance = it }
+        prefs.readKey(KEY_PARTICLES_ENABLED, recovery) { vm.particlesEnabled = it }
+        prefs.readKey(KEY_ANIMATIONS_ENABLED, recovery) { vm.animationsEnabled = it }
+        prefs.readKey(KEY_FULL_GLOW_ENABLED, recovery) { vm.fullGlowEnabled = it }
         if (prefs[KEY_FULL_GLOW_ENABLED] == null) {
             vm.fullGlowEnabled = vm.interactionIntensity == 3 || vm.performanceMode == "high_performance"
         }
@@ -180,86 +253,82 @@ object HydraDataStore {
         if (prefs[KEY_ANIMATIONS_ENABLED] == null) {
             vm.animationsEnabled = vm.performanceMode != "battery_saver"
         }
-        prefs[KEY_CAL_CLICK_ACTION]?.let { vm.calendarClickAction = it }
-        prefs[KEY_CAL_DAY_FIRST]?.let { vm.calDayFirst = it }
-        prefs[KEY_CAL_SHOW_DAY_NAME]?.let { vm.calShowDayName = it }
-        prefs[KEY_CAL_SHOW_TIME]?.let { vm.calShowTime = it }
-        prefs[KEY_CAL_12_HOUR]?.let { vm.cal12Hour = it }
-        prefs[KEY_CAL_WEEK_START_MONDAY]?.let { vm.calWeekStartMonday = it }
-        prefs[KEY_CAL_DAY_RESET_HOUR]?.let { vm.calDayResetHour = it }
-        prefs[KEY_REMINDERS_ENABLED]?.let { vm.remindersEnabled = it }
-        prefs[KEY_REMINDER_SOUND]?.let { vm.reminderSound = it }
-        prefs[KEY_CUSTOM_REMINDERS]?.let {
-            val type = object : TypeToken<List<CustomReminder>>() {}.type
-            val reminders: List<CustomReminder> = gson.fromJson(it, type)
+        prefs.readKey(KEY_CAL_CLICK_ACTION, recovery) { vm.calendarClickAction = it }
+        prefs.readKey(KEY_CAL_DAY_FIRST, recovery) { vm.calDayFirst = it }
+        prefs.readKey(KEY_CAL_SHOW_DAY_NAME, recovery) { vm.calShowDayName = it }
+        prefs.readKey(KEY_CAL_SHOW_TIME, recovery) { vm.calShowTime = it }
+        prefs.readKey(KEY_CAL_12_HOUR, recovery) { vm.cal12Hour = it }
+        prefs.readKey(KEY_CAL_WEEK_START_MONDAY, recovery) { vm.calWeekStartMonday = it }
+        prefs.readKey(KEY_CAL_DAY_RESET_HOUR, recovery) { vm.calDayResetHour = it }
+        prefs.readKey(KEY_REMINDERS_ENABLED, recovery) { vm.remindersEnabled = it }
+        prefs.readKey(KEY_REMINDER_SOUND, recovery) { vm.reminderSound = it }
+        prefs.readKey(KEY_CUSTOM_REMINDERS, recovery) {
+            val reminders = listFrom<CustomReminder>(it).map { r -> r.sanitised() }
             vm.customReminders.clear()
             vm.customReminders.addAll(reminders)
         }
-        prefs[KEY_REMINDER_MESSAGES]?.let {
+        prefs.readKey(KEY_REMINDER_MESSAGES, recovery) {
             val type = object : TypeToken<List<String>>() {}.type
-            val messages: List<String> = gson.fromJson(it, type)
+            val messages: List<String> = gson.fromJson<List<String>?>(it, type)?.filterNotNull() ?: emptyList()
             vm.reminderMessages.clear()
             vm.reminderMessages.addAll(messages)
         }
-        prefs[KEY_DISABLED_PRESET_INDICES]?.let {
+        prefs.readKey(KEY_DISABLED_PRESET_INDICES, recovery) {
             val type = object : TypeToken<List<Int>>() {}.type
-            val indices: List<Int> = gson.fromJson(it, type)
+            val indices: List<Int> = gson.fromJson<List<Int>?>(it, type)?.filterNotNull() ?: emptyList()
             vm.disabledPresetIndices.clear()
             vm.disabledPresetIndices.addAll(indices)
         }
-        prefs[KEY_REMINDER_STOP_AT_GOAL]?.let { vm.reminderStopAtGoal = it }
-        prefs[KEY_REMINDER_SMART_SNOOZE]?.let { vm.reminderSmartSnooze = it }
-        prefs[KEY_REMINDER_DAILY_SUMMARY]?.let { vm.reminderDailySummary = it }
-        prefs[KEY_HP]?.let { vm.hp = it }
-        prefs[KEY_EARNED_TROPHIES]?.let {
+        prefs.readKey(KEY_REMINDER_STOP_AT_GOAL, recovery) { vm.reminderStopAtGoal = it }
+        prefs.readKey(KEY_REMINDER_SMART_SNOOZE, recovery) { vm.reminderSmartSnooze = it }
+        prefs.readKey(KEY_REMINDER_DAILY_SUMMARY, recovery) { vm.reminderDailySummary = it }
+        prefs.readKey(KEY_HP, recovery) { vm.hp = it }
+        prefs.readKey(KEY_EARNED_TROPHIES, recovery) {
             val type = object : TypeToken<List<String>>() {}.type
-            val ids: List<String> = gson.fromJson(it, type)
+            val ids: List<String> = gson.fromJson<List<String>?>(it, type)?.filterNotNull() ?: emptyList()
             vm.earnedTrophyIds.clear()
             vm.earnedTrophyIds.addAll(ids)
         }
-        prefs[KEY_STREAK]?.let { vm.streak = it }
-        prefs[KEY_TOTAL_DRINKS]?.let { vm.totalDrinksAllTime = it }
-        prefs[KEY_CURRENT_MOOD]?.let { vm.currentMood = it.ifBlank { null } }
-        prefs[KEY_MOOD_LOGGED_TODAY]?.let { vm.moodLoggedToday = it }
-        prefs[KEY_APP_OPENED_TODAY]?.let { vm.appOpenedToday = it }
-        prefs[KEY_MOOD_ENTRIES]?.let {
-            val type = object : TypeToken<List<MoodEntry>>() {}.type
-            val entries: List<MoodEntry> = gson.fromJson(it, type)
+        prefs.readKey(KEY_STREAK, recovery) { vm.streak = it }
+        prefs.readKey(KEY_TOTAL_DRINKS, recovery) { vm.totalDrinksAllTime = it }
+        prefs.readKey(KEY_CURRENT_MOOD, recovery) { vm.currentMood = it.ifBlank { null } }
+        prefs.readKey(KEY_MOOD_LOGGED_TODAY, recovery) { vm.moodLoggedToday = it }
+        prefs.readKey(KEY_APP_OPENED_TODAY, recovery) { vm.appOpenedToday = it }
+        prefs.readKey(KEY_MOOD_ENTRIES, recovery) {
+            val entries = listFrom<MoodEntry>(it).mapNotNull { e -> e.sanitised() }
             vm.moodEntries.clear()
             vm.moodEntries.addAll(entries)
         }
-        prefs[KEY_DAILY_RECORDS]?.let {
-            val type = object : TypeToken<List<DailyRecord>>() {}.type
-            val records: List<DailyRecord> = gson.fromJson(it, type)
+        prefs.readKey(KEY_DAILY_RECORDS, recovery) {
+            val records = listFrom<DailyRecord>(it).mapNotNull { r -> r.sanitised() }
             vm.dailyRecords.clear()
             vm.dailyRecords.addAll(records)
         }
-        prefs[KEY_LONGEST_STREAK]?.let { vm.longestStreak = it }
-        prefs[KEY_UNLOCKED_PERSONALITIES]?.let { json ->
+        prefs.readKey(KEY_LONGEST_STREAK, recovery) { vm.longestStreak = it }
+        prefs.readKey(KEY_UNLOCKED_PERSONALITIES, recovery) { json ->
             val type = object : TypeToken<List<String>>() {}.type
-            val names: List<String> = gson.fromJson(json, type)
+            val names: List<String> = gson.fromJson<List<String>?>(json, type)?.filterNotNull() ?: emptyList()
             val personalities = names.mapNotNull { runCatching { Personality.valueOf(it) }.getOrNull() }
             vm.unlockedPersonalities.clear()
             vm.unlockedPersonalities.addAll(personalities)
         }
-        prefs[KEY_REMINDER_IGNORE_COUNT]?.let { vm.reminderIgnoreCount = it }
-        prefs[KEY_FIRST_OPENED_TODAY_AT]?.let { vm.firstOpenedTodayAt = it }
+        prefs.readKey(KEY_REMINDER_IGNORE_COUNT, recovery) { vm.reminderIgnoreCount = it }
+        prefs.readKey(KEY_FIRST_OPENED_TODAY_AT, recovery) { vm.firstOpenedTodayAt = it }
 
         val savedDate = prefs[KEY_TODAY_DRINKS_DATE] ?: ""
         vm.openStreak = prefs[KEY_OPEN_STREAK] ?: usedDaysEndingOn(savedDate, vm.dailyRecords)
         if (savedDate == today()) {
-            prefs[KEY_TODAY_DRINKS]?.let {
-                val type = object : TypeToken<List<LoggedDrink>>() {}.type
-                val drinks: List<LoggedDrink> = gson.fromJson(it, type)
+            prefs.readKey(KEY_TODAY_DRINKS, recovery) {
+                val drinks = listFrom<LoggedDrink>(it).mapNotNull { d -> d.sanitised() }
                 vm.todayDrinks.clear()
                 vm.todayDrinks.addAll(drinks)
             }
         } else if (savedDate.isNotBlank()) {
             // A new day: turn the drinks saved on the last day into its daily record.
-            val yesterdayDrinks: List<LoggedDrink> = prefs[KEY_TODAY_DRINKS]?.let {
-                val type = object : TypeToken<List<LoggedDrink>>() {}.type
-                gson.fromJson<List<LoggedDrink>>(it, type)
-            } ?: emptyList()
+            var yesterdayDrinks: List<LoggedDrink> = emptyList()
+            prefs.readKey(KEY_TODAY_DRINKS, recovery) {
+                yesterdayDrinks = listFrom<LoggedDrink>(it).mapNotNull { d -> d.sanitised() }
+            }
             if (yesterdayDrinks.isNotEmpty() && vm.dailyRecords.none { it.date == savedDate }) {
                 val goals = GoalCalculator.calculate(vm.profile)
                 val effectiveGoal = if (vm.customGoalEnabled && vm.customWaterGoalMl != null) vm.customWaterGoalMl!! else goals.waterMl
@@ -289,6 +358,9 @@ object HydraDataStore {
             vm.moodLoggedToday = false
             vm.appOpenedToday = false
         }
+
+        vm.recoveryBackup.clear()
+        vm.recoveryBackup.putAll(recovery)
 
         if (vm.onboardingComplete && vm.profile.name.isBlank() && vm.hp == 0 && vm.earnedTrophyIds.isEmpty()) {
             vm.onboardingComplete = false
@@ -358,6 +430,7 @@ object HydraDataStore {
             prefs[KEY_REMINDER_IGNORE_COUNT] = vm.reminderIgnoreCount
             prefs[KEY_OPEN_STREAK] = vm.openStreak
             prefs[KEY_FIRST_OPENED_TODAY_AT] = vm.firstOpenedTodayAt
+            if (vm.recoveryBackup.isNotEmpty()) prefs[KEY_RECOVERY_BACKUP] = gson.toJson(vm.recoveryBackup.toMap())
         }
     }
 
