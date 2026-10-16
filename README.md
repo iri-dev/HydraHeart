@@ -454,7 +454,8 @@ for everyone, no ads, no subscriptions and no guilt.
 
 ## A note from the developer
 
-HydraHeart started as something I wanted to build for myself. I wanted to drink more water, but I
+HydraHeart is my first app, and it started as something I wanted to build for myself. I wanted to
+drink more water, but I
 struggled with motivation, and the apps I tried wanted a subscription before they'd really help. I
 wanted something different: something enjoyable, encouraging and genuinely free.
 
