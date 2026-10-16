@@ -2,7 +2,7 @@
 
 <img src="branding/hydraheart-icon.svg" alt="The HydraHeart icon, a smiling white heart half full of water on a sky-blue tile" width="112">
 
-# HydraHeart
+# HydraHeart: Your Water Tracker
 
 **Hydrate beautifully.**
 
