@@ -362,13 +362,6 @@ Hydra herself is drawn in code on a Compose `Canvas`: every shape, the layered c
 drink, her face, her accessories and her level effects. There are no images or animation files
 behind her.
 
-### Requirements
-
-- Android Studio, recent enough for Android Gradle Plugin 9.4
-- JDK 17 or newer (the one bundled with Android Studio works)
-- The Android SDK Platform for API 36.1
-- A phone or emulator running Android 8.0 or newer
-
 ### Contributing
 
 I'm not taking code contributions (pull requests) at the moment, because HydraHeart isn't open
