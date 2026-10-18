@@ -85,6 +85,7 @@ import com.hydraheart2.app.ui.components.HydraHeartCanvas
 import com.hydraheart2.app.ui.components.HydraSpeechBubble
 import com.hydraheart2.app.ui.components.LevelPopup
 import com.hydraheart2.app.ui.components.StatPill
+import com.hydraheart2.app.ui.navigation.heartFadeIn
 import com.hydraheart2.app.util.HapticEngine
 import com.hydraheart2.app.viewmodel.HydraViewModel
 import kotlinx.coroutines.delay
@@ -317,7 +318,7 @@ fun HomeScreen(viewModel: HydraViewModel, onNavigate: (String) -> Unit) {
                         text = viewModel.hydraSpeech,
                         styleId = viewModel.speechBubbleStyleId,
                         theme = theme,
-                        modifier = Modifier.widthIn(max = 310.dp)
+                        modifier = Modifier.widthIn(max = 310.dp).heartFadeIn()
                     )
                     Spacer(Modifier.height(8.dp))
                 }
@@ -325,7 +326,8 @@ fun HomeScreen(viewModel: HydraViewModel, onNavigate: (String) -> Unit) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .aspectRatio(0.9f)
-                        .padding(horizontal = 8.dp),
+                        .padding(horizontal = 8.dp)
+                        .heartFadeIn(),
                     contentAlignment = Alignment.Center
                 ) {
                     HydraHeartCanvas(

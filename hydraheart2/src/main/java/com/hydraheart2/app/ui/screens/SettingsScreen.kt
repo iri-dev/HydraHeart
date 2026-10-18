@@ -135,6 +135,7 @@ import com.hydraheart2.app.ui.components.FrostedGlass
 import com.hydraheart2.app.ui.components.HydraHeartCanvas
 import com.hydraheart2.app.ui.components.HydraSpeechBubble
 import com.hydraheart2.app.ui.components.HydraTimePicker
+import com.hydraheart2.app.ui.navigation.heartFadeIn
 import com.hydraheart2.app.ui.navigation.pageTransition
 import com.hydraheart2.app.util.AppLocale
 import com.hydraheart2.app.util.HapticEngine
@@ -694,7 +695,7 @@ private fun PersonalitySettingsSection(viewModel: HydraViewModel, theme: HydraTh
 
     FrostedGlass(theme = theme, padding = PaddingValues(16.dp, 14.dp)) {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            Box(Modifier.size(88.dp).graphicsLayer { scaleX = pulseScale.value; scaleY = pulseScale.value }) {
+            Box(Modifier.size(88.dp).heartFadeIn().graphicsLayer { scaleX = pulseScale.value; scaleY = pulseScale.value }) {
                 HydraHeartCanvas(
                     fillPercent = viewModel.waterPercent,
                     mood = viewModel.hydraMood,
@@ -964,7 +965,7 @@ private fun HydraLookSettingsSection(viewModel: HydraViewModel, theme: HydraThem
         val canvasH = if (viewModel.showFace && viewModel.showSpeechBubble) 148.dp else 190.dp
         Box(
             contentAlignment = Alignment.Center,
-            modifier = Modifier.fillMaxWidth().height(canvasH)
+            modifier = Modifier.fillMaxWidth().height(canvasH).heartFadeIn()
         ) {
             Box(
                 Modifier.size(140.dp).drawBehind {
@@ -1894,7 +1895,7 @@ private fun UnifiedReminderHero(viewModel: HydraViewModel, theme: HydraTheme, ti
 
             Spacer(Modifier.height(22.dp))
 
-            Box(contentAlignment = Alignment.Center) {
+            Box(contentAlignment = Alignment.Center, modifier = Modifier.heartFadeIn()) {
                 Canvas(Modifier.size(180.dp)) {
                     val cx = size.width / 2f
                     val cy = size.height / 2f
@@ -2923,7 +2924,7 @@ private fun UnitSettingsSection(viewModel: HydraViewModel, theme: HydraTheme) {
 
             Spacer(Modifier.height(22.dp))
 
-            Box(contentAlignment = Alignment.Center) {
+            Box(contentAlignment = Alignment.Center, modifier = Modifier.heartFadeIn()) {
                 Canvas(Modifier.size(130.dp)) {
                     val cx = size.width / 2f
                     val cy = size.height / 2f
@@ -4005,7 +4006,7 @@ private fun GeneralHeroSection(viewModel: HydraViewModel, theme: HydraTheme, rea
 
             Spacer(Modifier.height(22.dp))
 
-            Box(contentAlignment = Alignment.Center) {
+            Box(contentAlignment = Alignment.Center, modifier = Modifier.heartFadeIn()) {
                 Canvas(Modifier.size(180.dp)) {
                     val cx = size.width / 2f
                     val cy = size.height / 2f

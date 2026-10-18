@@ -54,7 +54,6 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -157,8 +156,7 @@ fun MoodTrackingScreen(viewModel: HydraViewModel, onBack: () -> Unit) {
 
             AnimatedVisibility(
                 visible = loaded,
-                enter = fadeIn(tween(450, delayMillis = 60)) +
-                    scaleIn(tween(450, delayMillis = 60), 0.88f, TransformOrigin(0.5f, 0.5f))
+                enter = fadeIn(tween(600)) + scaleIn(tween(600), 0.92f)
             ) {
                 Box(
                     modifier = Modifier
