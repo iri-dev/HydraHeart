@@ -4,10 +4,10 @@ import android.app.Activity
 import android.view.WindowManager
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -100,7 +100,7 @@ fun HydraNavigation(viewModel: HydraViewModel) {
         AnimatedContent(
             targetState = currentScreen,
             modifier = Modifier.fillMaxSize(),
-            transitionSpec = { fadeIn(tween(150)) togetherWith fadeOut(tween(100)) },
+            transitionSpec = { pageTransition() },
             label = "screenTransition"
         ) { screen ->
             when (screen) {
@@ -127,10 +127,13 @@ fun HydraNavigation(viewModel: HydraViewModel) {
         }
 
         val hideNavBar = listOf("settings", "diary", "mood_tracking", "mood_calendar", "about", "dev_profile", "privacy", "terms", "whats_new", "dev_level_control").contains(currentScreen)
-        if (!hideNavBar) {
-            Box(modifier = Modifier.align(Alignment.BottomCenter)) {
-                NavBar(currentScreen, viewModel.currentTheme, onNavigate = { if (it == "log") navigateTo(it) else selectTab(it) })
-            }
+        AnimatedVisibility(
+            visible = !hideNavBar,
+            enter = fadeIn(tween(PAGE_FADE_IN_MS)),
+            exit = fadeOut(tween(PAGE_FADE_OUT_MS)),
+            modifier = Modifier.align(Alignment.BottomCenter)
+        ) {
+            NavBar(currentScreen, viewModel.currentTheme, onNavigate = { if (it == "log") navigateTo(it) else selectTab(it) })
         }
     }
 }

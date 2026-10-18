@@ -4,12 +4,6 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -54,6 +48,7 @@ import com.hydraheart2.app.data.HydraTheme
 import com.hydraheart2.app.data.models.DrinkCategory
 import com.hydraheart2.app.ui.components.AddictiveButton
 import com.hydraheart2.app.ui.components.FrostedGlass
+import com.hydraheart2.app.ui.navigation.pageTransition
 import com.hydraheart2.app.util.HapticEngine
 import com.hydraheart2.app.viewmodel.HydraViewModel
 
@@ -106,10 +101,7 @@ fun LogDrinkScreen(viewModel: HydraViewModel, onNavigateHome: () -> Unit) {
 
             AnimatedContent(
                 targetState = selectedCategory,
-                transitionSpec = {
-                    (fadeIn(tween(250)) + slideInHorizontally { it / 4 }) togetherWith
-                        (fadeOut(tween(150)) + slideOutHorizontally { -it / 4 })
-                },
+                transitionSpec = { pageTransition() },
                 label = "categoryTransition"
             ) { category ->
                 Column(modifier = Modifier.padding(horizontal = 20.dp)) {

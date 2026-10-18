@@ -2,8 +2,6 @@ package com.hydraheart2.app.ui.screens
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.FastOutLinearInEasing
-import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
@@ -11,8 +9,6 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -42,7 +38,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -77,6 +72,8 @@ import com.hydraheart2.app.data.models.Gender
 import com.hydraheart2.app.data.models.Profile
 import com.hydraheart2.app.ui.components.FrostedGlass
 import com.hydraheart2.app.ui.components.HydraSpeechBubble
+import com.hydraheart2.app.ui.navigation.PageEnter
+import com.hydraheart2.app.ui.navigation.PageExit
 import com.hydraheart2.app.util.HapticEngine
 import com.hydraheart2.app.viewmodel.HydraViewModel
 import java.util.Random
@@ -153,13 +150,6 @@ fun EducationScreen(viewModel: HydraViewModel) {
         EducationData.topics.filter { it !== featured }.groupBy { it.category }
     }
 
-    var loaded by remember { mutableStateOf(false) }
-    LaunchedEffect(Unit) { loaded = true }
-    val entryOffset by animateFloatAsState(
-        if (loaded) 0f else 28f,
-        tween(380, easing = FastOutSlowInEasing),
-        label = "entry"
-    )
 
     Box(
         modifier = Modifier
@@ -172,7 +162,6 @@ fun EducationScreen(viewModel: HydraViewModel) {
                 .verticalScroll(rememberScrollState())
                 .statusBarsPadding()
                 .padding(bottom = 100.dp)
-                .graphicsLayer { translationY = entryOffset }
         ) {
             Text(
                 stringResource(R.string.learn_title),
@@ -251,8 +240,8 @@ fun EducationScreen(viewModel: HydraViewModel) {
 
         AnimatedVisibility(
             visible = selectedTopic != null,
-            enter = slideInVertically(spring(dampingRatio = 0.5f, stiffness = 400f)) { it } + fadeIn(tween(260)),
-            exit = slideOutVertically(tween(220, easing = FastOutLinearInEasing)) { it } + fadeOut(tween(180))
+            enter = PageEnter,
+            exit = PageExit
         ) {
             selectedTopic?.let { topic ->
                 BackHandler { selectedTopic = null }

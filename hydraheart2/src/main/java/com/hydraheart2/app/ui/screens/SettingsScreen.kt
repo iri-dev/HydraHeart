@@ -135,6 +135,7 @@ import com.hydraheart2.app.ui.components.FrostedGlass
 import com.hydraheart2.app.ui.components.HydraHeartCanvas
 import com.hydraheart2.app.ui.components.HydraSpeechBubble
 import com.hydraheart2.app.ui.components.HydraTimePicker
+import com.hydraheart2.app.ui.navigation.pageTransition
 import com.hydraheart2.app.util.AppLocale
 import com.hydraheart2.app.util.HapticEngine
 import com.hydraheart2.app.util.NotificationHelper
@@ -198,10 +199,7 @@ fun SettingsScreen(
 
             AnimatedContent(
                 targetState = sec,
-                transitionSpec = {
-                    (fadeIn(tween(220)) + slideInHorizontally { it / 14 }) togetherWith
-                        (fadeOut(tween(140)) + slideOutHorizontally { -it / 14 })
-                },
+                transitionSpec = { pageTransition() },
                 label = "settings_nav"
             ) { s ->
                 Column(modifier = Modifier.padding(top = 4.dp)) {

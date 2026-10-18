@@ -2,10 +2,6 @@ package com.hydraheart2.app
 
 import android.content.SharedPreferences
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,6 +19,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.edit
 import com.hydraheart2.app.ui.navigation.HydraNavigation
+import com.hydraheart2.app.ui.navigation.pageTransition
 import com.hydraheart2.app.ui.screens.OnboardingScreen
 import com.hydraheart2.app.ui.theme.HydraHeart2Theme
 import com.hydraheart2.app.util.AppLocale
@@ -129,22 +126,23 @@ fun HydraApp(viewModel: HydraViewModel, prefs: SharedPreferences) {
                 }
             )
         }
-        if (!viewModel.isLoaded) {
-            Box(Modifier.fillMaxSize().background(Brush.linearGradient(listOf(theme.bg1, theme.bg2, theme.bg3))))
-        } else {
-            AnimatedContent(
-                targetState = viewModel.onboardingComplete,
-                transitionSpec = { fadeIn(tween(500)) togetherWith fadeOut(tween(300)) },
-                modifier = Modifier.fillMaxSize(),
-                label = "appState"
-            ) { onboarded ->
-                if (!onboarded) {
-                    OnboardingScreen(viewModel) {
-                        prefs.edit { putBoolean("has_seen_onboarding", true) }
-                        viewModel.onboardingComplete = true
+        // Pages fade over this, so the white window never shows through between them.
+        Box(Modifier.fillMaxSize().background(Brush.linearGradient(listOf(theme.bg1, theme.bg2, theme.bg3)))) {
+            if (viewModel.isLoaded) {
+                AnimatedContent(
+                    targetState = viewModel.onboardingComplete,
+                    transitionSpec = { pageTransition() },
+                    modifier = Modifier.fillMaxSize(),
+                    label = "appState"
+                ) { onboarded ->
+                    if (!onboarded) {
+                        OnboardingScreen(viewModel) {
+                            prefs.edit { putBoolean("has_seen_onboarding", true) }
+                            viewModel.onboardingComplete = true
+                        }
+                    } else {
+                        HydraNavigation(viewModel)
                     }
-                } else {
-                    HydraNavigation(viewModel)
                 }
             }
         }

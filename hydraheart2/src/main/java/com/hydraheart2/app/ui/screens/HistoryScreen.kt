@@ -252,13 +252,6 @@ fun HistoryScreen(viewModel: HydraViewModel, onNavigate: (String) -> Unit = {}) 
         tween(900, easing = FastOutSlowInEasing),
         label = "graphProgress"
     )
-    var loaded by remember { mutableStateOf(false) }
-    LaunchedEffect(Unit) { loaded = true }
-    val entryOffset by animateFloatAsState(
-        if (loaded) 0f else 28f,
-        tween(380, easing = FastOutSlowInEasing),
-        label = "entry"
-    )
     val insightStrings = InsightStrings(
         stringResource(R.string.history_insight_empty),
         stringResource(R.string.history_insight_streak),
@@ -296,7 +289,6 @@ fun HistoryScreen(viewModel: HydraViewModel, onNavigate: (String) -> Unit = {}) 
                 .verticalScroll(rememberScrollState())
                 .statusBarsPadding()
                 .padding(bottom = 100.dp)
-                .graphicsLayer { translationY = entryOffset }
         ) {
             Row(
                 modifier = Modifier
