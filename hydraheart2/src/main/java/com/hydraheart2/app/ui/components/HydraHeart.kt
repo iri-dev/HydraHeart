@@ -1,5 +1,10 @@
 package com.hydraheart2.app.ui.components
 
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.EaseInOutSine
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -137,45 +142,35 @@ fun HydraHeartCanvas(
     )
     val fill by animateFloatAsState(fillPercent, spring(dampingRatio = 0.5f, stiffness = 400f), label = "fi")
 
-    var tapped by remember { mutableStateOf(false) }
-    var bloomVisible by remember { mutableStateOf(false) }
-    val bounceScale by animateFloatAsState(
-        if (tapped) 1.05f else 1f,
-        spring(dampingRatio = 0.5f, stiffness = 400f),
-        label = "bs"
-    )
-    val bloom by animateFloatAsState(
-        if (bloomVisible) 1f else 0f,
-        tween(if (bloomVisible) 55 else 360),
-        label = "bl"
-    )
-    LaunchedEffect(tapped) {
-        if (tapped) {
-            delay(180)
-            tapped = false
-        }
-    }
-    LaunchedEffect(bloomVisible) {
-        if (bloomVisible) {
-            delay(55)
-            bloomVisible = false
-        }
-    }
+    // Hydra's little bounce and glow when tapped. Each tap restarts them, so quick taps are never ignored.
+    val scope = rememberCoroutineScope()
+    val bounce = remember { Animatable(1f) }
+    val bloom = remember { Animatable(0f) }
+    var tapReaction by remember { mutableStateOf<Job?>(null) }
+    val latestOnTap by rememberUpdatedState(onTap)
     val eyeOpen = blink < 0.93f || blink > 0.97f
 
     Canvas(
         modifier = Modifier
             .fillMaxSize()
             .graphicsLayer {
-                val s = breathe * (if (fill >= 99f) celebPulse else 1f) * bounceScale
+                val s = breathe * (if (fill >= 99f) celebPulse else 1f) * bounce.value
                 scaleX = s
                 scaleY = s
             }
             .pointerInput(Unit) {
                 detectTapGestures(onTap = {
-                    tapped = true
-                    bloomVisible = true
-                    onTap?.invoke()
+                    tapReaction?.cancel()
+                    tapReaction = scope.launch {
+                        launch {
+                            bloom.animateTo(1f, tween(55))
+                            bloom.animateTo(0f, tween(360))
+                        }
+                        launch { bounce.animateTo(1.05f, spring(dampingRatio = 0.5f, stiffness = 400f)) }
+                        delay(180)
+                        bounce.animateTo(1f, spring(dampingRatio = 0.5f, stiffness = 400f))
+                    }
+                    latestOnTap?.invoke()
                 })
             }
     ) {
@@ -245,11 +240,12 @@ fun HydraHeartCanvas(
         }
 
         // Tap bloom
-        if (bloom > 0.01f) {
+        val glow = bloom.value
+        if (glow > 0.01f) {
             drawRect(
                 brush = Brush.radialGradient(
-                    0f to Color.White.copy(alpha = bloom * 0.2f),
-                    0.38f to theme.accent.copy(alpha = bloom * 0.1f),
+                    0f to Color.White.copy(alpha = glow * 0.2f),
+                    0.38f to theme.accent.copy(alpha = glow * 0.1f),
                     1f to Color.Transparent,
                     center = Offset(cx, cy),
                     radius = w * 0.88f
